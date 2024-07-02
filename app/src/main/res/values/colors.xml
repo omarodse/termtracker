@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E7EBFF</color> <!-- Light gray for Toolbar and general background -->
+    <color name="colorPrimaryDark">#E0E0E0</color> <!-- Slightly darker gray for status bar, etc. -->
+    <color name="colorAccent">#525E7D</color> <!-- Accent color, same as secondary recycler views for simplicity -->
+    <color name="colorOnPrimary">#333333</color> <!-- Dark gray for text on primary and accent backgrounds -->
+    <color name="colorBackground">#FFFFFF</color> <!-- White background for some elements and bottom menu -->
+    <color name="colorSecondary">#9FACCD</color> <!-- Secondary color for RecyclerViews and accents -->
+    <color name="colorTernary">#EAF0FF</color> <!-- Ternary color for information icons -->
+    <color name="colorOnSecondary">#FFFFFF</color> <!-- White for text on secondary -->
+</resources>

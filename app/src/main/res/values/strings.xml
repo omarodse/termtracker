@@ -1,0 +1,30 @@
+<resources>
+    <!-- App General -->
+    <string name="app_name">TermTracker</string>
+
+    <!-- Menu Icons -->
+    <string name="home">Home</string>
+    <string name="terms">Terms</string>
+    <string name="courses">Courses</string>
+    <string name="tests">Tests</string>
+    <string name="options">More Options</string>
+
+    <!-- Home Screen -->
+    <string name="active_courses">Active Courses</string>
+    <string name="upcoming_tests">Upcoming Tests</string>
+
+    <!-- Course Strings -->
+    <string name="course_title">Title</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="date">Date</string>
+    <string name="dash">-</string>
+    <string name="status">Status</string>
+
+    <!-- Instructor Details -->
+    <string name="instructor_label">Instructor</string>
+    <string name="instructor_full_name">%1$s</string>
+    <string name="instructor_phone">%1$d</string>
+    <string name="instructor_email">%1$s</string>
+
+</resources>

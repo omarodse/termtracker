@@ -1,0 +1,47 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TermTracker" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary theme colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
+
+        <!-- Text colors -->
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="textAppearanceButton">@style/TextAppearance.AppCompat.Button</item>
+
+        <!-- Toolbar style -->
+        <item name="toolbarStyle">@style/MyToolbarStyle</item>
+    </style>
+
+    <!-- Toolbar style -->
+    <style name="MyToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="background">@color/colorPrimary</item>
+        <item name="titleTextAppearance">@style/MyToolbarTitleText</item>
+    </style>
+
+    <!-- Text appearances for toolbar -->
+    <style name="MyToolbarTitleText" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorOnPrimary</item>
+    </style>
+
+    <!-- Headline text -->
+    <style name="headlineText" parent="@style/TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/colorOnPrimary</item>
+    </style>
+
+    <!-- Headline text recycler item -->
+    <style name="cardTitle" parent="@style/TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Regular text recycler item -->
+    <style name="regularText" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/colorOnPrimary</item>
+    </style>
+
+
+</resources>
