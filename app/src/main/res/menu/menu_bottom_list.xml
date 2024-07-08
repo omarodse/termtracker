@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home_24px"
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/navigation_terms"
+        android:icon="@drawable/date_range_24px"
+        android:title="@string/terms"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/navigation_courses"
+        android:icon="@drawable/book_5_24px"
+        android:title="@string/courses"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/navigation_tests"
+        android:icon="@drawable/assignment_24px"
+        android:title="@string/tests"
+        app:showAsAction="ifRoom" />
+</menu>

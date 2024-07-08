@@ -1,41 +1,37 @@
 package com.sld.termtracker.UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.termtracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
+public class CoursesActivity extends AppCompatActivity {
+    private static final String TAG = "CoursesActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_courses);
 
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar);
-        setSupportActionBar(toolbar);
 
+        setSupportActionBar(toolbar);
         // Check if the action bar is not null before setting the title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-            TextView toolbarTitle = findViewById(R.id.toolbar_title);
-            toolbarTitle.setText(getString(R.string.app_name));
         }
 
         // Set navigation state
         BottomNavigationView navView = findViewById(R.id.bottom_menu);
-        navView.setSelectedItemId(R.id.navigation_home); // Set based on the activity
+        navView.setSelectedItemId(R.id.navigation_courses); // Set based on the activity
 
         navView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -44,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
             if (itemId != currentItemId) {
                 Intent intent = null;
 
-                if (itemId == R.id.navigation_terms) {
+                if (itemId == R.id.navigation_home) {
+                    intent = new Intent(this, MainActivity.class);
+                } else if (itemId == R.id.navigation_terms) {
                     intent = new Intent(this, TermsActivity.class);
-                } else if (itemId == R.id.navigation_courses) {
-                    intent = new Intent(this, CoursesActivity.class);
                 } else if (itemId == R.id.navigation_tests) {
                     intent = new Intent(this, TestsActivity.class);
                 }
@@ -59,15 +55,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             return true;  // Handle the navigation item selection here
-            });
-        // Display if no active terms
-        showNoTermsFragment();
+        });
+        // Display if no courses active
+        showNoCoursesFragment();
+        Log.d(TAG, "WORKING HERE");
     }
 
-    private void showNoTermsFragment() {
-        Fragment noTermsFragment = new NoTermsFragment();
+    private void showNoCoursesFragment() {
+        Fragment noCoursesFragment = new NoCoursesFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, noTermsFragment);
+        transaction.replace(R.id.courses_fragment_container, noCoursesFragment);
         transaction.commit();
     }
 }

@@ -20,6 +20,16 @@
     <string name="date">Date</string>
     <string name="dash">-</string>
     <string name="status">Status</string>
+    <string name="noActiveCourses">No active Courses</string>
+    <string name="courseFABContentDescription">Add course</string>
+
+    <!-- Tests Strings -->
+    <string name="noActiveTests">No active tests</string>
+    <string name="testFABContentDescription">Add test</string>
+
+    <!-- Term Strings -->
+    <string name="noActiveTerms">No active terms</string>
+    <string name="termFABContentDescription">Add term</string>
 
     <!-- Instructor Details -->
     <string name="instructor_label">Instructor</string>

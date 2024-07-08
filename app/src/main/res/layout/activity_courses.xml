@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sld.termtracker.UI.TermsActivity">
+    tools:context="com.sld.termtracker.UI.CoursesActivity">
 
     <include
-        android:id="@+id/include2"
+        android:id="@+id/include"
         layout="@layout/layout_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,17 +17,17 @@
 
     <!-- Fragment container to hold the dynamic content -->
     <FrameLayout
-        android:id="@+id/terms_fragment_container"
+        android:id="@+id/courses_fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/terms_bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@+id/courses_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2"
+        app:layout_constraintTop_toBottomOf="@+id/include"
         tools:ignore="MissingConstraints" />
 
     <include
-        android:id="@+id/terms_bottom_navigation"
+        android:id="@+id/courses_bottom_navigation"
         layout="@layout/layout_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

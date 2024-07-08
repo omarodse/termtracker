@@ -13,11 +13,17 @@
         android:theme="@style/Base.Theme.TermTracker"
         tools:targetApi="31">
         <activity
-            android:name=".UI.TermsActivity"
+            android:name="com.sld.termtracker.UI.TestsActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.MainActivity"
-            android:exported="true">
+            android:name="com.sld.termtracker.UI.CoursesActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.sld.termtracker.UI.TermsActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.sld.termtracker.UI.MainActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

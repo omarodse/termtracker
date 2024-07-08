@@ -43,5 +43,22 @@
         <item name="android:textColor">@color/colorOnPrimary</item>
     </style>
 
+    <!-- Bottom navigation -->
+    <style name="Widget.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@color/colorOnPrimary</item>
+        <item name="itemTextColor">@color/colorOnPrimary</item>
+        <item name="itemRippleColor">@color/colorAccent</item>
+    </style>
+
+    <!-- Floating Action Button -->
+    <style name="Widget.MyApp.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
+        <item name="fabSize">normal</item>
+        <item name="tint">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="rippleColor">@color/colorOnPrimary</item>
+        <item name="elevation">6dp</item>
+        <item name="pressedTranslationZ">12dp</item>
+    </style>
+
 
 </resources>

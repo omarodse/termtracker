@@ -1,5 +1,6 @@
 package com.sld.termtracker.DAO;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -10,7 +11,7 @@ import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.Term;
 
 import java.util.List;
-
+@Dao
 public interface TermDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Term term);

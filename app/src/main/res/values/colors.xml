@@ -8,4 +8,7 @@
     <color name="colorSecondary">#9FACCD</color> <!-- Secondary color for RecyclerViews and accents -->
     <color name="colorTernary">#EAF0FF</color> <!-- Ternary color for information icons -->
     <color name="colorOnSecondary">#FFFFFF</color> <!-- White for text on secondary -->
+    <color name="bottomNavUnselectedItem">#949494</color> <!-- Light gray for unselected navigation items -->
+    <color name="bottomNavSelectedItem">#333333</color> <!-- Dark gray for selected navigation items -->
 </resources>
+
