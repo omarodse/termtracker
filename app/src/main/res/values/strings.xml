@@ -10,8 +10,8 @@
     <string name="options">More Options</string>
 
     <!-- Home Screen -->
-    <string name="active_courses">Active Courses</string>
-    <string name="upcoming_tests">Upcoming Tests</string>
+    <string name="home_active_courses">Active Courses</string>
+    <string name="home_upcoming_tests">Upcoming Tests</string>
 
     <!-- Course Strings -->
     <string name="course_title">Title</string>
@@ -20,11 +20,13 @@
     <string name="date">Date</string>
     <string name="dash">-</string>
     <string name="status">Status</string>
+    <string name="activeCourses">Active Courses</string>
     <string name="noActiveCourses">No active Courses</string>
     <string name="courseFABContentDescription">Add course</string>
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active tests</string>
+    <string name="upcomingTests">Upcoming tests</string>
     <string name="testFABContentDescription">Add test</string>
 
     <!-- Term Strings -->
