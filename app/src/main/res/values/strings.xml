@@ -32,6 +32,7 @@
     <!-- Term Strings -->
     <string name="noActiveTerms">No active terms</string>
     <string name="termFABContentDescription">Add term</string>
+    <string name="addTerm">Add term</string>
 
     <!-- Instructor Details -->
     <string name="instructor_label">Instructor</string>

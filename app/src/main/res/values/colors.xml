@@ -5,10 +5,13 @@
     <color name="colorAccent">#525E7D</color> <!-- Accent color, same as secondary recycler views for simplicity -->
     <color name="colorOnPrimary">#333333</color> <!-- Dark gray for text on primary and accent backgrounds -->
     <color name="colorBackground">#FFFFFF</color> <!-- White background for some elements and bottom menu -->
-    <color name="colorSecondary">#9FACCD</color> <!-- Secondary color for RecyclerViews and accents -->
+    <color name="colorSecondary">#798AB5</color> <!-- Secondary color for RecyclerViews and accents -->
     <color name="colorTernary">#EAF0FF</color> <!-- Ternary color for information icons -->
     <color name="colorOnSecondary">#FFFFFF</color> <!-- White for text on secondary -->
     <color name="bottomNavUnselectedItem">#949494</color> <!-- Light gray for unselected navigation items -->
+    <color name="strokeColor">#949494</color> <!-- Light gray for view strokes -->
+    <color name="fieldColor">#D4E0FF</color> <!-- Light accent for fields -->
     <color name="bottomNavSelectedItem">#333333</color> <!-- Dark gray for selected navigation items -->
 </resources>
+
 

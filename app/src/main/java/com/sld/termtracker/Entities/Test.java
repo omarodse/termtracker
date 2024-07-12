@@ -10,7 +10,6 @@ public class Test {
     private String title;
     private String endDate;
     private TestType type;
-
     private int courseId;
 
     public Test(int testId, String title, String endDate, TestType type, int courseId) {
