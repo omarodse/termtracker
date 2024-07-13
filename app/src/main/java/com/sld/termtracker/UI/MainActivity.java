@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.termtracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;  // Handle the navigation item selection here
             });
-        // Display if no active terms
+
         showNoTermsFragment();
     }
 
@@ -70,4 +71,5 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, noTermsFragment);
         transaction.commit();
     }
+
 }

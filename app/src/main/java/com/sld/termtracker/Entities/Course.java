@@ -13,8 +13,7 @@ public class Course {
     private CourseStatus status;
     private int termId;
 
-    public Course(int courseId, String courseTitle, String startDate, String endDate, CourseStatus status, int termId) {
-        this.courseId = courseId;
+    public Course(String courseTitle, String startDate, String endDate, CourseStatus status, int termId) {
         this.courseTitle = courseTitle;
         this.startDate = startDate;
         this.endDate = endDate;

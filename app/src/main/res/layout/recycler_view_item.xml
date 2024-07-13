@@ -12,7 +12,7 @@
         android:id="@+id/course_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/course_title"
+        android:text="@string/title"
         android:textAppearance="@style/cardTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

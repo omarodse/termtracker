@@ -12,8 +12,7 @@ public class Test {
     private TestType type;
     private int courseId;
 
-    public Test(int testId, String title, String endDate, TestType type, int courseId) {
-        this.testId = testId;
+    public Test(String title, String endDate, TestType type, int courseId) {
         this.title = title;
         this.endDate = endDate;
         this.type = type;

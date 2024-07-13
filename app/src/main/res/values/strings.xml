@@ -2,19 +2,20 @@
     <!-- App General -->
     <string name="app_name">TermTracker</string>
 
-    <!-- Menu Icons -->
+    <!-- Menu Icons & Buttons-->
     <string name="home">Home</string>
     <string name="terms">Terms</string>
     <string name="courses">Courses</string>
     <string name="tests">Tests</string>
     <string name="options">More Options</string>
+    <string name="saveButton">Save</string>
 
     <!-- Home Screen -->
     <string name="home_active_courses">Active Courses</string>
     <string name="home_upcoming_tests">Upcoming Tests</string>
 
-    <!-- Course Strings -->
-    <string name="course_title">Title</string>
+    <!-- Course & Term Strings -->
+    <string name="title">Title</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="date">Date</string>
@@ -23,16 +24,14 @@
     <string name="activeCourses">Active Courses</string>
     <string name="noActiveCourses">No active Courses</string>
     <string name="courseFABContentDescription">Add course</string>
+    <string name="noActiveTerms">No active terms</string>
+    <string name="termFABContentDescription">Add term</string>
+    <string name="addTerm">Add term</string>
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active tests</string>
     <string name="upcomingTests">Upcoming tests</string>
     <string name="testFABContentDescription">Add test</string>
-
-    <!-- Term Strings -->
-    <string name="noActiveTerms">No active terms</string>
-    <string name="termFABContentDescription">Add term</string>
-    <string name="addTerm">Add term</string>
 
     <!-- Instructor Details -->
     <string name="instructor_label">Instructor</string>

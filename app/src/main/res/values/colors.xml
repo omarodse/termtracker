@@ -10,7 +10,7 @@
     <color name="colorOnSecondary">#FFFFFF</color> <!-- White for text on secondary -->
     <color name="bottomNavUnselectedItem">#949494</color> <!-- Light gray for unselected navigation items -->
     <color name="strokeColor">#949494</color> <!-- Light gray for view strokes -->
-    <color name="fieldColor">#D4E0FF</color> <!-- Light accent for fields -->
+    <color name="fieldColor">#FFFFFF</color> <!-- Light accent for fields -->
     <color name="bottomNavSelectedItem">#333333</color> <!-- Dark gray for selected navigation items -->
 </resources>
 
