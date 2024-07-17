@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.termtracker.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -30,10 +31,16 @@ public class AddTermFragment extends Fragment {
         termStartDateEditText = view.findViewById(R.id.term_start_date);
         termEndDateEditText = view.findViewById(R.id.term_end_date);
         Button saveButton = view.findViewById(R.id.save_button);
+        Button cancelButton = view.findViewById(R.id.cancel_button);
+
+        cancelButton.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         repository = new Repository(getActivity().getApplication());
 
-        saveButton.setOnClickListener(v -> saveTerm());
+        saveButton.setOnClickListener(v -> {
+            saveTerm();
+            getParentFragmentManager().popBackStack();
+        });
 
         return view;
     }
@@ -54,11 +61,19 @@ public class AddTermFragment extends Fragment {
         Toast.makeText(getContext(), "Term saved", Toast.LENGTH_SHORT).show();
 
         clearForm();
+
     }
 
     private void clearForm() {
         termTitleEditText.setText("");
         termStartDateEditText.setText("");
         termEndDateEditText.setText("");
+    }
+
+    private void showAddTermForm() {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new AddTermFragment());
+        transaction.addToBackStack(null); // Add to back stack to allow back navigation
+        transaction.commit();
     }
 }

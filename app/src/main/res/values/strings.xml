@@ -16,8 +16,8 @@
 
     <!-- Course & Term Strings -->
     <string name="title">Title</string>
-    <string name="start_date">Start Date</string>
-    <string name="end_date">End Date</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
     <string name="date">Date</string>
     <string name="dash">-</string>
     <string name="status">Status</string>
@@ -27,6 +27,8 @@
     <string name="noActiveTerms">No active terms</string>
     <string name="termFABContentDescription">Add term</string>
     <string name="addTerm">Add term</string>
+    <string name="cancel">CANCEL</string>
+    <string name="addCourse">Add course</string>
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active tests</string>

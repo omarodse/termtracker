@@ -1,9 +1,14 @@
 package com.sld.termtracker.Entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "tests")
+@Entity(tableName = "tests",
+        foreignKeys = @ForeignKey(entity = Course.class,
+                parentColumns = "courseId",
+                childColumns = "courseId",
+                onDelete = ForeignKey.CASCADE))
 public class Test {
     @PrimaryKey(autoGenerate = true)
     private int testId;

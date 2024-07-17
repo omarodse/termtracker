@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/course_title_tv"
+        android:id="@+id/course_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
@@ -18,46 +18,66 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/start_date_tv"
+        android:id="@+id/text_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="2dp"
         android:text="@string/start_date"
-        android:textAppearance="@style/regularText"
+        android:textAppearance="@style/recyclerViewText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/course_title_tv" />
+        app:layout_constraintTop_toBottomOf="@id/course_title" />
 
     <TextView
-        android:id="@+id/dash_tv"
+        android:id="@+id/text_dash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="@string/dash"
-        android:textAppearance="@style/regularText"
-        app:layout_constraintBaseline_toBaselineOf="@id/start_date_tv"
-        app:layout_constraintStart_toEndOf="@id/start_date_tv" />
+        android:textAppearance="@style/recyclerViewText"
+        app:layout_constraintBaseline_toBaselineOf="@id/text_start_date"
+        app:layout_constraintStart_toEndOf="@id/text_start_date" />
 
     <TextView
-        android:id="@+id/end_date_tv"
+        android:id="@+id/text_end_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="@string/end_date"
-        android:textAppearance="@style/regularText"
-        app:layout_constraintBaseline_toBaselineOf="@id/dash_tv"
-        app:layout_constraintStart_toEndOf="@id/dash_tv" />
+        android:textAppearance="@style/recyclerViewText"
+        app:layout_constraintBaseline_toBaselineOf="@id/text_dash"
+        app:layout_constraintStart_toEndOf="@id/text_dash" />
 
     <TextView
-        android:id="@+id/date_tv"
+        android:id="@+id/date_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date"
-        android:textAppearance="@style/regularText"
+        android:textAppearance="@style/recyclerViewText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/start_date_tv" />
+        app:layout_constraintTop_toBottomOf="@id/text_start_date" />
 
     <TextView
-        android:id="@+id/status_tv"
+        android:id="@+id/date_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="@string/date"
+        android:textAppearance="@style/recyclerViewText"
+        app:layout_constraintBaseline_toBaselineOf="@id/date_dash"
+        app:layout_constraintStart_toEndOf="@id/date_dash" />
+
+    <TextView
+        android:id="@+id/date_dash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="@string/dash"
+        android:textAppearance="@style/recyclerViewText"
+        app:layout_constraintBaseline_toBaselineOf="@id/date_start_date"
+        app:layout_constraintStart_toEndOf="@id/date_start_date" />
+
+    <TextView
+        android:id="@+id/course_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -68,15 +88,15 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/imageViewOptions"
+        android:id="@+id/image_view_options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:src="@drawable/more_horiz_24px"
-        app:tint="@color/colorOnSecondary"
+        app:tint="@color/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/options"/>
+        android:contentDescription="@string/options" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

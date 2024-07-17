@@ -62,14 +62,13 @@ public class MainActivity extends AppCompatActivity {
             return true;  // Handle the navigation item selection here
             });
 
-        showNoTermsFragment();
+        showEmptyStateFragment();
     }
 
-    private void showNoTermsFragment() {
-        Fragment noTermsFragment = new NoTermsFragment();
+    private void showEmptyStateFragment() {
+        EmptyStateFragmentHome emptyStateFragmentHome = new EmptyStateFragmentHome();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, noTermsFragment);
+        transaction.replace(R.id.fragment_container, emptyStateFragmentHome);
         transaction.commit();
     }
-
 }

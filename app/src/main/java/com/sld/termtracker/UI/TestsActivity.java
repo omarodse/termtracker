@@ -52,12 +52,13 @@ public class TestsActivity extends AppCompatActivity {
             }
             return true;  // Handle the navigation item selection here
         });
-        showNoTestsFragment();
+        showEmptyStateFragment("No active tests");
     }
-    private void showNoTestsFragment() {
-        Fragment noTestsFragment = new NoTestsFragment();
+
+    private void showEmptyStateFragment(String message) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.tests_fragment_container, noTestsFragment);
+        transaction.replace(R.id.tests_fragment_container, emptyStateFragment);
         transaction.commit();
     }
 }

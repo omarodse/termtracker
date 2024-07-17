@@ -28,19 +28,23 @@
     </style>
 
     <!-- Headline text -->
-    <style name="headlineText" parent="@style/TextAppearance.MaterialComponents.Headline5">
+    <style name="headlineText" parent="@style/TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/colorOnPrimary</item>
-    </style>
-
-    <!-- Headline text recycler item -->
-    <style name="cardTitle" parent="@style/TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textSize">20dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <!-- Regular text recycler item -->
-    <style name="regularText" parent="@style/TextAppearance.MaterialComponents.Caption">
+    <!-- Headline text recycler item -->
+    <style name="cardTitle" parent="@style/TextAppearance.MaterialComponents.Caption">
         <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textStyle"></item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Regular text recycler item -->
+    <style name="recyclerViewText" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/supportingText</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!-- Bottom navigation -->
@@ -48,6 +52,7 @@
         <item name="itemIconTint">@color/colorOnPrimary</item>
         <item name="itemTextColor">@color/colorOnPrimary</item>
         <item name="itemRippleColor">@color/colorAccent</item>
+        <item name="backgroundTint">@color/menuBG</item>
     </style>
 
     <!-- Floating Action Button -->
@@ -97,6 +102,13 @@
         <item name="android:backgroundTint">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="cancel_button" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/supportingText</item>
         <item name="android:layout_height">56dp</item>
         <item name="cornerRadius">8dp</item>
     </style>

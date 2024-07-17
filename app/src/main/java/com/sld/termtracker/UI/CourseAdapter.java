@@ -15,39 +15,43 @@ import com.sld.termtracker.Entities.Course;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
-    private List<Course> courseList;
-    private Context context;
+    private List<Course> courses;
 
-    public CourseAdapter(Context context, List<Course> courseList) {
-        this.context = context;
-        this.courseList = courseList;
+    public static class CourseViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, starDate, endDate, status;
+
+        public CourseViewHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.course_title);
+            starDate = itemView.findViewById(R.id.date_start_date);
+            endDate = itemView.findViewById(R.id.date_end_date);
+            status = itemView.findViewById(R.id.course_status);
+        }
+    }
+
+    public CourseAdapter(List<Course> courses) {
+        this.courses = courses;
     }
 
     @NonNull
     @Override
-    public CourseAdapter.CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
-        return new CourseViewHolder(itemView);
+    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recycler_view_course_item, parent, false);
+        return new CourseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CourseAdapter.CourseViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+        Course course = courses.get(position);
+        holder.title.setText(course.getCourseTitle());
+        holder.starDate.setText(course.getStartDate());
+        holder.endDate.setText(course.getEndDate());
+        holder.status.setText(course.getStatus().toString());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
-    }
-
-    public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitle;
-        TextView textViewDescription;
-
-        public CourseViewHolder(View view) {
-            super(view);
-//            textViewTitle = view.findViewById(R.id.textViewTitle);
-//            textViewDescription = view.findViewById(R.id.textViewDescription);
-        }
+        return courses.size();
     }
 }

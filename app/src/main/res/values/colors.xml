@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#E7EBFF</color> <!-- Light gray for Toolbar and general background -->
+    <color name="colorPrimary">#FBFBFB</color> <!-- Light gray for Toolbar and general background -->
     <color name="colorPrimaryDark">#E0E0E0</color> <!-- Slightly darker gray for status bar, etc. -->
-    <color name="colorAccent">#525E7D</color> <!-- Accent color, same as secondary recycler views for simplicity -->
-    <color name="colorOnPrimary">#333333</color> <!-- Dark gray for text on primary and accent backgrounds -->
+    <color name="colorAccent">#4E598C</color> <!-- Accent color, same as secondary recycler views for simplicity -->
+    <color name="colorOnPrimary">#0E0E0E</color> <!-- Dark gray for text on primary and accent backgrounds -->
     <color name="colorBackground">#FFFFFF</color> <!-- White background for some elements and bottom menu -->
-    <color name="colorSecondary">#798AB5</color> <!-- Secondary color for RecyclerViews and accents -->
+    <color name="colorSecondary">#FFFFFF</color> <!-- Secondary color for RecyclerViews and accents -->
     <color name="colorTernary">#EAF0FF</color> <!-- Ternary color for information icons -->
     <color name="colorOnSecondary">#FFFFFF</color> <!-- White for text on secondary -->
     <color name="bottomNavUnselectedItem">#949494</color> <!-- Light gray for unselected navigation items -->
-    <color name="strokeColor">#949494</color> <!-- Light gray for view strokes -->
+    <color name="strokeColor">#F4F6FF</color> <!-- Light gray for view strokes -->
     <color name="fieldColor">#FFFFFF</color> <!-- Light accent for fields -->
     <color name="bottomNavSelectedItem">#333333</color> <!-- Dark gray for selected navigation items -->
+    <color name="supportingText">#494949</color> <!-- Light gray for supporting text -->
+    <color name="itemBG">#FFFFFF</color>
+    <color name="menuBG">#F8F8F8</color>
 </resources>
 
 

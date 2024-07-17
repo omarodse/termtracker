@@ -57,14 +57,13 @@ public class CoursesActivity extends AppCompatActivity {
             return true;  // Handle the navigation item selection here
         });
         // Display if no courses active
-        showNoCoursesFragment();
-        Log.d(TAG, "WORKING HERE");
+        showEmptyStateFragment("No active courses");
     }
 
-    private void showNoCoursesFragment() {
-        Fragment noCoursesFragment = new NoCoursesFragment();
+    private void showEmptyStateFragment(String message) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.courses_fragment_container, noCoursesFragment);
+        transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.commit();
     }
 }

@@ -4,22 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sld.termtracker.UI.MainActivity">
+    tools:context="com.sld.termtracker.UI.EmptyStateFragment">
 
     <TextView
-        android:id="@+id/no_terms_message"
+        android:id="@+id/empty_state_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/noActiveTerms"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/termsFAB"
+        app:layout_constraintBottom_toTopOf="@id/addFAB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/termsFAB"
+        android:id="@+id/addFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/termFABContentDescription"

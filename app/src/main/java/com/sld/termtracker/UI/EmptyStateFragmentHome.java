@@ -1,21 +1,29 @@
 package com.sld.termtracker.UI;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.termtracker.R;
+import com.sld.termtracker.Database.Repository;
+import com.sld.termtracker.Entities.Term;
 
-public class NoCoursesFragment extends Fragment {
+import java.util.List;
+
+public class EmptyStateFragmentHome extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_no_courses, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_empty_state_home, container, false);
 
+        return view;
+
+    }
 }
