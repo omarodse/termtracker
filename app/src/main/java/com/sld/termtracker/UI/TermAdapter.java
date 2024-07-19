@@ -1,5 +1,6 @@
 package com.sld.termtracker.UI;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.termtracker.R;
 import com.sld.termtracker.Entities.Term;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
     private List<Term> terms;
     private OnItemClickListener listener;
+
+    private static final String TAG = "termAdapter";
 
     public interface OnItemClickListener {
         void onItemClick(Term term);
@@ -61,5 +65,11 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     @Override
     public int getItemCount() {
         return terms.size();
+    }
+
+    public void updateTerms(ArrayList<Term> newTerms) {
+        terms.clear();
+        terms.addAll(newTerms);
+        notifyDataSetChanged();
     }
 }

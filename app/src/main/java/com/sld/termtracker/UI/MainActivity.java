@@ -71,4 +71,5 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, emptyStateFragmentHome);
         transaction.commit();
     }
+
 }

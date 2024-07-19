@@ -66,17 +66,21 @@ public class TermsActivity extends AppCompatActivity {
         });
 
         repository = new Repository(getApplication());
-        List<Term> termList = repository.getmAllTerms();
-        if(termList.isEmpty()) {
-            showEmptyStateFragment("No active terms");
-        } else {
-            showTerms();
-        }
+        // Retrieve terms asynchronously
+        repository.getAllTerms(terms -> {
+            runOnUiThread(() -> {
+                if (terms.isEmpty()) {
+                    showEmptyStateFragment("No active terms", "Terms");
+                } else {
+                    showTerms();
+                }
+            });
+        });
 
     }
 
-    private void showEmptyStateFragment(String message) {
-        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message);
+    public void showEmptyStateFragment(String message, String frameTitle) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.commit();
@@ -97,8 +101,8 @@ public class TermsActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    public void showCoursesFragment(int termId) {
-        CourseFragment courseFragment = CourseFragment.newInstance(termId);
+    public void showCoursesFragment(int termId, String termTitle) {
+        CourseFragment courseFragment = CourseFragment.newInstance(termId, termTitle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, courseFragment);
         transaction.addToBackStack(null);

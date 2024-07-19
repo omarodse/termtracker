@@ -13,6 +13,7 @@ import com.sld.termtracker.Entities.Instructor;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,282 +47,162 @@ public class Repository {
         mInstructorDAO = db.instructorDAO();
     }
     // Access Terms in DB
-    public List<Term> getmAllTerms() {
-        databaseExecutor.execute(()->{
-            mAllTerms = mTermDAO.getAllTerms();
+    public void getAllTerms(OnTermsRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Term> terms = mTermDAO.getAllTerms();
+            listener.onTermsRetrieved(new ArrayList<>(terms));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return mAllTerms;
     }
 
     public void insert(Term term) {
-        databaseExecutor.execute(()->{
-            mTermDAO.insert(term);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mTermDAO.insert(term));
     }
 
     public void update(Term term) {
-        databaseExecutor.execute(()->{
-            mTermDAO.update(term);
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mTermDAO.update(term));
     }
 
     public void delete(Term term) {
-        databaseExecutor.execute(()->{
-            mTermDAO.delete(term);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mTermDAO.delete(term));
     }
 
-    public List<Course> getAssociatedCourses(int termId) {
-        databaseExecutor.execute(()->{
-            mAllCourses = mCourseDAO.getAssociatedCourses(termId);
+    public void getAssociatedCourses(int termId, OnCoursesRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Course> courses = mCourseDAO.getAssociatedCourses(termId);
+            listener.onCoursesRetrieved(new ArrayList<>(courses));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    }
 
-        return mAllCourses;
+    public void getTermById(int termId, OnTermRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            Term term = mTermDAO.getTermById(termId);
+            listener.onTermRetrieved(term);
+        });
+    }
+
+    public interface OnTermRetrievedListener {
+        void onTermRetrieved(Term term);
+    }
+
+    public interface OnTermsRetrievedListener {
+        void onTermsRetrieved(ArrayList<Term> terms);
     }
 
     // Access Courses
     public void insert(Course course) {
-        databaseExecutor.execute(()->{
-            mCourseDAO.insert(course);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCourseDAO.insert(course));
     }
 
     public void update(Course course) {
-        databaseExecutor.execute(()->{
-            mCourseDAO.update(course);
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCourseDAO.update(course));
     }
 
     public void delete(Course course) {
-        databaseExecutor.execute(()->{
-            mCourseDAO.delete(course);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCourseDAO.delete(course));
     }
 
-    public List<Course> getmAllCourses() {
-        databaseExecutor.execute(()->{
-            mAllCourses = mCourseDAO.getAllCourses();
+    public void getAllCourses(OnCoursesRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Course> courses = mCourseDAO.getAllCourses();
+            listener.onCoursesRetrieved(new ArrayList<>(courses));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return mAllCourses;
     }
 
-    public List<Test> getAssociatedTests(int courseId) {
-        databaseExecutor.execute(()->{
-            mAllTests = mTestDAO.getAssociatedTests(courseId);
+    public void getCoursesByTermId(int termId, OnCoursesRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Course> courses = mCourseDAO.getCoursesByTermId(termId);
+            listener.onCoursesRetrieved(new ArrayList<>(courses));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    }
 
-        return mAllTests;
+    public interface OnCoursesRetrievedListener {
+        void onCoursesRetrieved(ArrayList<Course> courses);
     }
 
     // Access tests
     public void insert(Test test) {
-        databaseExecutor.execute(()->{
-            mTestDAO.insert(test);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mTestDAO.insert(test));
     }
 
     public void update(Test test) {
-        databaseExecutor.execute(()->{
-            mTestDAO.update(test);
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mTestDAO.update(test));
     }
 
     public void delete(Test test) {
-        databaseExecutor.execute(()->{
-            mTestDAO.delete(test);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mTestDAO.delete(test));
     }
 
-    public List<Test> getmAllTests() {
-        databaseExecutor.execute(()->{
-            mAllTests = mTestDAO.getAllTests();
+    public void getAllTests(OnTestsRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Test> tests = mTestDAO.getAllTests();
+            listener.onTestsRetrieved(new ArrayList<>(tests));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    }
 
-        return mAllTests;
+    public void getAssociatedTests(int courseId, OnTestsRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Test> tests = mTestDAO.getAssociatedTests(courseId);
+            listener.onTestsRetrieved(new ArrayList<>(tests));
+        });
+    }
+
+    public interface OnTestsRetrievedListener {
+        void onTestsRetrieved(ArrayList<Test> tests);
     }
 
     // Access Course Notes
-    public List<CourseNote> getmAllCourseNotes() {
-        databaseExecutor.execute(()->{
-            mAllCourseNotes = mCourseNoteDAO.getAllNotes();
+    public void getAllCourseNotes(OnCourseNotesRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<CourseNote> notes = mCourseNoteDAO.getAllNotes();
+            listener.onCourseNotesRetrieved(new ArrayList<>(notes));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return mAllCourseNotes;
     }
 
-    public List<CourseNote> getAssociatedNotes(int courseId) {
-        databaseExecutor.execute(()->{
-            mAllCourseNotes = mCourseNoteDAO.getAssociatedNotes(courseId);
+    public void getAssociatedNotes(int courseId, OnCourseNotesRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<CourseNote> notes = mCourseNoteDAO.getAssociatedNotes(courseId);
+            listener.onCourseNotesRetrieved(new ArrayList<>(notes));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return mAllCourseNotes;
     }
 
     public void insert(CourseNote note) {
-        databaseExecutor.execute(()->{
-            mCourseNoteDAO.insert(note);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCourseNoteDAO.insert(note));
     }
 
     public void update(CourseNote note) {
-        databaseExecutor.execute(()->{
-            mCourseNoteDAO.update(note);
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCourseNoteDAO.update(note));
     }
 
     public void delete(CourseNote note) {
-        databaseExecutor.execute(()->{
-            mCourseNoteDAO.delete(note);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCourseNoteDAO.delete(note));
+    }
+
+    public interface OnCourseNotesRetrievedListener {
+        void onCourseNotesRetrieved(ArrayList<CourseNote> notes);
     }
 
     // Access Instructors
-    public List<Instructor> getmAllInstructors() {
-        databaseExecutor.execute(()->{
-            mAllInstructors = mInstructorDAO.getAllInstructors();
+    public void getAllInstructors(OnInstructorsRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Instructor> instructors = mInstructorDAO.getAllInstructors();
+            listener.onInstructorsRetrieved(new ArrayList<>(instructors));
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return mAllInstructors;
     }
 
     public void insert(Instructor instructor) {
-        databaseExecutor.execute(()->{
-            mInstructorDAO.insert(instructor);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mInstructorDAO.insert(instructor));
     }
 
     public void update(Instructor instructor) {
-        databaseExecutor.execute(()->{
-            mInstructorDAO.update(instructor);
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mInstructorDAO.update(instructor));
     }
 
     public void delete(Instructor instructor) {
-        databaseExecutor.execute(()->{
-            mInstructorDAO.delete(instructor);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mInstructorDAO.delete(instructor));
+    }
+
+    public interface OnInstructorsRetrievedListener {
+        void onInstructorsRetrieved(ArrayList<Instructor> instructors);
     }
 
 }

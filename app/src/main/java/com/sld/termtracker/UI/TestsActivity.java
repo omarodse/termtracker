@@ -52,11 +52,11 @@ public class TestsActivity extends AppCompatActivity {
             }
             return true;  // Handle the navigation item selection here
         });
-        showEmptyStateFragment("No active tests");
+        showEmptyStateFragment("No active tests", "Tests");
     }
 
-    private void showEmptyStateFragment(String message) {
-        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message);
+    private void showEmptyStateFragment(String message, String frameTitle) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.tests_fragment_container, emptyStateFragment);
         transaction.commit();

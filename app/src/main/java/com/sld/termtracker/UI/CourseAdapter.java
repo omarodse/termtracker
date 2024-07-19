@@ -1,5 +1,6 @@
 package com.sld.termtracker.UI;
 
+import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +11,35 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.termtracker.R;
+import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private List<Course> courses;
 
-    public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, starDate, endDate, status;
+    private static final String TAG = "courseAdapter";
 
+    Repository repository;
+
+    public static class CourseViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, starDate, endDate, status, termTitle;
         public CourseViewHolder(@NonNull View itemView) {
+
             super(itemView);
             title = itemView.findViewById(R.id.course_title);
             starDate = itemView.findViewById(R.id.date_start_date);
             endDate = itemView.findViewById(R.id.date_end_date);
             status = itemView.findViewById(R.id.course_status);
+            termTitle = itemView.findViewById(R.id.courses_title);
         }
     }
 
-    public CourseAdapter(List<Course> courses) {
+    public CourseAdapter(ArrayList<Course> courses, Context context) {
         this.courses = courses;
+        this.repository = new Repository((Application) context.getApplicationContext());
     }
 
     @NonNull
@@ -39,6 +48,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_course_item, parent, false);
         return new CourseViewHolder(view);
+
     }
 
     @Override
@@ -48,6 +58,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.starDate.setText(course.getStartDate());
         holder.endDate.setText(course.getEndDate());
         holder.status.setText(course.getStatus().toString());
+
+        repository.getTermById(course.getTermId(), term -> {
+            if (term != null) {
+                holder.termTitle.setText(term.getTitle());
+            } else {
+                holder.termTitle.setText("Term not found");
+            }
+        });
     }
 
     @Override

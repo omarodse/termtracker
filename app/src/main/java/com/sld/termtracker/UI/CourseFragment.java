@@ -19,13 +19,19 @@ import java.util.ArrayList;
 
 public class CourseFragment extends Fragment {
     private static final String ARG_TERM_ID = "term_id";
+    private static final String ARG_TERM_TITLE = "term_title";
+
+    private static final String TAG = "courseFragment";
+    private String termTitle;
     private int termId;
     private ArrayList<Course> courseList;
+    private CourseAdapter adapter;
 
-    public static CourseFragment newInstance(int termId) {
+    public static CourseFragment newInstance(int termId, String termTitle) {
         CourseFragment fragment = new CourseFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_TERM_ID, termId);
+        args.putString(ARG_TERM_TITLE, termTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,13 +45,33 @@ public class CourseFragment extends Fragment {
 
         if (getArguments() != null) {
             termId = getArguments().getInt(ARG_TERM_ID);
+            termTitle = getArguments().getString(ARG_TERM_TITLE);
         }
 
-        Repository repository = new Repository(getActivity().getApplication());
-        courseList = new ArrayList<>(repository.getAssociatedCourses(termId));
-        CourseAdapter adapter = new CourseAdapter(courseList);
+        courseList = new ArrayList<>();
+        adapter = new CourseAdapter(courseList, getContext());
         recyclerView.setAdapter(adapter);
+
+        loadCourses(termId, termTitle);
 
         return view;
     }
+
+    private void loadCourses(int termId, String termTitle) {
+        Repository repository = new Repository(getActivity().getApplication());
+        repository.getCoursesByTermId(termId, courses -> {
+            getActivity().runOnUiThread(() -> {
+                if (courses.isEmpty()) {
+                    if (getActivity() instanceof TermsActivity) {
+                        ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle);
+                    }
+                } else {
+                    courseList.clear();
+                    courseList.addAll(courses);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        });
+    }
+
 }

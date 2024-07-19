@@ -18,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Term;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TermFragment extends Fragment {
@@ -37,15 +38,19 @@ public class TermFragment extends Fragment {
         // Initialize repository
         dataRepository = new Repository(getActivity().getApplication());
 
-        // Setup RecyclerView for Active Courses
+        // Setup RecyclerView for Terms
         termsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<Term> activeTerms = dataRepository.getmAllTerms();
-        TermAdapter adapter = new TermAdapter(activeTerms, term -> {
-            if (getActivity() instanceof TermsActivity) {
-                ((TermsActivity) getActivity()).showCoursesFragment(term.getTermId());
-            }
+        termsAdapter = new TermAdapter(new ArrayList<>(), term -> {
+            ((TermsActivity) getActivity()).showCoursesFragment(term.getTermId(), term.getTitle());
         });
-        termsRecyclerView.setAdapter(adapter);
+        termsRecyclerView.setAdapter(termsAdapter);
+
+        // Retrieve terms asynchronously
+        dataRepository.getAllTerms(terms -> {
+            getActivity().runOnUiThread(() -> {
+                termsAdapter.updateTerms(terms);
+            });
+        });
 
         FloatingActionButton fabAdd = view.findViewById(R.id.addFAB);
         fabAdd.setOnClickListener(v -> {

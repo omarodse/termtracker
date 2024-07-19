@@ -2,6 +2,7 @@ package com.sld.termtracker.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class EmptyStateFragment extends Fragment {
     private static final String ARG_MESSAGE = "message";
 
-    public static EmptyStateFragment newInstance(String message) {
+    private static final String ARG_FRAME_TITLE = "frameTitle";
+
+    private static final String TAG = "EmptyStateFragment";
+
+    public static EmptyStateFragment newInstance(String message, String frameTitle) {
         EmptyStateFragment fragment = new EmptyStateFragment();
         Bundle args = new Bundle();
         args.putString(ARG_MESSAGE, message);
+        args.putString(ARG_FRAME_TITLE, frameTitle);
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Nullable
@@ -31,11 +38,14 @@ public class EmptyStateFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_empty_state, container, false);
         TextView emptyStateText = view.findViewById(R.id.empty_state_text);
+        TextView emptyFragmentTitle = view.findViewById(R.id.frame_title);
         FloatingActionButton fabAdd = view.findViewById(R.id.addFAB);
 
         if (getArguments() != null) {
             String message = getArguments().getString(ARG_MESSAGE);
+            String termTitle = getArguments().getString(ARG_FRAME_TITLE);
             emptyStateText.setText(message);
+            emptyFragmentTitle.setText(termTitle);
 
             fabAdd.setOnClickListener(v -> {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

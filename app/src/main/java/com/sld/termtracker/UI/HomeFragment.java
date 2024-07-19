@@ -38,10 +38,10 @@ public class HomeFragment extends Fragment {
         dataRepository = new Repository(getActivity().getApplication());
 
         // Setup RecyclerView for Active Courses
-        activeCoursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<Course> activeCourses = dataRepository.getmAllCourses();
-        coursesAdapter = new CourseAdapter(activeCourses);
-        activeCoursesRecyclerView.setAdapter(coursesAdapter);
+//        activeCoursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        List<Course> activeCourses = dataRepository.getmAllCourses();
+//        coursesAdapter = new CourseAdapter(activeCourses);
+//        activeCoursesRecyclerView.setAdapter(coursesAdapter);
 
 //        // Setup RecyclerView for Upcoming Tests
 //        upcomingTestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
