@@ -1,6 +1,7 @@
 package com.sld.termtracker.UI;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Term;
 
 public class AddTermFragment extends Fragment {
+
+    private static final String TAG = "AddTerm";
     private TextInputEditText termTitleEditText;
     private TextInputEditText termStartDateEditText;
     private TextInputEditText termEndDateEditText;
@@ -27,19 +30,35 @@ public class AddTermFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_term, container, false);
 
+        if(getActivity() instanceof TermsActivity) {
+            ((TermsActivity) getActivity()).updateToolbarTitle("Add term");
+            ((TermsActivity) getActivity()).showBackButton(true);
+        }
+
         termTitleEditText = view.findViewById(R.id.term_title);
         termStartDateEditText = view.findViewById(R.id.term_start_date);
         termEndDateEditText = view.findViewById(R.id.term_end_date);
         Button saveButton = view.findViewById(R.id.save_button);
         Button cancelButton = view.findViewById(R.id.cancel_button);
 
-        cancelButton.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        cancelButton.setOnClickListener(v -> {
+            if(getActivity() instanceof TermsActivity) {
+                ((TermsActivity) getActivity()).updateToolbarTitle("Terms");
+                ((TermsActivity) getActivity()).showBackButton(false);
+            }
+            getParentFragmentManager().popBackStack();
+        });
 
         repository = new Repository(getActivity().getApplication());
 
         saveButton.setOnClickListener(v -> {
             saveTerm();
-            getParentFragmentManager().popBackStack();
+
+            // Check if the DB was initialized to avoid reloading the fragment
+            if(((TermsActivity) getActivity()).isNoTerms()) {
+                reloadTermFragment();
+            }
+
         });
 
         return view;
@@ -59,7 +78,7 @@ public class AddTermFragment extends Fragment {
         repository.insert(term);
 
         Toast.makeText(getContext(), "Term saved", Toast.LENGTH_SHORT).show();
-
+        getParentFragmentManager().popBackStack();
         clearForm();
 
     }
@@ -70,10 +89,10 @@ public class AddTermFragment extends Fragment {
         termEndDateEditText.setText("");
     }
 
-    private void showAddTermForm() {
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new AddTermFragment());
-        transaction.addToBackStack(null); // Add to back stack to allow back navigation
-        transaction.commit();
+    private void reloadTermFragment() {
+        if (getActivity() instanceof TermsActivity) {
+            ((TermsActivity) getActivity()).showTerms();
+        }
     }
+
 }

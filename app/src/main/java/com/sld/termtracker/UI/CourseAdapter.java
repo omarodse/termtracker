@@ -2,6 +2,7 @@ package com.sld.termtracker.UI;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,11 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private List<Course> courses;
-
     private static final String TAG = "courseAdapter";
-
     Repository repository;
 
     public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, starDate, endDate, status, termTitle;
+        public TextView title, starDate, endDate, status;
         public CourseViewHolder(@NonNull View itemView) {
 
             super(itemView);
@@ -33,7 +32,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             starDate = itemView.findViewById(R.id.date_start_date);
             endDate = itemView.findViewById(R.id.date_end_date);
             status = itemView.findViewById(R.id.course_status);
-            termTitle = itemView.findViewById(R.id.courses_title);
         }
     }
 
@@ -58,14 +56,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.starDate.setText(course.getStartDate());
         holder.endDate.setText(course.getEndDate());
         holder.status.setText(course.getStatus().toString());
-
-        repository.getTermById(course.getTermId(), term -> {
-            if (term != null) {
-                holder.termTitle.setText(term.getTitle());
-            } else {
-                holder.termTitle.setText("Term not found");
-            }
-        });
     }
 
     @Override

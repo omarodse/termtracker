@@ -4,12 +4,10 @@ import android.app.Application;
 
 import com.sld.termtracker.DAO.CourseDAO;
 import com.sld.termtracker.DAO.CourseNoteDAO;
-import com.sld.termtracker.DAO.InstructorDAO;
 import com.sld.termtracker.DAO.TermDAO;
 import com.sld.termtracker.DAO.TestDAO;
 import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.CourseNote;
-import com.sld.termtracker.Entities.Instructor;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.Test;
 
@@ -22,18 +20,13 @@ public class Repository {
     private TermDAO mTermDAO;
     private CourseDAO mCourseDAO;
     private TestDAO mTestDAO;
-
     private CourseNoteDAO mCourseNoteDAO;
-
-    private InstructorDAO mInstructorDAO;
 
     private List<Term> mAllTerms;
     private List<Course> mAllCourses;
     private List<Test> mAllTests;
 
     private List<CourseNote> mAllCourseNotes;
-
-    private List<Instructor> mAllInstructors;
 
     private static int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -44,7 +37,6 @@ public class Repository {
         mCourseDAO = db.courseDAO();
         mTestDAO = db.testDAO();
         mCourseNoteDAO = db.courseNoteDAO();
-        mInstructorDAO = db.instructorDAO();
     }
     // Access Terms in DB
     public void getAllTerms(OnTermsRetrievedListener listener) {
@@ -99,6 +91,11 @@ public class Repository {
 
     public void delete(Course course) {
         databaseExecutor.execute(() -> mCourseDAO.delete(course));
+    }
+
+    public Course getCourse(int courseId) {
+        Course course = mCourseDAO.getCourseById(courseId);
+        return course;
     }
 
     public void getAllCourses(OnCoursesRetrievedListener listener) {
@@ -179,30 +176,6 @@ public class Repository {
 
     public interface OnCourseNotesRetrievedListener {
         void onCourseNotesRetrieved(ArrayList<CourseNote> notes);
-    }
-
-    // Access Instructors
-    public void getAllInstructors(OnInstructorsRetrievedListener listener) {
-        databaseExecutor.execute(() -> {
-            List<Instructor> instructors = mInstructorDAO.getAllInstructors();
-            listener.onInstructorsRetrieved(new ArrayList<>(instructors));
-        });
-    }
-
-    public void insert(Instructor instructor) {
-        databaseExecutor.execute(() -> mInstructorDAO.insert(instructor));
-    }
-
-    public void update(Instructor instructor) {
-        databaseExecutor.execute(() -> mInstructorDAO.update(instructor));
-    }
-
-    public void delete(Instructor instructor) {
-        databaseExecutor.execute(() -> mInstructorDAO.delete(instructor));
-    }
-
-    public interface OnInstructorsRetrievedListener {
-        void onInstructorsRetrieved(ArrayList<Instructor> instructors);
     }
 
 }

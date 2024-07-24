@@ -1,9 +1,12 @@
 package com.sld.termtracker.UI;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,20 +15,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.termtracker.R;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
 
 import java.util.ArrayList;
 
 public class CourseFragment extends Fragment {
+    private static final String TAG = "courseFragment";
     private static final String ARG_TERM_ID = "term_id";
     private static final String ARG_TERM_TITLE = "term_title";
-
-    private static final String TAG = "courseFragment";
     private String termTitle;
     private int termId;
     private ArrayList<Course> courseList;
     private CourseAdapter adapter;
+
+    private TextView termTitleTextView;
 
     public static CourseFragment newInstance(int termId, String termTitle) {
         CourseFragment fragment = new CourseFragment();
@@ -46,6 +52,14 @@ public class CourseFragment extends Fragment {
         if (getArguments() != null) {
             termId = getArguments().getInt(ARG_TERM_ID);
             termTitle = getArguments().getString(ARG_TERM_TITLE);
+        } else {
+            Log.e(TAG, "Arguments are null");
+        }
+
+        // Update toolbar
+        if (getActivity() instanceof TermsActivity) {
+            ((TermsActivity) getActivity()).updateToolbarTitle(termTitle);
+            ((TermsActivity) getActivity()).showBackButton(true);
         }
 
         courseList = new ArrayList<>();
@@ -54,24 +68,47 @@ public class CourseFragment extends Fragment {
 
         loadCourses(termId, termTitle);
 
+        FloatingActionButton addCourseForm = view.findViewById(R.id.course_add_FAB);
+        addCourseForm.setOnClickListener(v -> {
+            if (getActivity() instanceof TermsActivity) {
+                ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle);
+            }
+        });
+
         return view;
     }
 
     private void loadCourses(int termId, String termTitle) {
         Repository repository = new Repository(getActivity().getApplication());
         repository.getCoursesByTermId(termId, courses -> {
-            getActivity().runOnUiThread(() -> {
-                if (courses.isEmpty()) {
-                    if (getActivity() instanceof TermsActivity) {
-                        ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle);
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (courses == null) {
+                        Log.e(TAG, "Courses are null");
+                        return;
                     }
-                } else {
-                    courseList.clear();
-                    courseList.addAll(courses);
-                    adapter.notifyDataSetChanged();
-                }
-            });
+                    Log.d(TAG, "Courses loaded: " + courses.size());
+                    if (courses.isEmpty()) {
+                        if (getActivity() instanceof TermsActivity) {
+                            ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId);
+                        }
+                    } else {
+                        courseList.clear();
+                        courseList.addAll(courses);
+                        adapter.notifyDataSetChanged();
+                        if(getActivity() instanceof TermsActivity) {
+                            ((TermsActivity) getActivity()).setNoCourses(false);
+                        }
+                    }
+                });
+            } else {
+                Log.e(TAG, "getActivity() returned null");
+            }
         });
+    }
+
+    public String getTermTitle() {
+        return termTitle;
     }
 
 }

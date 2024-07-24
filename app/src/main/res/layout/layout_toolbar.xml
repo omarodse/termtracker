@@ -11,7 +11,6 @@
         style="@style/MyToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +18,7 @@
         app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
 
     <TextView
-        android:id="@+id/toolbar_title"
+        android:id="@+id/main_toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

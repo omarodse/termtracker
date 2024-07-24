@@ -1,89 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="32dp"
     tools:context="com.sld.termtracker.UI.AddCourseFragment">
 
-    <TextView
-        android:id="@+id/add_course_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/addCourse"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        style="@style/FormLinearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_course_title">
+        android:padding="32dp" >
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/CustomTextInputLayout"
-            android:layout_width="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/course_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/title" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/CustomTextInputLayout"
+        <LinearLayout
+            style="@style/FormLinearLayout"
             android:layout_width="match_parent"
-            android:layout_marginTop="16dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/course_start_date"
-                style="@style/CustomTextInputEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/title" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_start_date"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/start_date" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_end_date"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/end_date" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/course_spinner"
+                style="@style/SpinnerStyle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/course_spinner"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/instructorLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/start_date" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="16dp"
+                android:text="@string/instructor_label"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/CustomTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/course_end_date"
-                style="@style/CustomTextInputEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/end_date" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="16dp">
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_details_instructor_name"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/instructor_full_name" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/save_button"
-            style="@style/FormSaveButton"
-            android:layout_width="match_parent"
-            android:layout_marginTop="24dp"
-            android:text="@string/saveButton" />
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp">
 
-        <Button
-            android:id="@+id/cancel_button"
-            style="@style/cancel_button"
-            android:layout_width="match_parent"
-            android:text="@string/cancel" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_details_instructor_phone"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/instructor_phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_details_instructor_email"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/instructor_email" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/course_save_button"
+                style="@style/FormSaveButton"
+                android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
+                android:text="@string/saveButton" />
+
+            <Button
+                android:id="@+id/course_cancel_button"
+                style="@style/cancel_button"
+                android:layout_width="match_parent"
+                android:text="@string/cancel" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

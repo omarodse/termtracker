@@ -16,8 +16,8 @@
 
     <!-- Course & Term Strings -->
     <string name="title">Title</string>
-    <string name="start_date">Start date</string>
-    <string name="end_date">End date</string>
+    <string name="start_date">Start</string>
+    <string name="end_date">End</string>
     <string name="date">Date</string>
     <string name="dash">-</string>
     <string name="status">Status</string>
@@ -37,8 +37,8 @@
 
     <!-- Instructor Details -->
     <string name="instructor_label">Instructor</string>
-    <string name="instructor_full_name">%1$s</string>
-    <string name="instructor_phone">%1$d</string>
-    <string name="instructor_email">%1$s</string>
+    <string name="instructor_full_name">Name</string>
+    <string name="instructor_phone">Phone</string>
+    <string name="instructor_email">Email</string>
 
 </resources>

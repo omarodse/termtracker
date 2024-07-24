@@ -17,15 +17,19 @@ public class Course {
     private String endDate;
     private CourseStatus status;
     private int termId;
-    private int instructorId;
+    private String instructorName;
+    private String instructorPhone;
+    private String instructorEmail;
 
-    public Course(String courseTitle, String startDate, String endDate, CourseStatus status, int termId, int instructorId) {
+    public Course(String courseTitle, String startDate, String endDate, CourseStatus status, int termId, String instructorName, String instructorPhone, String instructorEmail) {
         this.courseTitle = courseTitle;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
         this.termId = termId;
-        this.instructorId = instructorId;
+        this.instructorName = instructorName;
+        this.instructorPhone = instructorPhone;
+        this.instructorEmail = instructorEmail;
     }
 
     public int getCourseId() {
@@ -51,8 +55,16 @@ public class Course {
         return termId;
     }
 
-    public int getInstructorId() {
-        return instructorId;
+    public String getInstructorName() {
+        return instructorName;
+    }
+
+    public String getInstructorPhone() {
+        return instructorPhone;
+    }
+
+    public String getInstructorEmail() {
+        return instructorEmail;
     }
     public void setCourseId(int courseId) {
         this.courseId = courseId;
@@ -75,7 +87,13 @@ public class Course {
     public void setTermId(int termId) {
         this.termId = termId;
     }
-    public void setInstructorId(int instructorId) {
-        this.instructorId = instructorId;
+    public void setInstructorName(String instructorName) {
+        this.instructorName = instructorName;
+    }
+    public void setInstructorPhone(String instructorPhone) {
+        this.instructorPhone = instructorPhone;
+    }
+    public void setInstructorEmail(String instructorEmail) {
+        this.instructorEmail = instructorEmail;
     }
 }

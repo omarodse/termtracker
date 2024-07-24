@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.termtracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -24,18 +27,34 @@ public class TermsActivity extends AppCompatActivity {
     private static final String TAG = "TermActivity";
     private Repository repository;
     private MaterialToolbar toolbar;
+    private ImageView backArrow;
+    private TextView toolbarTitle;
+    private boolean noTerms = true;
+    private boolean noCourses = true;
+
+    private String termTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms);
 
-        toolbar = findViewById(R.id.materialToolbar);
+        toolbar = findViewById(R.id.toolbar);
+        toolbarTitle = findViewById(R.id.main_toolbar_title);
+        backArrow = findViewById(R.id.back_arrow);
 
         setSupportActionBar(toolbar);
         // Check if the action bar is not null before setting the title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            updateToolbarTitle("Terms");
         }
+
+        backArrow.setOnClickListener(v -> onBackPressed());
+        // Set up back stack listener
+        getSupportFragmentManager().addOnBackStackChangedListener(this::updateToolbar);
+
 
         // Set navigation state
         BottomNavigationView navView = findViewById(R.id.bottom_menu);
@@ -70,23 +89,77 @@ public class TermsActivity extends AppCompatActivity {
         repository.getAllTerms(terms -> {
             runOnUiThread(() -> {
                 if (terms.isEmpty()) {
-                    showEmptyStateFragment("No active terms", "Terms");
+                    showEmptyStateFragment("No active terms", "Terms", 0);
                 } else {
                     showTerms();
+                    noTerms = false;
                 }
             });
         });
 
     }
 
-    public void showEmptyStateFragment(String message, String frameTitle) {
-        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle);
+    private void updateToolbar() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof AddCourseFragment) {
+            updateToolbarTitle("Add Course");
+            showBackButton(true);
+        } else if (currentFragment instanceof CourseFragment) {
+            termTitle = ((CourseFragment) currentFragment).getTermTitle();
+            updateToolbarTitle(termTitle);
+            showBackButton(true);
+        } else if (currentFragment instanceof TermFragment) {
+            updateToolbarTitle("Terms");
+            showBackButton(false);
+        } else if(currentFragment instanceof EmptyStateFragment) {
+            String coursesText = ((EmptyStateFragment) currentFragment).getCenterText();
+            if(coursesText.contains("courses")) {
+                updateToolbarTitle(termTitle);
+                showBackButton(true);
+            }
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void updateToolbarTitle(String title) {
+        toolbarTitle.setText(title);
+    }
+
+    public void showBackButton(boolean show) {
+        if (show) {
+            backArrow.setVisibility(View.VISIBLE);
+        } else {
+            backArrow.setVisibility(View.GONE);
+        }
+    }
+
+    public boolean isNoTerms() {
+        return noTerms;
+    }
+
+    public boolean isNoCourses() {
+        return noCourses;
+    }
+
+    public void setNoCourses (boolean change) {
+        noCourses = change;
+    }
+
+    public void showEmptyStateFragment(String message, String frameTitle, int termId) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.commit();
     }
 
-    private void showTerms() {
+    public void showTerms() {
         TermFragment termFragment = new TermFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, termFragment);
@@ -97,6 +170,14 @@ public class TermsActivity extends AppCompatActivity {
         AddTermFragment addTermFragment = new AddTermFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addTermFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void showAddCourseFragment(int termId, String termTitle) {
+        AddCourseFragment addCourse = AddCourseFragment.newInstance(termId, termTitle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, addCourse);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -116,14 +197,5 @@ public class TermsActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
     }
 }

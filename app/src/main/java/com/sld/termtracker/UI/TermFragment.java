@@ -46,11 +46,8 @@ public class TermFragment extends Fragment {
         termsRecyclerView.setAdapter(termsAdapter);
 
         // Retrieve terms asynchronously
-        dataRepository.getAllTerms(terms -> {
-            getActivity().runOnUiThread(() -> {
-                termsAdapter.updateTerms(terms);
-            });
-        });
+        loadTerms();
+
 
         FloatingActionButton fabAdd = view.findViewById(R.id.addFAB);
         fabAdd.setOnClickListener(v -> {
@@ -60,6 +57,18 @@ public class TermFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void loadTerms() {
+        dataRepository.getAllTerms(terms -> {
+            getActivity().runOnUiThread(() -> {
+                termsAdapter.updateTerms(terms);
+            });
+        });
+    }
+    public void addTerm(Term term) {
+        dataRepository.insert(term);
+        loadTerms();
     }
 
 }
