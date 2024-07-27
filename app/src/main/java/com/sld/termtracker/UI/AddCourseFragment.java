@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.CourseStatus;
+import com.sld.termtracker.Entities.Term;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class AddCourseFragment extends Fragment {
     private TextInputEditText courseInstructorEditText;
     private TextInputEditText courseInstructorPhoneEditText;
     private TextInputEditText courseInstructorEmailEditText;
+    private TextInputEditText courseNoteEditText;
     private Spinner courseStatus;
     private CourseStatus selectedStatus;
     private static final String ARG_TERM_ID = "term_id";
@@ -75,6 +77,7 @@ public class AddCourseFragment extends Fragment {
         courseInstructorEditText = view.findViewById(R.id.course_details_instructor_name);
         courseInstructorPhoneEditText = view.findViewById(R.id.course_details_instructor_phone);
         courseInstructorEmailEditText = view.findViewById(R.id.course_details_instructor_email);
+        courseNoteEditText = view.findViewById(R.id.course_note);
         courseStatus = view.findViewById(R.id.course_spinner);
         Button saveCourse = view.findViewById(R.id.course_save_button);
         Button cancelAddCourse = view.findViewById(R.id.course_cancel_button);
@@ -115,17 +118,12 @@ public class AddCourseFragment extends Fragment {
             getParentFragmentManager().popBackStack();
         });
 
+        // Create a course
         saveCourse.setOnClickListener(v -> {
             saveCourse();
             // Reset spinner
             courseStatus.setSelection(statusList.indexOf(CourseStatus.SELECT_STATUS));
 
-            // Reload fragment if there were no courses in that term
-            if(getActivity() instanceof TermsActivity) {
-                if(((TermsActivity) getActivity()).isNoCourses()) {
-                    reloadCourseFragment();
-                }
-            }
         });
 
         return view;
@@ -139,6 +137,7 @@ public class AddCourseFragment extends Fragment {
         String instructorName = courseInstructorEditText.getText().toString().trim();
         String instructorPhone = courseInstructorPhoneEditText.getText().toString().trim();
         String instructorEmail = courseInstructorEmailEditText.getText().toString().trim();
+        String note = courseNoteEditText.getText().toString().trim();
 
         if (title.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || instructorName.isEmpty()
                 || instructorPhone.isEmpty() ||instructorEmail.isEmpty()) {
@@ -151,11 +150,23 @@ public class AddCourseFragment extends Fragment {
             return;
         }
         // Saving the course
-        Course newCourse = new Course(title, startDate, endDate, selectedStatus, termId, instructorName, instructorPhone, instructorEmail);
+        Course newCourse = new Course(title, startDate, endDate, selectedStatus, termId, instructorName, instructorPhone, instructorEmail, note);
         repository.insert(newCourse);
         Toast.makeText(getContext(), "Course saved", Toast.LENGTH_SHORT).show();
         getParentFragmentManager().popBackStack();
         clearForm();
+
+        // Reload fragment if there were no courses in that term
+        repository.getTermById(termId, term -> {
+            boolean hasNoCourses = term.isNoCourses();
+            if(getActivity() instanceof TermsActivity && hasNoCourses) {
+                // Remove the empty fragment from the stack to avoid showing it again
+                getParentFragmentManager().popBackStack();
+                // Reload the courses for that term
+                reloadCourseFragment();
+            }
+        });
+
     }
 
     private void clearForm() {

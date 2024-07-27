@@ -70,6 +70,7 @@ public class TestsActivity extends AppCompatActivity {
         EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.tests_fragment_container, emptyStateFragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

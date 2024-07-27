@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.termtracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sld.termtracker.Database.Repository;
 
 public class CoursesActivity extends AppCompatActivity {
     private static final String TAG = "CoursesActivity";
@@ -22,6 +23,9 @@ public class CoursesActivity extends AppCompatActivity {
     private MaterialToolbar toolbar;
     private ImageView backArrow;
     private TextView toolbarTitle;
+    private Repository repository;
+
+    private boolean hasTerms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +66,13 @@ public class CoursesActivity extends AppCompatActivity {
                 if (intent != null) {
                     startActivity(intent);
                     finish();  // Finish the current activity
-                    overridePendingTransition(0, 0);  // Smooth transitions
+                    //overridePendingTransition(0, 0);  // Smooth transitions
                 }
             }
-            return true;  // Handle the navigation item selection here
+            return true;
         });
+
+
         // Display if no courses active
         showEmptyStateFragment("No active courses", "Courses", 0);
     }
@@ -75,6 +81,7 @@ public class CoursesActivity extends AppCompatActivity {
         EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 

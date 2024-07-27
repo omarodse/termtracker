@@ -24,8 +24,9 @@ public class EmptyStateFragment extends Fragment {
     private static final String ARG_FRAME_TITLE = "frameTitle";
     private static final String ARG_TERM_ID = "term_id";
     private String termTitle;
-
     private String message;
+
+    private int termId;
 
     MaterialToolbar toolbar;
 
@@ -47,32 +48,39 @@ public class EmptyStateFragment extends Fragment {
         TextView emptyStateText = view.findViewById(R.id.empty_state_text);
         FloatingActionButton fabAdd = view.findViewById(R.id.addFAB);
 
-
         if (getArguments() != null) {
             message = getArguments().getString(ARG_MESSAGE);
             termTitle = getArguments().getString(ARG_FRAME_TITLE);
-            int termId = getArguments().getInt(ARG_TERM_ID);
+            termId = getArguments().getInt(ARG_TERM_ID);
             emptyStateText.setText(message);
 
-            fabAdd.setOnClickListener(v -> {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                Fragment fragment = null;
-
-                if (message != null) {
-                    if (message.contains("terms")) {
-                        fragment = new AddTermFragment();
-                    } else if (message.contains("courses")) {
-                        fragment = AddCourseFragment.newInstance(termId, termTitle);
-                    }
+            // Hide FAB if termId is null
+            if (!(getActivity() instanceof TermsActivity)) {
+                if (termId == 0) {
+                    fabAdd.setVisibility(View.GONE);
                 }
-
-                if (fragment != null) {
-                    transaction.replace(R.id.fragment_container, fragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-            });
+            }
         }
+
+        fabAdd.setOnClickListener(v -> {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            Fragment fragment = null;
+
+            if (message != null) {
+                if (message.contains("terms")) {
+                    fragment = new AddTermFragment();
+                } else if (message.contains("courses")) {
+                    fragment = AddCourseFragment.newInstance(termId, termTitle);
+                }
+            }
+
+            if (fragment != null) {
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
 
         return view;
     }

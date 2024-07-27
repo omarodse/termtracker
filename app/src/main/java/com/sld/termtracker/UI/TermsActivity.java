@@ -22,16 +22,15 @@ import com.sld.termtracker.Entities.Term;
 
 import java.util.List;
 
-public class TermsActivity extends AppCompatActivity {
+public class TermsActivity extends AppCompatActivity implements CourseDetailsFragment.OnCourseTitleUpdatedListener{
 
     private static final String TAG = "TermActivity";
     private Repository repository;
     private MaterialToolbar toolbar;
     private ImageView backArrow;
     private TextView toolbarTitle;
-    private boolean noTerms = true;
+    private static boolean noTerms = true;
     private boolean noCourses = true;
-
     private String termTitle;
 
     @Override
@@ -51,10 +50,11 @@ public class TermsActivity extends AppCompatActivity {
             updateToolbarTitle("Terms");
         }
 
+
+
         backArrow.setOnClickListener(v -> onBackPressed());
         // Set up back stack listener
         getSupportFragmentManager().addOnBackStackChangedListener(this::updateToolbar);
-
 
         // Set navigation state
         BottomNavigationView navView = findViewById(R.id.bottom_menu);
@@ -64,27 +64,31 @@ public class TermsActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             int currentItemId = navView.getSelectedItemId();
 
-            if (itemId != currentItemId) {
-                Intent intent = null;
+            Intent intent = null;
 
-                if (itemId == R.id.navigation_home) {
-                    intent = new Intent(this, MainActivity.class);
-                } else if (itemId == R.id.navigation_courses) {
-                    intent = new Intent(this, CoursesActivity.class);
-                } else if (itemId == R.id.navigation_tests) {
-                    intent = new Intent(this, TestsActivity.class);
-                }
-
-                if (intent != null) {
-                    startActivity(intent);
-                    finish();  // Finish the current activity
-                    overridePendingTransition(0, 0);  // Smooth transitions
-                }
+            if (itemId == R.id.navigation_home) {
+                intent = new Intent(this, MainActivity.class);
+            } else if (itemId == R.id.navigation_courses) {
+                intent = new Intent(this, CoursesActivity.class);
+            } else if (itemId == R.id.navigation_tests) {
+                intent = new Intent(this, TestsActivity.class);
+            } else if (itemId == R.id.navigation_terms) {
+                showTerms();
+                updateToolbarTitle("Terms");
+                showBackButton(false);
+                return true;
             }
-            return true;  // Handle the navigation item selection here
+
+            if (intent != null) {
+                startActivity(intent);
+                finish();
+            }
+
+            return true;
         });
 
         repository = new Repository(getApplication());
+
         // Retrieve terms asynchronously
         repository.getAllTerms(terms -> {
             runOnUiThread(() -> {
@@ -112,10 +116,13 @@ public class TermsActivity extends AppCompatActivity {
             updateToolbarTitle("Terms");
             showBackButton(false);
         } else if(currentFragment instanceof EmptyStateFragment) {
-            String coursesText = ((EmptyStateFragment) currentFragment).getCenterText();
-            if(coursesText.contains("courses")) {
+            String emptyStateText = ((EmptyStateFragment) currentFragment).getCenterText();
+            if(emptyStateText.contains("courses")) {
                 updateToolbarTitle(termTitle);
                 showBackButton(true);
+            } else if(emptyStateText.contains("terms")) {
+                updateToolbarTitle("Terms");
+                showBackButton(false);
             }
         }
     }
@@ -127,9 +134,12 @@ public class TermsActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
     public void updateToolbarTitle(String title) {
         toolbarTitle.setText(title);
+    }
+    @Override
+    public void onCourseTitleUpdated(String courseTitle) {
+        updateToolbarTitle(courseTitle);
     }
 
     public void showBackButton(boolean show) {
@@ -156,6 +166,7 @@ public class TermsActivity extends AppCompatActivity {
         EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -193,9 +204,13 @@ public class TermsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            getSupportFragmentManager().popBackStack();
+            //getSupportFragmentManager().popBackStack();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean hasNoTerms() {
+        return noTerms;
     }
 }

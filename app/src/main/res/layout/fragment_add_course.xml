@@ -59,6 +59,19 @@
                     android:hint="@string/end_date" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/course_note"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/noteOptional" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Spinner
                 android:id="@+id/course_spinner"
                 style="@style/SpinnerStyle"

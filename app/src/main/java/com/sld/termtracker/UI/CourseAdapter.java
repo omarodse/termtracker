@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.Term;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,22 +23,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private List<Course> courses;
     private static final String TAG = "courseAdapter";
     Repository repository;
+    private OnItemClickListener listener;
 
-    public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, starDate, endDate, status;
-        public CourseViewHolder(@NonNull View itemView) {
-
-            super(itemView);
-            title = itemView.findViewById(R.id.course_title);
-            starDate = itemView.findViewById(R.id.date_start_date);
-            endDate = itemView.findViewById(R.id.date_end_date);
-            status = itemView.findViewById(R.id.course_status);
-        }
+    public interface OnItemClickListener {
+        void onItemClick(Course course);
     }
-
-    public CourseAdapter(ArrayList<Course> courses, Context context) {
+    public CourseAdapter(List<Course> courses, OnItemClickListener listener) {
         this.courses = courses;
-        this.repository = new Repository((Application) context.getApplicationContext());
+        this.listener = listener;
     }
 
     @NonNull
@@ -48,14 +41,27 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         return new CourseViewHolder(view);
 
     }
-
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course course = courses.get(position);
         holder.title.setText(course.getCourseTitle());
-        holder.starDate.setText(course.getStartDate());
+        holder.startDate.setText(course.getStartDate());
         holder.endDate.setText(course.getEndDate());
         holder.status.setText(course.getStatus().toString());
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(course));
+        Log.d(TAG, "From course adapter working");
+    }
+
+    public static class CourseViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, startDate, endDate, status;
+        public CourseViewHolder(@NonNull View itemView) {
+
+            super(itemView);
+            title = itemView.findViewById(R.id.course_title);
+            startDate = itemView.findViewById(R.id.date_start_date);
+            endDate = itemView.findViewById(R.id.date_end_date);
+            status = itemView.findViewById(R.id.course_status);
+        }
     }
 
     @Override

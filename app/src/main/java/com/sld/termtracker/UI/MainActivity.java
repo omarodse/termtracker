@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 if (intent != null) {
                     startActivity(intent);
                     finish();  // Finish the current activity
-                    overridePendingTransition(0, 0);  // Smooth transitions
+                    //overridePendingTransition(0, 0);  // Smooth transitions
                 }
             }
             return true;  // Handle the navigation item selection here

@@ -3,11 +3,9 @@ package com.sld.termtracker.Database;
 import android.app.Application;
 
 import com.sld.termtracker.DAO.CourseDAO;
-import com.sld.termtracker.DAO.CourseNoteDAO;
 import com.sld.termtracker.DAO.TermDAO;
 import com.sld.termtracker.DAO.TestDAO;
 import com.sld.termtracker.Entities.Course;
-import com.sld.termtracker.Entities.CourseNote;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.Test;
 
@@ -20,13 +18,11 @@ public class Repository {
     private TermDAO mTermDAO;
     private CourseDAO mCourseDAO;
     private TestDAO mTestDAO;
-    private CourseNoteDAO mCourseNoteDAO;
 
     private List<Term> mAllTerms;
     private List<Course> mAllCourses;
     private List<Test> mAllTests;
 
-    private List<CourseNote> mAllCourseNotes;
 
     private static int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -36,7 +32,6 @@ public class Repository {
         mTermDAO = db.termDAO();
         mCourseDAO = db.courseDAO();
         mTestDAO = db.testDAO();
-        mCourseNoteDAO = db.courseNoteDAO();
     }
     // Access Terms in DB
     public void getAllTerms(OnTermsRetrievedListener listener) {
@@ -44,6 +39,10 @@ public class Repository {
             List<Term> terms = mTermDAO.getAllTerms();
             listener.onTermsRetrieved(new ArrayList<>(terms));
         });
+    }
+
+    public interface OnTermsRetrievedListener {
+        void onTermsRetrieved(ArrayList<Term> terms);
     }
 
     public void insert(Term term) {
@@ -76,10 +75,6 @@ public class Repository {
         void onTermRetrieved(Term term);
     }
 
-    public interface OnTermsRetrievedListener {
-        void onTermsRetrieved(ArrayList<Term> terms);
-    }
-
     // Access Courses
     public void insert(Course course) {
         databaseExecutor.execute(() -> mCourseDAO.insert(course));
@@ -93,9 +88,15 @@ public class Repository {
         databaseExecutor.execute(() -> mCourseDAO.delete(course));
     }
 
-    public Course getCourse(int courseId) {
-        Course course = mCourseDAO.getCourseById(courseId);
-        return course;
+    public void getCourseById(int courseId, OnCourseRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            Course course = mCourseDAO.getCourseById(courseId);
+            listener.onCourseRetrieved(course);
+        });
+    }
+
+    public interface OnCourseRetrievedListener {
+        void onCourseRetrieved(Course course);
     }
 
     public void getAllCourses(OnCoursesRetrievedListener listener) {
@@ -145,37 +146,6 @@ public class Repository {
 
     public interface OnTestsRetrievedListener {
         void onTestsRetrieved(ArrayList<Test> tests);
-    }
-
-    // Access Course Notes
-    public void getAllCourseNotes(OnCourseNotesRetrievedListener listener) {
-        databaseExecutor.execute(() -> {
-            List<CourseNote> notes = mCourseNoteDAO.getAllNotes();
-            listener.onCourseNotesRetrieved(new ArrayList<>(notes));
-        });
-    }
-
-    public void getAssociatedNotes(int courseId, OnCourseNotesRetrievedListener listener) {
-        databaseExecutor.execute(() -> {
-            List<CourseNote> notes = mCourseNoteDAO.getAssociatedNotes(courseId);
-            listener.onCourseNotesRetrieved(new ArrayList<>(notes));
-        });
-    }
-
-    public void insert(CourseNote note) {
-        databaseExecutor.execute(() -> mCourseNoteDAO.insert(note));
-    }
-
-    public void update(CourseNote note) {
-        databaseExecutor.execute(() -> mCourseNoteDAO.update(note));
-    }
-
-    public void delete(CourseNote note) {
-        databaseExecutor.execute(() -> mCourseNoteDAO.delete(note));
-    }
-
-    public interface OnCourseNotesRetrievedListener {
-        void onCourseNotesRetrieved(ArrayList<CourseNote> notes);
     }
 
 }

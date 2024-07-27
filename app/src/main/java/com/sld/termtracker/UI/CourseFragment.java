@@ -11,6 +11,7 @@ import android.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,19 +57,15 @@ public class CourseFragment extends Fragment {
             Log.e(TAG, "Arguments are null");
         }
 
-        // Update toolbar
-        if (getActivity() instanceof TermsActivity) {
-            ((TermsActivity) getActivity()).updateToolbarTitle(termTitle);
-            ((TermsActivity) getActivity()).showBackButton(true);
-        }
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         courseList = new ArrayList<>();
-        adapter = new CourseAdapter(courseList, getContext());
+        adapter = new CourseAdapter(courseList, course -> showCourseDetailFragment(course));
         recyclerView.setAdapter(adapter);
 
         loadCourses(termId, termTitle);
 
         FloatingActionButton addCourseForm = view.findViewById(R.id.course_add_FAB);
+
         addCourseForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
                 ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle);
@@ -83,14 +80,19 @@ public class CourseFragment extends Fragment {
         repository.getCoursesByTermId(termId, courses -> {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    if (courses == null) {
-                        Log.e(TAG, "Courses are null");
-                        return;
-                    }
-                    Log.d(TAG, "Courses loaded: " + courses.size());
+//                    if (courses == null) {
+//                        Log.e(TAG, "Courses are null");
+//                        return;
+//                    }
+//                    Log.d(TAG, "Courses loaded: " + courses.size());
                     if (courses.isEmpty()) {
+
+                        // Pop a stack to avoid going back to the same fragment
+                        getParentFragmentManager().popBackStack();
+
                         if (getActivity() instanceof TermsActivity) {
                             ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId);
+                            Log.d(TAG, "Courses loaded: " + courses.size());
                         }
                     } else {
                         courseList.clear();
@@ -105,6 +107,14 @@ public class CourseFragment extends Fragment {
                 Log.e(TAG, "getActivity() returned null");
             }
         });
+    }
+
+    private void showCourseDetailFragment(Course course) {
+        CourseDetailsFragment fragment = CourseDetailsFragment.newInstance(course.getCourseId());
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public String getTermTitle() {

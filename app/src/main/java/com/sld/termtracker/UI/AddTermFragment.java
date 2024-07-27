@@ -54,11 +54,6 @@ public class AddTermFragment extends Fragment {
         saveButton.setOnClickListener(v -> {
             saveTerm();
 
-            // Check if the DB was initialized to avoid reloading the fragment
-            if(((TermsActivity) getActivity()).isNoTerms()) {
-                reloadTermFragment();
-            }
-
         });
 
         return view;
@@ -80,6 +75,11 @@ public class AddTermFragment extends Fragment {
         Toast.makeText(getContext(), "Term saved", Toast.LENGTH_SHORT).show();
         getParentFragmentManager().popBackStack();
         clearForm();
+
+        // Check if the DB was initialized to avoid reloading the fragment
+        if(((TermsActivity) getActivity()).isNoTerms()) {
+            reloadTermFragment();
+        }
 
     }
 

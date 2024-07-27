@@ -29,6 +29,8 @@
     <string name="addTerm">Add term</string>
     <string name="cancel">CANCEL</string>
     <string name="addCourse">Add course</string>
+    <string name="noteOptional">Note (Optional)</string>
+    <string name="noteLabel">NOTE</string>
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active tests</string>
