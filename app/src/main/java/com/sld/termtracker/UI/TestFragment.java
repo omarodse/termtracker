@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,28 +15,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.termtracker.R;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.Test;
 
 import java.util.ArrayList;
 
-public class CourseFragment extends Fragment {
-    private static final String TAG = "courseFragment";
-    private static final String ARG_TERM_ID = "term_id";
-    private static final String ARG_TERM_TITLE = "term_title";
-    private String termTitle;
-    private int termId;
-    private ArrayList<Course> courseList;
-    private CourseAdapter adapter;
+public class TestFragment extends Fragment {
+    private static final String TAG = "testFragment";
+    private static final String ARG_COURSE_ID = "course_id";
+    private static final String ARG_COURSE_TITLE = "term_title";
+    private String courseTitle;
+    private int courseId;
+    private ArrayList<Test> testList;
+    private TestAdapter adapter;
     private Repository repository;
 
-    public static CourseFragment newInstance(int termId, String termTitle) {
-        CourseFragment fragment = new CourseFragment();
+
+    public static TestFragment newInstance(String courseTitle, int courseId) {
+        TestFragment fragment = new TestFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_TERM_ID, termId);
-        args.putString(ARG_TERM_TITLE, termTitle);
+        args.putInt(ARG_COURSE_ID, courseId);
+        args.putString(ARG_COURSE_TITLE, courseTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,13 +45,13 @@ public class CourseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_courses, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerviewCourses);
+        View view = inflater.inflate(R.layout.fragment_tests, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerviewTests);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (getArguments() != null) {
-            termId = getArguments().getInt(ARG_TERM_ID);
-            termTitle = getArguments().getString(ARG_TERM_TITLE);
+            courseId = getArguments().getInt(ARG_COURSE_ID);
+            courseTitle = getArguments().getString(ARG_COURSE_TITLE);
         } else {
             Log.e(TAG, "Arguments are null");
         }
@@ -59,44 +59,43 @@ public class CourseFragment extends Fragment {
         repository = new Repository(getActivity().getApplication());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        courseList = new ArrayList<>();
-        adapter = new CourseAdapter(courseList, repository, this::showCourseDetailFragment);
+        testList = new ArrayList<>();
+        adapter = new TestAdapter(testList, repository, this::showTestDetailFragment);
         recyclerView.setAdapter(adapter);
 
-        loadCourses(termId, termTitle);
+        loadTests(courseTitle, courseId);
 
-        FloatingActionButton addCourseForm = view.findViewById(R.id.course_add_FAB);
+        FloatingActionButton addTestForm = view.findViewById(R.id.test_add_FAB);
 
-        addCourseForm.setOnClickListener(v -> {
+        Log.d(TAG, "Passing FAB Button");
+
+        addTestForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
-                ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle);
+                ((TermsActivity) getActivity()).showAddTestFragment(courseId, courseTitle);
             }
         });
 
         return view;
     }
 
-    private void loadCourses(int termId, String termTitle) {
+    private void loadTests(String itemTitle, int itemId) {
         Repository repository = new Repository(getActivity().getApplication());
-        repository.getCoursesByTermId(termId, courses -> {
+        repository.getAssociatedTests(courseId, tests -> {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    if (courses.isEmpty()) {
-
+                    if (tests.isEmpty()) {
                         // Pop a stack to avoid going back to the same fragment
                         getParentFragmentManager().popBackStack();
 
                         if (getActivity() instanceof TermsActivity) {
-                            ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId);
-                            Log.d(TAG, "Courses loaded: " + courses.size());
+                            ((TermsActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, itemId);
+                            Log.d(TAG, "Tests loaded: " + tests.size());
                         }
                     } else {
-                        courseList.clear();
-                        courseList.addAll(courses);
+                        testList.clear();
+                        testList.addAll(tests);
                         adapter.notifyDataSetChanged();
-                        if(getActivity() instanceof TermsActivity) {
-                            ((TermsActivity) getActivity()).setNoCourses(false);
-                        }
+                        updateToolbarTitle(itemTitle + "\nAssessments");
                     }
                 });
             } else {
@@ -105,16 +104,21 @@ public class CourseFragment extends Fragment {
         });
     }
 
-    private void showCourseDetailFragment(Course course) {
-        CourseDetailsFragment fragment = CourseDetailsFragment.newInstance(course.getCourseId());
+    private void showTestDetailFragment(Test test) {
+        TestDetailsFragment fragment = TestDetailsFragment.newInstance(test.getTestId(), courseTitle);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    public String getTermTitle() {
-        return termTitle;
+    public String getCourseTitle() {
+        return courseTitle;
     }
 
+    private void updateToolbarTitle(String title) {
+        if (getActivity() instanceof TermsActivity) {
+            ((TermsActivity) getActivity()).updateToolbarTitle(title);
+        }
+    }
 }

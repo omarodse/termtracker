@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/course_title"
+        android:id="@+id/test_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
@@ -18,37 +18,37 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_start_date"
+        android:id="@+id/test_text_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/start_date"
         android:textAppearance="@style/recyclerViewText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/course_title" />
+        app:layout_constraintTop_toBottomOf="@id/test_title" />
 
     <TextView
-        android:id="@+id/text_dash"
+        android:id="@+id/test_text_dash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="@string/dash"
         android:textAppearance="@style/recyclerViewText"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_start_date"
-        app:layout_constraintStart_toEndOf="@id/text_start_date" />
+        app:layout_constraintBaseline_toBaselineOf="@id/test_text_start_date"
+        app:layout_constraintStart_toEndOf="@id/test_text_start_date" />
 
     <TextView
-        android:id="@+id/text_end_date"
+        android:id="@+id/test_text_end_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="@string/end_date"
         android:textAppearance="@style/recyclerViewText"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_dash"
-        app:layout_constraintStart_toEndOf="@id/text_dash" />
+        app:layout_constraintBaseline_toBaselineOf="@id/test_text_dash"
+        app:layout_constraintStart_toEndOf="@id/test_text_dash" />
 
     <TextView
-        android:id="@+id/date_start_date"
+        android:id="@+id/test_date_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -56,37 +56,37 @@
         android:textAppearance="@style/recyclerViewText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_start_date" />
+        app:layout_constraintTop_toBottomOf="@id/test_text_start_date" />
 
     <TextView
-        android:id="@+id/date_end_date"
+        android:id="@+id/test_date_end_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="@string/date"
         android:textAppearance="@style/recyclerViewText"
-        app:layout_constraintBaseline_toBaselineOf="@id/date_dash"
-        app:layout_constraintStart_toEndOf="@id/date_dash" />
+        app:layout_constraintBaseline_toBaselineOf="@id/test_date_dash"
+        app:layout_constraintStart_toEndOf="@id/test_date_dash" />
 
     <TextView
-        android:id="@+id/date_dash"
+        android:id="@+id/test_date_dash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="@string/dash"
         android:textAppearance="@style/recyclerViewText"
-        app:layout_constraintBaseline_toBaselineOf="@id/date_start_date"
-        app:layout_constraintStart_toEndOf="@id/date_start_date" />
+        app:layout_constraintBaseline_toBaselineOf="@id/test_date_start_date"
+        app:layout_constraintStart_toEndOf="@id/test_date_start_date" />
 
     <TextView
-        android:id="@+id/course_status"
+        android:id="@+id/test_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@drawable/status_in_progress"
         android:gravity="center"
-        android:text="@string/status"
-        app:layout_constraintBottom_toBottomOf="@+id/date_end_date"
+        android:text="@string/typeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/test_date_end_date"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView

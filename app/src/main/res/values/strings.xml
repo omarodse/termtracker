@@ -31,11 +31,15 @@
     <string name="addCourse">Add course</string>
     <string name="noteOptional">Note (Optional)</string>
     <string name="noteLabel">NOTE</string>
+    <string name="delete">Delete</string>
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active tests</string>
     <string name="upcomingTests">Upcoming tests</string>
     <string name="testFABContentDescription">Add test</string>
+    <string name="typeLabel">Type</string>
+    <string name="courseLabel">Course:</string>
+    <string name="courseTitle">Course Title</string>
 
     <!-- Instructor Details -->
     <string name="instructor_label">Instructor</string>

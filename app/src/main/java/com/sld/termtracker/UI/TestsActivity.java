@@ -1,6 +1,7 @@
 package com.sld.termtracker.UI;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -64,6 +65,11 @@ public class TestsActivity extends AppCompatActivity {
             return true;  // Handle the navigation item selection here
         });
         showEmptyStateFragment("No active tests", "Tests", 0);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     private void showEmptyStateFragment(String message, String frameTitle, int termId) {

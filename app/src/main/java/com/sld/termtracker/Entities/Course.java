@@ -22,6 +22,8 @@ public class Course {
     private String instructorEmail;
     private String note;
 
+    private boolean hasNoTests;
+
 
     public Course(String courseTitle, String startDate, String endDate, CourseStatus status, int termId,
                   String instructorName, String instructorPhone, String instructorEmail, String note) {
@@ -34,6 +36,7 @@ public class Course {
         this.instructorPhone = instructorPhone;
         this.instructorEmail = instructorEmail;
         this.note = note;
+        this.hasNoTests = true;
     }
 
     public int getCourseId() {
@@ -74,6 +77,10 @@ public class Course {
     public String getNote() {
         return note;
     }
+
+    public boolean isHasNoTests() {
+        return hasNoTests;
+    }
     public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
@@ -107,5 +114,8 @@ public class Course {
 
     public void setNote(String note) {
         this.note = note;
+    }
+    public void setHasNoTests(boolean hasNoTests) {
+        this.hasNoTests = hasNoTests;
     }
 }

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ContentUris;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,9 +24,10 @@ import com.sld.termtracker.Entities.Term;
 
 import java.util.List;
 
-public class TermsActivity extends AppCompatActivity implements CourseDetailsFragment.OnCourseTitleUpdatedListener{
+public class TermsActivity extends AppCompatActivity implements
+        CourseDetailsFragment.OnCourseTitleUpdatedListener, TestDetailsFragment.OnTestTitleUpdatedListener {
 
-    private static final String TAG = "TermActivity";
+    private static final String TAG = "termActivity";
     private Repository repository;
     private MaterialToolbar toolbar;
     private ImageView backArrow;
@@ -103,11 +106,21 @@ public class TermsActivity extends AppCompatActivity implements CourseDetailsFra
 
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
     private void updateToolbar() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (currentFragment instanceof AddCourseFragment) {
-            updateToolbarTitle("Add Course");
             showBackButton(true);
+            int courseId = ((AddCourseFragment) currentFragment).getCourseId();
+            if(courseId == -1) {
+                updateToolbarTitle("Add course");
+            } else {
+                updateToolbarTitle("Edit Course");
+            }
         } else if (currentFragment instanceof CourseFragment) {
             termTitle = ((CourseFragment) currentFragment).getTermTitle();
             updateToolbarTitle(termTitle);
@@ -124,6 +137,19 @@ public class TermsActivity extends AppCompatActivity implements CourseDetailsFra
                 updateToolbarTitle("Terms");
                 showBackButton(false);
             }
+        } else if(currentFragment instanceof AddTestFragment) {
+            showBackButton(true);
+            int testId = ((AddTestFragment) currentFragment).getTestId();
+            Log.d(TAG, "testId: " +testId);
+            if(testId == -1) {
+                updateToolbarTitle("Add assessment");
+            } else {
+                updateToolbarTitle("Edit assessment");
+            }
+        } else if(currentFragment instanceof TestDetailsFragment) {
+            String testTitle = ((TestDetailsFragment) currentFragment).getTestTitle();
+            updateToolbarTitle(testTitle);
+            showBackButton(true);
         }
     }
     @Override
@@ -140,6 +166,10 @@ public class TermsActivity extends AppCompatActivity implements CourseDetailsFra
     @Override
     public void onCourseTitleUpdated(String courseTitle) {
         updateToolbarTitle(courseTitle);
+    }
+
+public void onTestTitleUpdated(String testTitle) {
+        updateToolbarTitle(testTitle);
     }
 
     public void showBackButton(boolean show) {
@@ -186,9 +216,17 @@ public class TermsActivity extends AppCompatActivity implements CourseDetailsFra
     }
 
     public void showAddCourseFragment(int termId, String termTitle) {
-        AddCourseFragment addCourse = AddCourseFragment.newInstance(termId, termTitle);
+        AddCourseFragment addCourse = AddCourseFragment.newInstance(termId, termTitle, -1);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addCourse);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void showAddTestFragment(int itemId, String itemTitle) {
+        AddTestFragment addTest = AddTestFragment.newInstance(itemId, itemTitle, -1);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, addTest);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -197,6 +235,14 @@ public class TermsActivity extends AppCompatActivity implements CourseDetailsFra
         CourseFragment courseFragment = CourseFragment.newInstance(termId, termTitle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, courseFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void showTestsFragment(String itemTitle, int itemId) {
+        TestFragment testFragment = TestFragment.newInstance(itemTitle, itemId);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, testFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

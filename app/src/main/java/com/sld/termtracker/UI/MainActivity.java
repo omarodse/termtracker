@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -52,14 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
                 if (intent != null) {
                     startActivity(intent);
-                    finish();  // Finish the current activity
-                    //overridePendingTransition(0, 0);  // Smooth transitions
+                    finish();
                 }
             }
             return true;  // Handle the navigation item selection here
             });
 
         showEmptyStateFragment();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     private void showEmptyStateFragment() {

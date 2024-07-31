@@ -130,6 +130,13 @@ public class Repository {
         databaseExecutor.execute(() -> mTestDAO.delete(test));
     }
 
+    public void getTestById(int testId, OnTestRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            Test test = mTestDAO.getTestById(testId);
+            listener.onTestRetrieved(test);
+        });
+    }
+
     public void getAllTests(OnTestsRetrievedListener listener) {
         databaseExecutor.execute(() -> {
             List<Test> tests = mTestDAO.getAllTests();
@@ -146,6 +153,10 @@ public class Repository {
 
     public interface OnTestsRetrievedListener {
         void onTestsRetrieved(ArrayList<Test> tests);
+    }
+
+    public interface OnTestRetrievedListener {
+        void onTestRetrieved(Test test);
     }
 
 }

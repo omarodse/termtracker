@@ -13,12 +13,14 @@ public class Test {
     @PrimaryKey(autoGenerate = true)
     private int testId;
     private String title;
+    private String startDate;
     private String endDate;
     private TestType type;
     private int courseId;
 
-    public Test(String title, String endDate, TestType type, int courseId) {
+    public Test(String title, String startDate, String endDate, TestType type, int courseId) {
         this.title = title;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
         this.courseId = courseId;
@@ -28,6 +30,9 @@ public class Test {
         return testId;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
     public String getTitle() {
         return title;
     }
@@ -51,7 +56,9 @@ public class Test {
     public void setTitle(String title) {
         this.title = title;
     }
-
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }

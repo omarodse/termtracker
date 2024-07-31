@@ -13,7 +13,7 @@ import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.Test;
 
-@Database(entities = {Course.class, Term.class, Test.class}, version = 8, exportSchema = false)
+@Database(entities = {Course.class, Term.class, Test.class}, version = 10, exportSchema = false)
 public abstract class TermtrackerDatabaseBuilder extends RoomDatabase {
     public abstract CourseDAO courseDAO();
     public abstract TermDAO termDAO();

@@ -1,43 +1,54 @@
 package com.sld.termtracker.UI;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.termtracker.R;
+import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Term;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
     private List<Term> terms;
     private OnItemClickListener listener;
 
     private static final String TAG = "termAdapter";
+    private Repository repository;
 
     public interface OnItemClickListener {
         void onItemClick(Term term);
     }
 
-    public TermAdapter(List<Term> terms, OnItemClickListener listener) {
+    public TermAdapter(List<Term> terms, Repository repository, OnItemClickListener listener) {
         this.terms = terms;
+        this.repository = repository;
         this.listener = listener;
     }
 
     public static class TermViewHolder extends RecyclerView.ViewHolder {
         public TextView title, startDate, endDate;
+        public ImageView deleteIcon;
 
         public TermViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.term_title);
             startDate = itemView.findViewById(R.id.term_date_start_date);
             endDate = itemView.findViewById(R.id.term_date_end_date);
+            deleteIcon = itemView.findViewById(R.id.delete_button);
         }
 
         public void bind(final Term term, final OnItemClickListener listener) {
@@ -60,6 +71,11 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
         Term term = terms.get(position);
         holder.bind(term, listener);
+
+        holder.deleteIcon.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            checkAndDeleteTerm(term, position, context);
+        });
     }
 
     @Override
@@ -71,5 +87,21 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         terms.clear();
         terms.addAll(newTerms);
         notifyDataSetChanged();
+    }
+
+    private void checkAndDeleteTerm(Term term, int position, Context context) {
+        repository.getCoursesByTermId(term.getTermId(), courses -> {
+            // Ensure UI updates are run on the main thread
+            ((Activity) context).runOnUiThread(() -> {
+                if (courses.isEmpty()) {
+                    repository.delete(term);
+                    terms.remove(position);
+                    notifyItemRemoved(position);
+                    Toast.makeText(context, "Term deleted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Cannot delete term with associated courses", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 }

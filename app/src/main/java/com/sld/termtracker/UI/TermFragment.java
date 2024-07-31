@@ -40,7 +40,7 @@ public class TermFragment extends Fragment {
 
         // Setup RecyclerView for Terms
         termsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        termsAdapter = new TermAdapter(new ArrayList<>(), term -> {
+        termsAdapter = new TermAdapter(new ArrayList<>(), dataRepository, term -> {
             ((TermsActivity) getActivity()).showCoursesFragment(term.getTermId(), term.getTitle());
         });
         termsRecyclerView.setAdapter(termsAdapter);

@@ -21,21 +21,21 @@ public class EmptyStateFragment extends Fragment {
 
     private static final String TAG = "EmptyStateFragment";
     private static final String ARG_MESSAGE = "message";
-    private static final String ARG_FRAME_TITLE = "frameTitle";
-    private static final String ARG_TERM_ID = "term_id";
-    private String termTitle;
+    private static final String ARG_ITEM_TITLE = "frameTitle";
+    private static final String ARG_ITEM_ID = "term_id";
+    private String itemTitle;
     private String message;
 
-    private int termId;
+    private int itemId;
 
     MaterialToolbar toolbar;
 
-    public static EmptyStateFragment newInstance(String message, String frameTitle, int termId) {
+    public static EmptyStateFragment newInstance(String message, String itemTitle, int itemId) {
         EmptyStateFragment fragment = new EmptyStateFragment();
         Bundle args = new Bundle();
         args.putString(ARG_MESSAGE, message);
-        args.putInt(ARG_TERM_ID, termId);
-        args.putString(ARG_FRAME_TITLE, frameTitle);
+        args.putInt(ARG_ITEM_ID, itemId);
+        args.putString(ARG_ITEM_TITLE, itemTitle);
         fragment.setArguments(args);
         return fragment;
 
@@ -50,13 +50,13 @@ public class EmptyStateFragment extends Fragment {
 
         if (getArguments() != null) {
             message = getArguments().getString(ARG_MESSAGE);
-            termTitle = getArguments().getString(ARG_FRAME_TITLE);
-            termId = getArguments().getInt(ARG_TERM_ID);
+            itemTitle = getArguments().getString(ARG_ITEM_TITLE);
+            itemId = getArguments().getInt(ARG_ITEM_ID);
             emptyStateText.setText(message);
 
             // Hide FAB if termId is null
             if (!(getActivity() instanceof TermsActivity)) {
-                if (termId == 0) {
+                if (itemId == 0) {
                     fabAdd.setVisibility(View.GONE);
                 }
             }
@@ -70,7 +70,9 @@ public class EmptyStateFragment extends Fragment {
                 if (message.contains("terms")) {
                     fragment = new AddTermFragment();
                 } else if (message.contains("courses")) {
-                    fragment = AddCourseFragment.newInstance(termId, termTitle);
+                    fragment = AddCourseFragment.newInstance(itemId, itemTitle, -1);
+                } else if(message.contains("assessments")) {
+                    fragment = AddTestFragment.newInstance(itemId, itemTitle, -1);
                 }
             }
 

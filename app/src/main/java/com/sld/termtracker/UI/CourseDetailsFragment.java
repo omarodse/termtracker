@@ -23,7 +23,6 @@ public class CourseDetailsFragment extends Fragment {
     private static final String ARG_COURSE_ID = "courseId";
     private int courseId;
     private String courseTitle;
-
     public interface OnCourseTitleUpdatedListener {
         void onCourseTitleUpdated(String courseTitle);
     }
@@ -85,7 +84,8 @@ public class CourseDetailsFragment extends Fragment {
 
         assessments.setOnClickListener(v ->{
            if(getActivity() instanceof TermsActivity) {
-               ((TermsActivity) getActivity()).showEmptyStateFragment("No active assessments", courseTitle, courseId);
+               ((TermsActivity) getActivity()).showTestsFragment(courseTitle, courseId);
+
            }
         });
 

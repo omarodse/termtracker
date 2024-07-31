@@ -2,6 +2,7 @@ package com.sld.termtracker.UI;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,6 +76,11 @@ public class CoursesActivity extends AppCompatActivity {
 
         // Display if no courses active
         showEmptyStateFragment("No active courses", "Courses", 0);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     private void showEmptyStateFragment(String message, String frameTitle, int termId) {
