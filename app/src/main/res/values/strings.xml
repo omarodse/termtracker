@@ -32,6 +32,8 @@
     <string name="noteOptional">Note (Optional)</string>
     <string name="noteLabel">NOTE</string>
     <string name="delete">Delete</string>
+    <string name="dateHint">MM/DD/YY</string>
+    <string name="shareNote">Share note</string>
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active tests</string>

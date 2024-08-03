@@ -1,6 +1,11 @@
 package com.sld.termtracker.UI;
 
 import androidx.fragment.app.Fragment;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,8 +27,12 @@ import com.sld.termtracker.Entities.CourseStatus;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.TestType;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AddCourseFragment extends Fragment {
     private static final String TAG = "AddCourse";
@@ -190,10 +199,19 @@ public class AddCourseFragment extends Fragment {
                 return;
             }
 
-            if (selectedStatus == CourseStatus.SELECT_STATUS) {
-                Toast.makeText(getContext(), "Please select a valid status", Toast.LENGTH_LONG).show();
-                return;
+            try {
+                if (DateUtils.areDatesValid(startDate, endDate)) {
+                    Context context = getContext();
+                    DateUtils.scheduleDateNotification(context, startDate, title + " starts today");
+                    DateUtils.scheduleDateNotification(context, endDate, title + " ends today");
+                } else {
+                    Toast.makeText(getActivity(), "Invalid dates", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
             }
+
             // Saving the course
             Course newCourse = new Course(title, startDate, endDate, selectedStatus, termId, instructorName, instructorPhone, instructorEmail, note);
             repository.insert(newCourse);
@@ -251,4 +269,5 @@ public class AddCourseFragment extends Fragment {
     public int getCourseId() {
         return courseId;
     }
+
 }

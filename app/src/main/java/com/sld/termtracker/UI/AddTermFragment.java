@@ -16,6 +16,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Term;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class AddTermFragment extends Fragment {
 
     private static final String TAG = "AddTerm";
@@ -52,20 +57,32 @@ public class AddTermFragment extends Fragment {
         repository = new Repository(getActivity().getApplication());
 
         saveButton.setOnClickListener(v -> {
-            saveTerm();
+            try {
+                saveTerm();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
 
         });
 
         return view;
     }
 
-    private void saveTerm() {
+    private void saveTerm() throws ParseException {
         String title = termTitleEditText.getText().toString().trim();
         String startDate = termStartDateEditText.getText().toString().trim();
         String endDate = termEndDateEditText.getText().toString().trim();
 
         if (title.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
             Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (areDatesValid(startDate, endDate)) {
+            // Dates are valid, proceed with saving the data
+        } else {
+            // Error message to the user
+            Toast.makeText(getContext(), "Dates are not valid", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -81,6 +98,21 @@ public class AddTermFragment extends Fragment {
             reloadTermFragment();
         }
 
+    }
+
+    private boolean areDatesValid(String startDateStr, String endDateStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
+        try {
+            Date startDate = sdf.parse(startDateStr);
+            Date endDate = sdf.parse(endDateStr);
+
+            if (startDate != null && endDate != null) {
+                return !endDate.before(startDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void clearForm() {

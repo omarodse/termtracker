@@ -1,5 +1,6 @@
 package com.sld.termtracker.UI;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Test;
 import com.sld.termtracker.Entities.TestType;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddTestFragment extends Fragment {
 
@@ -147,6 +153,19 @@ public class AddTestFragment extends Fragment {
                 return;
             }
 
+            try {
+                if (DateUtils.areDatesValid(startDate, endDate)) {
+                    Context context = getContext();
+                    DateUtils.scheduleDateNotification(context, startDate, title + " starts today");
+                    DateUtils.scheduleDateNotification(context, endDate, title + " ends today");
+                } else {
+                    Toast.makeText(getActivity(), "Invalid dates", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
             int selectedTypeId = testTypeGroup.getCheckedRadioButtonId();
             if (selectedTypeId == R.id.type_performance) {
                 testType = TestType.PERFORMANCE_ASSESSMENT;
@@ -190,6 +209,21 @@ public class AddTestFragment extends Fragment {
         }
         // Go back or close the fragment
         getParentFragmentManager().popBackStack();
+    }
+
+    private boolean areDatesValid(String startDateStr, String endDateStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
+        try {
+            Date startDate = sdf.parse(startDateStr);
+            Date endDate = sdf.parse(endDateStr);
+
+            if (startDate != null && endDate != null) {
+                return !endDate.before(startDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public int getTestId() {
