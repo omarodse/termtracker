@@ -53,8 +53,6 @@ public class TermsActivity extends AppCompatActivity implements
             updateToolbarTitle("Terms");
         }
 
-
-
         backArrow.setOnClickListener(v -> onBackPressed());
         // Set up back stack listener
         getSupportFragmentManager().addOnBackStackChangedListener(this::updateToolbar);
@@ -168,7 +166,7 @@ public class TermsActivity extends AppCompatActivity implements
         updateToolbarTitle(courseTitle);
     }
 
-public void onTestTitleUpdated(String testTitle) {
+    public void onTestTitleUpdated(String testTitle) {
         updateToolbarTitle(testTitle);
     }
 

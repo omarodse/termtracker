@@ -40,11 +40,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/upcomingTestsRecyclerView"
-        android:layout_width="379dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upcomingTestsTitle" />
+        app:layout_constraintTop_toBottomOf="@id/upcomingTestsTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

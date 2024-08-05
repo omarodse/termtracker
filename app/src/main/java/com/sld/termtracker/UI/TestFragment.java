@@ -1,5 +1,6 @@
 package com.sld.termtracker.UI;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,14 +26,17 @@ import java.util.ArrayList;
 public class TestFragment extends Fragment {
     private static final String TAG = "testFragment";
     private static final String ARG_COURSE_ID = "course_id";
-    private static final String ARG_COURSE_TITLE = "term_title";
+    private static final String ARG_COURSE_TITLE = "course_title";
     private String courseTitle;
     private int courseId;
     private ArrayList<Test> testList;
     private TestAdapter adapter;
     private Repository repository;
 
+    private FloatingActionButton addTestForm;
 
+
+    // Method to display tests by courses
     public static TestFragment newInstance(String courseTitle, int courseId) {
         TestFragment fragment = new TestFragment();
         Bundle args = new Bundle();
@@ -42,32 +46,37 @@ public class TestFragment extends Fragment {
         return fragment;
     }
 
+    // Method to display all tests
+    public static TestFragment newInstanceForAllTests() {
+        return new TestFragment();
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tests, container, false);
+        repository = new Repository(getActivity().getApplication());
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewTests);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (getArguments() != null) {
+        // Determine whether to load tests by course or all tests
+        if (getArguments() != null && getArguments().containsKey(ARG_COURSE_ID)) {
             courseId = getArguments().getInt(ARG_COURSE_ID);
             courseTitle = getArguments().getString(ARG_COURSE_TITLE);
+            loadTests(courseTitle, courseId);
         } else {
-            Log.e(TAG, "Arguments are null");
+            loadAllTests();
         }
-
-        repository = new Repository(getActivity().getApplication());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         testList = new ArrayList<>();
         adapter = new TestAdapter(testList, repository, this::showTestDetailFragment);
         recyclerView.setAdapter(adapter);
 
-        loadTests(courseTitle, courseId);
+        addTestForm = view.findViewById(R.id.test_add_FAB);
 
-        FloatingActionButton addTestForm = view.findViewById(R.id.test_add_FAB);
-
-        Log.d(TAG, "Passing FAB Button");
+        if(getActivity() instanceof MainActivity) {
+            addTestForm.setVisibility(View.GONE);
+        }
 
         addTestForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
@@ -78,6 +87,7 @@ public class TestFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadTests(String itemTitle, int itemId) {
         Repository repository = new Repository(getActivity().getApplication());
         repository.getAssociatedTests(courseId, tests -> {
@@ -89,7 +99,8 @@ public class TestFragment extends Fragment {
 
                         if (getActivity() instanceof TermsActivity) {
                             ((TermsActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, itemId);
-                            Log.d(TAG, "Tests loaded: " + tests.size());
+                        } else if(getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, 0);
                         }
                     } else {
                         testList.clear();
@@ -101,6 +112,32 @@ public class TestFragment extends Fragment {
             } else {
                 Log.e(TAG, "getActivity() returned null");
             }
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadAllTests() {
+        Repository repository = new Repository(getActivity().getApplication());
+        repository.getAllTests(allTests -> {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if(allTests.isEmpty()) {
+                        // Pop a stack to avoid going back to the same fragment
+                        getParentFragmentManager().popBackStack();
+
+                        if (getActivity() instanceof TestsActivity) {
+                            ((TestsActivity) getActivity()).showEmptyStateFragment("No active courses", courseTitle, courseId);
+                        }
+                    } else {
+                        testList.clear();
+                        testList.addAll(allTests);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            } else {
+                Log.e(TAG, "getActivity() returned null");
+            }
+
         });
     }
 

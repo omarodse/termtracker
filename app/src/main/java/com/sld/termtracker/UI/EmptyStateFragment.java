@@ -59,6 +59,8 @@ public class EmptyStateFragment extends Fragment {
                 if (itemId == 0) {
                     fabAdd.setVisibility(View.GONE);
                 }
+            } else if(getActivity() instanceof MainActivity) {
+                fabAdd.setVisibility(View.GONE);
             }
         }
 

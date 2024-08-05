@@ -86,7 +86,7 @@
         android:background="@drawable/status_in_progress"
         android:gravity="center"
         android:text="@string/status"
-        app:layout_constraintBottom_toBottomOf="@+id/date_end_date"
+        app:layout_constraintBottom_toBottomOf="@id/date_end_date"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView

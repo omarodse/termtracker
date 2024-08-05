@@ -42,6 +42,11 @@ public class CourseFragment extends Fragment {
         return fragment;
     }
 
+    // Method for displaying all courses
+    public static CourseFragment newInstanceForAllCourses() {
+        return new CourseFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,11 +54,13 @@ public class CourseFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewCourses);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (getArguments() != null) {
+        // Determine whether to load courses by term or all courses
+        if (getArguments() != null && getArguments().containsKey(ARG_TERM_ID)) {
             termId = getArguments().getInt(ARG_TERM_ID);
             termTitle = getArguments().getString(ARG_TERM_TITLE);
+            loadCourses(termId, termTitle);
         } else {
-            Log.e(TAG, "Arguments are null");
+            loadAllCourses();
         }
 
         repository = new Repository(getActivity().getApplication());
@@ -62,8 +69,6 @@ public class CourseFragment extends Fragment {
         courseList = new ArrayList<>();
         adapter = new CourseAdapter(courseList, repository, this::showCourseDetailFragment);
         recyclerView.setAdapter(adapter);
-
-        loadCourses(termId, termTitle);
 
         FloatingActionButton addCourseForm = view.findViewById(R.id.course_add_FAB);
 
@@ -88,7 +93,6 @@ public class CourseFragment extends Fragment {
 
                         if (getActivity() instanceof TermsActivity) {
                             ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId);
-                            Log.d(TAG, "Courses loaded: " + courses.size());
                         }
                     } else {
                         courseList.clear();
@@ -102,6 +106,31 @@ public class CourseFragment extends Fragment {
             } else {
                 Log.e(TAG, "getActivity() returned null");
             }
+        });
+    }
+
+    private void loadAllCourses() {
+        Repository repository = new Repository(getActivity().getApplication());
+        repository.getAllCourses(courses -> {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if(courses.isEmpty()) {
+                        // Pop a stack to avoid going back to the same fragment
+                        getParentFragmentManager().popBackStack();
+
+                        if (getActivity() instanceof CoursesActivity) {
+                            ((CoursesActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId);
+                        }
+                    } else {
+                        courseList.clear();
+                        courseList.addAll(courses);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            } else {
+                Log.e(TAG, "getActivity() returned null");
+            }
+
         });
     }
 

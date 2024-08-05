@@ -74,8 +74,11 @@ public class CoursesActivity extends AppCompatActivity {
         });
 
 
-        // Display if no courses active
-        showEmptyStateFragment("No active courses", "Courses", 0);
+        // Initialize repository
+        repository = new Repository(getApplication());
+
+        // Load courses
+        loadCourses();
     }
 
     @Override
@@ -83,11 +86,29 @@ public class CoursesActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
-    private void showEmptyStateFragment(String message, String frameTitle, int termId) {
+    private void loadCourses() {
+        repository.getAllCourses(courses -> {
+            runOnUiThread(() -> {
+                if (courses.isEmpty()) {
+                    showEmptyStateFragment("No active courses", "Courses", 0);
+                } else {
+                    showCoursesFragment();
+                }
+            });
+        });
+    }
+
+    public void showEmptyStateFragment(String message, String frameTitle, int termId) {
         EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
-        //transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void showCoursesFragment() {
+        CourseFragment coursesFragment = CourseFragment.newInstanceForAllCourses();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, coursesFragment);
         transaction.commit();
     }
 

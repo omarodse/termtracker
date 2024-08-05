@@ -1,13 +1,16 @@
 package com.sld.termtracker.UI;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,38 +20,111 @@ import com.sld.termtracker.Database.TermtrackerDatabaseBuilder;
 import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private RecyclerView activeCoursesRecyclerView;
-    private RecyclerView upcomingTestsRecyclerView;
-    private CourseAdapter coursesAdapter;
-    private TestAdapter testsAdapter;
-    private Repository dataRepository;
+    private RecyclerView coursesRecyclerView, testsRecyclerView;
+    private CourseAdapter courseAdapter;
+    private TestAdapter testAdapter;
+    private Repository repository;
+    private TextView toolbarTitle;
+    private ArrayList<Course> coursesList = new ArrayList<>();
+    private ArrayList<Test> testsList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        activeCoursesRecyclerView = view.findViewById(R.id.activeCoursesRecyclerView);
-        upcomingTestsRecyclerView = view.findViewById(R.id.upcomingTestsRecyclerView);
+        coursesRecyclerView = view.findViewById(R.id.activeCoursesRecyclerView);
+        testsRecyclerView = view.findViewById(R.id.upcomingTestsRecyclerView);
 
         // Initialize repository
-        dataRepository = new Repository(getActivity().getApplication());
+        repository = new Repository(getActivity().getApplication());
 
-        // Setup RecyclerView for Active Courses
-//        activeCoursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        List<Course> activeCourses = dataRepository.getmAllCourses();
-//        coursesAdapter = new CourseAdapter(activeCourses);
-//        activeCoursesRecyclerView.setAdapter(coursesAdapter);
+        coursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        testsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-//        // Setup RecyclerView for Upcoming Tests
-//        upcomingTestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        List<Test> upcomingTests = dataRepository.getmAllTests();
-//        testsAdapter = new TestsAdapter(upcomingTests);
-//        upcomingTestsRecyclerView.setAdapter(testsAdapter);
+        courseAdapter = new CourseAdapter(coursesList, repository, this::showCourseDetailFragment);
+        testAdapter = new TestAdapter(testsList, repository, this::showTestDetailFragment);
+
+        coursesRecyclerView.setAdapter(courseAdapter);
+        testsRecyclerView.setAdapter(testAdapter);
+
+        loadCourses();
+        loadTests();
 
         return view;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadCourses() {
+        repository.getAllCourses(courses -> {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    coursesList.clear();
+
+                    // Limit to two courses if more are available
+                    if (courses.size() > 2) {
+                        coursesList.addAll(courses.subList(0, 2));
+                    } else {
+                        coursesList.addAll(courses);
+                    }
+
+                    courseAdapter.notifyDataSetChanged();
+
+                    if (coursesList.isEmpty()) {
+                        if(getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).showEmptyStateFragment();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadTests() {
+        repository.getAllTests(tests -> {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    testsList.clear();
+
+                    // Limit to two courses if more are available
+                    if (tests.size() > 2) {
+                        testsList.addAll(tests.subList(0, 2));
+                    } else {
+                        testsList.addAll(tests);
+                    }
+
+                    testAdapter.notifyDataSetChanged();
+
+//                    if (testsList.isEmpty()) {
+//                        findViewById(R.id.emptyStateContainer).setVisibility(View.GONE);
+//                    }
+                });
+            }
+        });
+    }
+
+    private void showCourseDetailFragment(Course course) {
+        CourseDetailsFragment fragment = CourseDetailsFragment.newInstance(course.getCourseId());
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void showTestDetailFragment(Test test) {
+        TestDetailsFragment fragment = TestDetailsFragment.newInstance(test.getTestId(), test.getTitle());
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void updateToolbarTitle(String title) {
+        toolbarTitle.setText(title);
     }
 }

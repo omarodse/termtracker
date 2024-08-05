@@ -70,6 +70,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             endDate = itemView.findViewById(R.id.date_end_date);
             status = itemView.findViewById(R.id.course_status);
             optionsMenu = itemView.findViewById(R.id.course_options_menu);
+
+            // Hide options menu
+            if(itemView.getContext() instanceof MainActivity) {
+                optionsMenu.setVisibility(View.GONE);
+            }
+
             optionsMenu.setOnClickListener(this);
             this.adapter = adapter;
             this.repository = repository;

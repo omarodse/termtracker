@@ -8,18 +8,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.termtracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sld.termtracker.Database.Repository;
 
 public class TestsActivity extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
     private ImageView backArrow;
     private TextView toolbarTitle;
+    Repository repository;
+
+    private static final String TAG = "TestsActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +65,14 @@ public class TestsActivity extends AppCompatActivity {
                     overridePendingTransition(0, 0);  // Smooth transitions
                 }
             }
-            return true;  // Handle the navigation item selection here
+            return true;
         });
-        showEmptyStateFragment("No active tests", "Tests", 0);
+
+        // Initialize repository
+        repository = new Repository(getApplication());
+
+        // Load tests
+        loadTests();
     }
 
     @Override
@@ -72,11 +80,30 @@ public class TestsActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
-    private void showEmptyStateFragment(String message, String frameTitle, int termId) {
+    private void loadTests() {
+        repository.getAllTests(tests -> {
+            runOnUiThread(() -> {
+                if (tests.isEmpty()) {
+                    showEmptyStateFragment("No active assessments", "Assessments", 0);
+                } else {
+                    showTestsFragment();
+                }
+            });
+        });
+    }
+
+    public void showEmptyStateFragment(String message, String frameTitle, int termId) {
         EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.tests_fragment_container, emptyStateFragment);
+        transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void showTestsFragment() {
+        TestFragment testFragment = TestFragment.newInstanceForAllTests();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, testFragment);
         transaction.commit();
     }
 

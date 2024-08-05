@@ -52,6 +52,12 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestViewHolder
             endDate = itemView.findViewById(R.id.test_date_end_date);
             type = itemView.findViewById(R.id.test_type);
             optionsMenu = itemView.findViewById(R.id.course_options_menu);
+
+            // Hide options menu
+            if(itemView.getContext() instanceof MainActivity) {
+                optionsMenu.setVisibility(View.GONE);
+            }
+
             optionsMenu.setOnClickListener(this);
             this.adapter = adapter;
             this.repository = repository;

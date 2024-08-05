@@ -1,5 +1,6 @@
 package com.sld.termtracker.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ public class CourseDetailsFragment extends Fragment {
     private static final String ARG_COURSE_ID = "courseId";
     private int courseId;
     private String courseTitle;
+    private String courseNoteValue;
     public interface OnCourseTitleUpdatedListener {
         void onCourseTitleUpdated(String courseTitle);
     }
@@ -52,6 +54,7 @@ public class CourseDetailsFragment extends Fragment {
         TextView instructorName = view.findViewById(R.id.course_details_instructor_name);
         TextView instructorPhone = view.findViewById(R.id.course_details_instructor_phone);
         TextView instructorEmail = view.findViewById(R.id.course_details_instructor_email);
+        TextView shareNoteButton = view.findViewById(R.id.share_note);
         TextView courseNote = view.findViewById(R.id.course_note);
 
         repository = new Repository(getActivity().getApplication());
@@ -67,6 +70,15 @@ public class CourseDetailsFragment extends Fragment {
                     instructorPhone.setText(course.getInstructorPhone());
                     instructorEmail.setText(course.getInstructorEmail());
                     courseNote.setText(course.getNote());
+
+                    courseNoteValue = course.getNote();
+
+                    // If there is a note, display the share button.
+                    if(courseNoteValue != null && !courseNoteValue.isEmpty()) {
+                        shareNoteButton.setVisibility(View.VISIBLE);
+                    }
+
+                    shareNoteButton.setOnClickListener(v -> shareNote());
 
                     courseTitle = course.getCourseTitle();
 
@@ -85,7 +97,8 @@ public class CourseDetailsFragment extends Fragment {
         assessments.setOnClickListener(v ->{
            if(getActivity() instanceof TermsActivity) {
                ((TermsActivity) getActivity()).showTestsFragment(courseTitle, courseId);
-
+           } else if(getActivity() instanceof MainActivity) {
+               ((MainActivity) getActivity()).mainShowTestsFragment(courseTitle, courseId);
            }
         });
 
@@ -97,4 +110,13 @@ public class CourseDetailsFragment extends Fragment {
         return courseTitle;
     }
 
+    private void shareNote() {
+        if (courseNoteValue != null && !courseNoteValue.isEmpty()) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, (CharSequence) courseNoteValue);
+
+            startActivity(Intent.createChooser(shareIntent, "Share Note via"));
+        }
+    }
 }
