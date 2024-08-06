@@ -4,5 +4,4 @@
     <item android:color="@color/colorPrimaryDark" android:state_hovered="true"/>
     <item android:color="@android:color/darker_gray" android:state_enabled="false"/>
     <item android:color="@color/colorPrimaryDark"/>
-
 </selector>

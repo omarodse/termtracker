@@ -1,101 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="32dp"
     tools:context="com.sld.termtracker.UI.AddTermFragment">
 
-    <LinearLayout
-        style="@style/FormLinearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:padding="32dp" >
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/test_title_layout"
-            style="@style/CustomTextInputLayout"
-            android:layout_width="match_parent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/test_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/title" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/test_start_date_layout"
-            style="@style/CustomTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/test_start_date"
-                style="@style/CustomTextInputEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/dateHintStart" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/test_end_date_layout"
-            style="@style/CustomTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/test_end_date"
-                style="@style/CustomTextInputEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/dateHintEnd" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/typeLabel"
+        <LinearLayout
+            style="@style/FormLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/typeLabel"
-            android:layout_marginTop="26dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <RadioGroup
-            android:id="@+id/test_type_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/test_title_layout"
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent">
 
-            <RadioButton
-                android:id="@+id/type_performance"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/test_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/title" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/test_start_date_layout"
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/test_start_date"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/dateHintStart" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/test_end_date_layout"
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/test_end_date"
+                    style="@style/CustomTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/dateHintEnd" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/typeLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/typeLabel"
+                android:layout_marginTop="26dp" />
+
+            <RadioGroup
+                android:id="@+id/test_type_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Performance"/>
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/type_objective"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Objective"/>
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/type_performance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Performance"/>
 
-        <Button
-            android:id="@+id/save_button"
-            style="@style/FormSaveButton"
-            android:layout_width="match_parent"
-            android:layout_marginTop="24dp"
-            android:text="@string/saveButton" />
+                <RadioButton
+                    android:id="@+id/type_objective"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Objective"/>
+            </RadioGroup>
 
-        <Button
-            android:id="@+id/cancel_button"
-            style="@style/cancel_button"
-            android:layout_width="match_parent"
-            android:text="@string/cancel" />
+            <Button
+                android:id="@+id/save_button"
+                style="@style/FormSaveButton"
+                android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
+                android:text="@string/saveButton" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/cancel_button"
+                android:layout_width="match_parent"
+                android:text="@string/cancel" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
