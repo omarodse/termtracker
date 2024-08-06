@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.TermTracker" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary theme colors -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorOnPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorPrimary</item>

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.termtracker.R;
@@ -15,7 +16,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sld.termtracker.Database.Repository;
 
-public class TestsActivity extends AppCompatActivity {
+public class TestsActivity extends AppCompatActivity implements TestDetailsFragment.OnTestTitleUpdatedListener {
 
     private MaterialToolbar toolbar;
     private ImageView backArrow;
@@ -37,8 +38,11 @@ public class TestsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-            updateToolbarTitle("Tests");
+            updateToolbarTitle("Assessments");
         }
+
+        backArrow.setOnClickListener(v -> onBackPressed());
+        getSupportFragmentManager().addOnBackStackChangedListener(this::updateToolbar);
 
         // Set navigation state
         BottomNavigationView navView = findViewById(R.id.bottom_menu);
@@ -73,6 +77,19 @@ public class TestsActivity extends AppCompatActivity {
 
         // Load tests
         loadTests();
+    }
+
+    private void updateToolbar() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(currentFragment instanceof TestDetailsFragment) {
+            showBackButton(true);
+        } else if(currentFragment instanceof TestFragment) {
+            updateToolbarTitle("Assessments");
+            showBackButton(false);
+        } else if(currentFragment instanceof AddTestFragment) {
+            updateToolbarTitle("Edit Assessment");
+            showBackButton(true);
+        }
     }
 
     @Override
@@ -117,5 +134,10 @@ public class TestsActivity extends AppCompatActivity {
         } else {
             backArrow.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onTestTitleUpdated(String testTitle) {
+        updateToolbarTitle(testTitle);
     }
 }

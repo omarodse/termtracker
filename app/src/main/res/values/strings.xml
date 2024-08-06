@@ -6,13 +6,13 @@
     <string name="home">Home</string>
     <string name="terms">Terms</string>
     <string name="courses">Courses</string>
-    <string name="tests">Tests</string>
+    <string name="tests">Assessments</string>
     <string name="options">More Options</string>
     <string name="saveButton">Save</string>
 
     <!-- Home Screen -->
-    <string name="home_active_courses">Active Courses</string>
-    <string name="home_upcoming_tests">Upcoming Tests</string>
+    <string name="home_active_courses">Current Courses</string>
+    <string name="home_upcoming_tests">Current Tests</string>
 
     <!-- Course & Term Strings -->
     <string name="title">Title</string>
@@ -32,13 +32,14 @@
     <string name="noteOptional">Note (Optional)</string>
     <string name="noteLabel">NOTE</string>
     <string name="delete">Delete</string>
-    <string name="dateHint">MM/DD/YY</string>
+    <string name="dateHintStart">Start Date (MM/dd/yy)</string>
+    <string name="dateHintEnd">End Date (MM/dd/yy)</string>
     <string name="shareNote">Share note</string>
 
     <!-- Tests Strings -->
-    <string name="noActiveTests">No active tests</string>
-    <string name="upcomingTests">Upcoming tests</string>
-    <string name="testFABContentDescription">Add test</string>
+    <string name="noActiveTests">No active Assessments</string>
+    <string name="upcomingTests">Upcoming Assessments</string>
+    <string name="testFABContentDescription">Add Assessments</string>
     <string name="typeLabel">Type</string>
     <string name="courseLabel">Course:</string>
     <string name="courseTitle">Course Title</string>

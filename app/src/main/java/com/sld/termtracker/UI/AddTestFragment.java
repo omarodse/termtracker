@@ -153,17 +153,13 @@ public class AddTestFragment extends Fragment {
                 return;
             }
 
-            try {
-                if (DateUtils.areDatesValid(startDate, endDate)) {
-                    Context context = getContext();
-                    DateUtils.scheduleDateNotification(context, startDate, title + " starts today");
-                    DateUtils.scheduleDateNotification(context, endDate, title + " ends today");
-                } else {
-                    Toast.makeText(getActivity(), "Invalid dates", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
+            if (DateUtils.areDatesValid(startDate, endDate)) {
+//                Context context = getContext();
+//                DateUtils.scheduleDateNotification(context, startDate, title + " starts today");
+//                DateUtils.scheduleDateNotification(context, endDate, title + " ends today");
+            } else {
+                Toast.makeText(getActivity(), "Invalid dates", Toast.LENGTH_SHORT).show();
+                return;
             }
 
             int selectedTypeId = testTypeGroup.getCheckedRadioButtonId();
@@ -178,17 +174,19 @@ public class AddTestFragment extends Fragment {
             repository.insert(test);
 
             // Reload fragment if there were no courses in that term
-            repository.getCourseById(courseId, course -> {
-                boolean hasNoTests = course.isHasNoTests();
-                if(getActivity() instanceof TermsActivity && hasNoTests) {
-                    // Change hasNoTests for the course
-                    course.setHasNoTests(false);
-                    // Remove the empty fragment from the stack to avoid showing it again
-                    getParentFragmentManager().popBackStack();
-                    // Reload the courses for that term
-                    reloadTestFragment();
-                }
-            });
+            if(getActivity() instanceof TermsActivity) {
+                repository.getCourseById(courseId, course -> {
+                    boolean hasNoTests = course.isHasNoTests();
+                    if (hasNoTests) {
+                        // Change hasNoTests for the course
+                        course.setHasNoTests(false);
+                        // Remove the empty fragment from the stack to avoid showing it again
+                        getParentFragmentManager().popBackStack();
+                        // Reload the courses for that term
+                        reloadTestFragment();
+                    }
+                });
+            }
 
         } else {
 
@@ -209,21 +207,6 @@ public class AddTestFragment extends Fragment {
         }
         // Go back or close the fragment
         getParentFragmentManager().popBackStack();
-    }
-
-    private boolean areDatesValid(String startDateStr, String endDateStr) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
-        try {
-            Date startDate = sdf.parse(startDateStr);
-            Date endDate = sdf.parse(endDateStr);
-
-            if (startDate != null && endDate != null) {
-                return !endDate.before(startDate);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public int getTestId() {

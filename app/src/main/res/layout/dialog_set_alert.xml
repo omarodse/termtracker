@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/start_date_edit_text"
+        style="@style/CustomTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Start Alert Date (MM/dd/yy)"
+        android:inputType="date" />
+
+
+    <EditText
+        android:id="@+id/end_date_edit_text"
+        style="@style/CustomTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="End Alert Date (MM/dd/yy)"
+        android:inputType="date" />
+
+</LinearLayout>

@@ -72,6 +72,10 @@ public class CourseFragment extends Fragment {
 
         FloatingActionButton addCourseForm = view.findViewById(R.id.course_add_FAB);
 
+        if(getActivity() instanceof CoursesActivity) {
+            addCourseForm.setVisibility(View.GONE);
+        }
+
         addCourseForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
                 ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle);

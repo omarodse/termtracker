@@ -78,7 +78,7 @@ public class AddTermFragment extends Fragment {
             return;
         }
 
-        if (areDatesValid(startDate, endDate)) {
+        if (DateUtils.areDatesValid(startDate, endDate)) {
             // Dates are valid, proceed with saving the data
         } else {
             // Error message to the user
@@ -93,26 +93,8 @@ public class AddTermFragment extends Fragment {
         getParentFragmentManager().popBackStack();
         clearForm();
 
-        // Check if the DB was initialized to avoid reloading the fragment
-        if(((TermsActivity) getActivity()).isNoTerms()) {
-            reloadTermFragment();
-        }
+        reloadTermFragment();
 
-    }
-
-    private boolean areDatesValid(String startDateStr, String endDateStr) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
-        try {
-            Date startDate = sdf.parse(startDateStr);
-            Date endDate = sdf.parse(endDateStr);
-
-            if (startDate != null && endDate != null) {
-                return !endDate.before(startDate);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     private void clearForm() {

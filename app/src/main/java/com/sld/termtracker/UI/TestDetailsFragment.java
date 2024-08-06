@@ -46,7 +46,8 @@ public class TestDetailsFragment extends Fragment {
 
         if (getArguments() != null) {
             testId = getArguments().getInt(ARG_TEST_ID);
-            courseTitle = getArguments().getString(ARG_COURSE_TITLE);
+            //courseTitle = getArguments().getString(ARG_COURSE_TITLE);
+            Log.d(TAG, "Course Title: " + testId);
         } else {
             Log.e(TAG, "Arguments are null");
         }
@@ -64,9 +65,22 @@ public class TestDetailsFragment extends Fragment {
                 getActivity().runOnUiThread(() -> {
                     startDate.setText(test.getStartDate());
                     endDate.setText(test.getEndDate());
-                    courseName.setText(courseTitle);
-                    type.setText(test.getType().toString());
 
+                    // Check if the course title is null
+                    if(courseTitle == null || courseTitle.isEmpty()) {
+                        Log.d(TAG, "Title is empty");
+                        int courseId = test.getCourseId();
+                        repository.getCourseById(courseId, course -> {
+                            getActivity().runOnUiThread(() -> {
+                                courseTitle = course.getCourseTitle();
+                                courseName.setText(courseTitle);
+                            });
+                        });
+                    } else {
+                        courseName.setText(courseTitle);
+                    }
+
+                    type.setText(test.getType().toString());
                     testTitle = test.getTitle();
 
                     // Notify the activity that the course title has been updated

@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements CourseDetailsFrag
 
         // Set navigation state
         BottomNavigationView navView = findViewById(R.id.bottom_menu);
-        navView.setSelectedItemId(R.id.navigation_home); // Set based on the activity
+        navView.setSelectedItemId(R.id.navigation_home);
 
         navView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -92,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements CourseDetailsFrag
         } else if(currentFragment instanceof TestDetailsFragment) {
             String testTitle = ((TestDetailsFragment) currentFragment).getTestTitle();
             updateToolbarTitle(testTitle);
+            showBackButton(true);
+        } else if(currentFragment instanceof TestFragment) {
+            String courseTitle = ((TestFragment) currentFragment).getCourseTitle();
+            updateToolbarTitle(courseTitle + "\nAssessments");
             showBackButton(true);
         }
     }

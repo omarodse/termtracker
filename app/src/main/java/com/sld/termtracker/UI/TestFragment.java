@@ -74,13 +74,15 @@ public class TestFragment extends Fragment {
 
         addTestForm = view.findViewById(R.id.test_add_FAB);
 
-        if(getActivity() instanceof MainActivity) {
+        if(getActivity() instanceof MainActivity || getActivity() instanceof TestsActivity) {
             addTestForm.setVisibility(View.GONE);
         }
 
         addTestForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
                 ((TermsActivity) getActivity()).showAddTestFragment(courseId, courseTitle);
+            } else if(getActivity() instanceof CoursesActivity) {
+                ((CoursesActivity) getActivity()).showAddTestFragment(courseId, courseTitle);
             }
         });
 
@@ -101,6 +103,8 @@ public class TestFragment extends Fragment {
                             ((TermsActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, itemId);
                         } else if(getActivity() instanceof MainActivity) {
                             ((MainActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, 0);
+                        } else if(getActivity() instanceof CoursesActivity) {
+                            ((CoursesActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, courseId);
                         }
                     } else {
                         testList.clear();

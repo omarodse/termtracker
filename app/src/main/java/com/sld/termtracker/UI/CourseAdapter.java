@@ -1,5 +1,7 @@
 package com.sld.termtracker.UI;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,8 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +22,7 @@ import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
@@ -55,7 +60,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         Log.d(TAG, "From course adapter working");
     }
 
-    public static class CourseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+    public class CourseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
         public TextView title, startDate, endDate, status;
 
         public View optionsMenu;
@@ -99,28 +104,90 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             int position = getAdapterPosition();
+            Course course = adapter.courses.get(position);
+            Context context = itemView.getContext();
             if(item.getItemId() == R.id.action_delete) {
                 if (position != RecyclerView.NO_POSITION) {
-                    Course course = adapter.courses.get(position);
+                    int termId = course.getTermId();
                     repository.delete(course);
                     adapter.deleteItem(position);
+                    if(courses.isEmpty()) {
+                        if (context instanceof TermsActivity) {
+                            ((TermsActivity) context).getSupportFragmentManager().popBackStack();
+                            ((TermsActivity) context).showEmptyStateFragment("No active courses", "", termId);
+                        }
+                    }
                     return true;
                 }
             } else if (item.getItemId() == R.id.action_edit) {
                 // Navigate to the AddTestFragment with the test ID
-                Context context = itemView.getContext();
-                if (context instanceof TermsActivity) {
-                    Course course = adapter.courses.get(position);
-                    TermsActivity activity = (TermsActivity) context;
-                    FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "" , course.getCourseId()));
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
+                context = itemView.getContext();
+                course = adapter.courses.get(position);
+                handleEditCourse(course, context);
+                return true;
+            } else if (item.getItemId() == R.id.action_set_alert) {
+                showSetAlertDialog(course, context);
                 return true;
             }
             return false;
         }
+    }
+
+    private static void handleEditCourse(Course course, Context context) {
+        FragmentTransaction transaction = null;
+
+        if (context instanceof TermsActivity) {
+            TermsActivity activity = (TermsActivity) context;
+            transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId()));
+
+        } else if (context instanceof CoursesActivity) {
+            CoursesActivity activity = (CoursesActivity) context;
+            transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId()));
+
+        }
+
+        if (transaction != null) {
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    private void showSetAlertDialog(Course course, Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Set Alerts");
+
+        // Inflate the custom layout
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_set_alert, null);
+        builder.setView(dialogView);
+
+        EditText startDateEditText = dialogView.findViewById(R.id.start_date_edit_text);
+        EditText endDateEditText = dialogView.findViewById(R.id.end_date_edit_text);
+
+        // Set up the buttons
+        builder.setPositiveButton("Set", (dialog, which) -> {
+            // Get the entered dates
+            String startDate = startDateEditText.getText().toString();
+            String endDate = endDateEditText.getText().toString();
+
+            if (DateUtils.areDatesValid(startDate, endDate)) {
+                // Context context = getContext();
+                DateUtils.scheduleDateNotification(context, startDate, course.getCourseTitle() + " starts today");
+                DateUtils.scheduleDateNotification(context, endDate, course.getCourseTitle() + " ends today");
+            } else {
+                Toast.makeText(context, "Invalid dates", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

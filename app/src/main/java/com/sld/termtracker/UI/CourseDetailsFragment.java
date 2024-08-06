@@ -99,6 +99,8 @@ public class CourseDetailsFragment extends Fragment {
                ((TermsActivity) getActivity()).showTestsFragment(courseTitle, courseId);
            } else if(getActivity() instanceof MainActivity) {
                ((MainActivity) getActivity()).mainShowTestsFragment(courseTitle, courseId);
+           } else if(getActivity() instanceof CoursesActivity) {
+               ((CoursesActivity) getActivity()).showTestsFragment(courseTitle, courseId);
            }
         });
 

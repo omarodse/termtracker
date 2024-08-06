@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,7 +19,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sld.termtracker.Database.Repository;
 
-public class CoursesActivity extends AppCompatActivity {
+public class CoursesActivity extends AppCompatActivity implements CourseDetailsFragment.OnCourseTitleUpdatedListener, TestDetailsFragment.OnTestTitleUpdatedListener {
     private static final String TAG = "CoursesActivity";
 
     private MaterialToolbar toolbar;
@@ -44,6 +45,9 @@ public class CoursesActivity extends AppCompatActivity {
 
             updateToolbarTitle("Courses");
         }
+
+        backArrow.setOnClickListener(v -> onBackPressed());
+        getSupportFragmentManager().addOnBackStackChangedListener(this::updateToolbar);
 
         // Set navigation state
         BottomNavigationView navView = findViewById(R.id.bottom_menu);
@@ -81,8 +85,30 @@ public class CoursesActivity extends AppCompatActivity {
         loadCourses();
     }
 
+    private void updateToolbar() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(currentFragment instanceof TestDetailsFragment || currentFragment instanceof CourseDetailsFragment) {
+            showBackButton(true);
+        } else if(currentFragment instanceof CourseFragment) {
+            updateToolbarTitle("Courses");
+            showBackButton(false);
+        } else if(currentFragment instanceof TestFragment) {
+            String courseTitle = ((TestFragment) currentFragment).getCourseTitle();
+            updateToolbarTitle(courseTitle + "\nAssessments");
+            showBackButton(true);
+        } else if(currentFragment instanceof AddCourseFragment) {
+            updateToolbarTitle("Edit course");
+            showBackButton(true);
+        } else if(currentFragment instanceof AddTestFragment) {
+            int testId = ((AddTestFragment) currentFragment).getTestId();
+            if(testId != -1) {
+                updateToolbarTitle("Edit assessment");
+            }
+        }
+    }
+
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
 
@@ -102,6 +128,7 @@ public class CoursesActivity extends AppCompatActivity {
         EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -111,7 +138,21 @@ public class CoursesActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, coursesFragment);
         transaction.commit();
     }
+    public void showTestsFragment(String courseTitle, int courseId) {
+        TestFragment testFragment = TestFragment.newInstance(courseTitle, courseId);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, testFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
+    public void showAddTestFragment(int itemId, String itemTitle) {
+        AddTestFragment addTest = AddTestFragment.newInstance(itemId, itemTitle, -1);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, addTest);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
     public void updateToolbarTitle(String title) {
         toolbarTitle.setText(title);
     }
@@ -122,5 +163,15 @@ public class CoursesActivity extends AppCompatActivity {
         } else {
             backArrow.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onCourseTitleUpdated(String courseTitle) {
+        updateToolbarTitle(courseTitle);
+    }
+
+    @Override
+    public void onTestTitleUpdated(String testTitle) {
+        updateToolbarTitle(testTitle);
     }
 }

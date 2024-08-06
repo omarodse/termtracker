@@ -6,4 +6,7 @@
     <item
         android:id="@+id/action_delete"
         android:title="Delete" />
+    <item
+        android:id="@+id/action_set_alert"
+        android:title="Set Alert" />
 </menu>

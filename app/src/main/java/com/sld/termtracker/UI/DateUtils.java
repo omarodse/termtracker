@@ -67,18 +67,81 @@ public class DateUtils {
         }
     }
 
-    public static boolean areDatesValid(String startDateStr, String endDateStr) throws ParseException {
+    public static boolean areDatesValid(String startDateStr, String endDateStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
+        sdf.setLenient(false); // Ensure strict parsing
         try {
             Date startDate = sdf.parse(startDateStr);
             Date endDate = sdf.parse(endDateStr);
 
-            if (startDate != null && endDate != null) {
-                return !endDate.before(startDate);
+            if (startDate == null || endDate == null) {
+                return false;
             }
+
+            // Split the date strings to validate month, day, and year
+            if (!isValidDateComponent(startDateStr) || !isValidDateComponent(endDateStr)) {
+                return false;
+            }
+
+            // Ensure end date is not before start date
+            return !endDate.before(startDate);
+
         } catch (ParseException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
+
+    private static boolean isValidDateComponent(String dateStr) {
+        String[] dateParts = dateStr.split("/");
+        if (dateParts.length != 3) {
+            return false;
+        }
+
+        try {
+            int month = Integer.parseInt(dateParts[0]);
+            int day = Integer.parseInt(dateParts[1]);
+            int year = Integer.parseInt(dateParts[2]);
+
+            // Validate month
+            if (month < 1 || month > 12) {
+                return false;
+            }
+
+            // Validate day based on the month and year
+            if (!isValidDayForMonth(month, day, year)) {
+                return false;
+            }
+
+            // Validate year (assuming a reasonable range for 'yy')
+            if (year < 0 || year > 99) {
+                return false;
+            }
+
+        } catch (NumberFormatException e) {
+            return false; // If any component is not a valid number
+        }
+
+        return true;
+    }
+
+    private static boolean isValidDayForMonth(int month, int day, int year) {
+        // Days in each month (non-leap year)
+        int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        // Check for leap year
+        if (month == 2 && isLeapYear(year)) {
+            return day >= 1 && day <= 29;
+        }
+
+        // Validate day based on the month
+        return day >= 1 && day <= daysInMonth[month - 1];
+    }
+
+    private static boolean isLeapYear(int year) {
+        // Convert 'yy' to 'yyyy' assuming 20th or 21st century
+        year += (year < 50 ? 2000 : 1900);
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
 }

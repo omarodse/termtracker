@@ -53,13 +53,13 @@ public class EmptyStateFragment extends Fragment {
             itemTitle = getArguments().getString(ARG_ITEM_TITLE);
             itemId = getArguments().getInt(ARG_ITEM_ID);
             emptyStateText.setText(message);
+        }
 
-            // Hide FAB if termId is null
-            if (!(getActivity() instanceof TermsActivity)) {
-                if (itemId == 0) {
-                    fabAdd.setVisibility(View.GONE);
-                }
-            } else if(getActivity() instanceof MainActivity) {
+        if ((getActivity() instanceof MainActivity || getActivity() instanceof TestsActivity)) {
+            fabAdd.setVisibility(View.GONE);
+        }
+        if(getActivity() instanceof CoursesActivity) {
+            if(itemId == 0) {
                 fabAdd.setVisibility(View.GONE);
             }
         }

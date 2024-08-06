@@ -199,17 +199,13 @@ public class AddCourseFragment extends Fragment {
                 return;
             }
 
-            try {
-                if (DateUtils.areDatesValid(startDate, endDate)) {
-                    Context context = getContext();
-                    DateUtils.scheduleDateNotification(context, startDate, title + " starts today");
-                    DateUtils.scheduleDateNotification(context, endDate, title + " ends today");
-                } else {
-                    Toast.makeText(getActivity(), "Invalid dates", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
+            if (DateUtils.areDatesValid(startDate, endDate)) {
+//                Context context = getContext();
+//                DateUtils.scheduleDateNotification(context, startDate, title + " starts today");
+//                DateUtils.scheduleDateNotification(context, endDate, title + " ends today");
+            } else {
+                Toast.makeText(getActivity(), "Invalid dates", Toast.LENGTH_SHORT).show();
+                return;
             }
 
             // Saving the course
@@ -220,17 +216,19 @@ public class AddCourseFragment extends Fragment {
             clearForm();
 
             // Reload fragment if there were no courses in that term
-            repository.getTermById(termId, term -> {
-                boolean hasNoCourses = term.isNoCourses();
-                if(getActivity() instanceof TermsActivity && hasNoCourses) {
-                    // Change isNoCourses for the term
-                    term.setNoCourses(false);
-                    // Remove the empty fragment from the stack to avoid showing it again
-                    getParentFragmentManager().popBackStack();
-                    // Reload the courses for that term
-                    reloadCourseFragment();
-                }
-            });
+            if(getActivity() instanceof TermsActivity) {
+                repository.getTermById(termId, term -> {
+                    boolean hasNoCourses = term.isNoCourses();
+                    if (hasNoCourses) {
+                        // Change isNoCourses for the term
+                        term.setNoCourses(false);
+                        // Remove the empty fragment from the stack to avoid showing it again
+                        getParentFragmentManager().popBackStack();
+                        // Reload the courses for that term
+                        reloadCourseFragment();
+                    }
+                });
+            }
         } else {
 
             // Updating an existing test

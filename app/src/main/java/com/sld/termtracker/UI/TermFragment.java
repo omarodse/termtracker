@@ -61,6 +61,11 @@ public class TermFragment extends Fragment {
 
     public void loadTerms() {
         dataRepository.getAllTerms(terms -> {
+            if (terms.isEmpty()) {
+                if(getActivity() instanceof TermsActivity) {
+                    ((TermsActivity) getActivity()).showEmptyStateFragment("No active terms", "", 0);
+                }
+            }
             getActivity().runOnUiThread(() -> {
                 termsAdapter.updateTerms(terms);
             });
