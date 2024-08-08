@@ -139,7 +139,7 @@ public class DateUtils {
     }
 
     private static boolean isLeapYear(int year) {
-        // Convert 'yy' to 'yyyy' assuming 20th or 21st century
+        // Convert 'yy' to 'yyyy'
         year += (year < 50 ? 2000 : 1900);
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }

@@ -70,8 +70,7 @@ public class CoursesActivity extends AppCompatActivity implements CourseDetailsF
 
                 if (intent != null) {
                     startActivity(intent);
-                    finish();  // Finish the current activity
-                    //overridePendingTransition(0, 0);  // Smooth transitions
+                    finish();
                 }
             }
             return true;

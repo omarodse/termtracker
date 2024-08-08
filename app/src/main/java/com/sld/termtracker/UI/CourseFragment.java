@@ -20,6 +20,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.Term;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,9 @@ public class CourseFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewCourses);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        TextView termStarts = view.findViewById(R.id.term_start);
+        TextView termEnds = view.findViewById(R.id.term_end);
+
         // Determine whether to load courses by term or all courses
         if (getArguments() != null && getArguments().containsKey(ARG_TERM_ID)) {
             termId = getArguments().getInt(ARG_TERM_ID);
@@ -64,6 +68,17 @@ public class CourseFragment extends Fragment {
         }
 
         repository = new Repository(getActivity().getApplication());
+
+        if(termId != -1 || termId !=0) {
+            repository.getTermById(termId, term ->{
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        termStarts.setText(term.getStartDate());
+                        termEnds.setText(term.getEndDate());
+                    });
+                }
+            });
+        }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         courseList = new ArrayList<>();

@@ -16,8 +16,8 @@
 
     <!-- Course & Term Strings -->
     <string name="title">Title</string>
-    <string name="start_date">Start</string>
-    <string name="end_date">End</string>
+    <string name="start_date">Starts</string>
+    <string name="end_date">Ends</string>
     <string name="date">Date</string>
     <string name="dash">-</string>
     <string name="status">Status</string>
@@ -35,6 +35,7 @@
     <string name="dateHintStart">Start Date (MM/dd/yy)</string>
     <string name="dateHintEnd">End Date (MM/dd/yy)</string>
     <string name="shareNote">Share note</string>
+    <string name="coursesLabel">COURSES</string>
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active Assessments</string>
