@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.termtracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sld.termtracker.Database.Repository;
 
 public class EmptyStateFragment extends Fragment {
 
@@ -25,6 +26,8 @@ public class EmptyStateFragment extends Fragment {
     private static final String ARG_ITEM_ID = "term_id";
     private String itemTitle;
     private String message;
+
+    private Repository repository;
 
     private int itemId;
 
@@ -53,6 +56,22 @@ public class EmptyStateFragment extends Fragment {
             itemTitle = getArguments().getString(ARG_ITEM_TITLE);
             itemId = getArguments().getInt(ARG_ITEM_ID);
             emptyStateText.setText(message);
+        }
+
+        TextView termStartDate = view.findViewById(R.id.date_start);
+        TextView termEndDate = view.findViewById(R.id.date_end);
+
+        repository = new Repository(getActivity().getApplication());
+
+        if(itemId != -1 || itemId != 0) {
+            repository.getTermById(itemId, term -> {
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        termStartDate.setText(term.getStartDate());
+                        termEndDate.setText(term.getEndDate());
+                    });
+                }
+            });
         }
 
         if ((getActivity() instanceof MainActivity || getActivity() instanceof TestsActivity)) {

@@ -20,15 +20,55 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addFAB"
+        style="@style/Widget.MyApp.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/termFABContentDescription"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        style="@style/Widget.MyApp.FloatingActionButton"
+        android:contentDescription="@string/termFABContentDescription"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/add_24px" />
+
+    <TextView
+        android:id="@+id/term_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/start_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/term_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/end_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/term_start" />
+
+    <TextView
+        android:id="@+id/date_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/date"
+        app:layout_constraintStart_toEndOf="@+id/term_start"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/date_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/date"
+        app:layout_constraintStart_toEndOf="@+id/term_end"
+        app:layout_constraintTop_toBottomOf="@+id/date_start" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
