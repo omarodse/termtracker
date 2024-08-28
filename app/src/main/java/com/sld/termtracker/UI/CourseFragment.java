@@ -20,6 +20,9 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.CourseType;
+import com.sld.termtracker.Entities.OfflineCourse;
+import com.sld.termtracker.Entities.OnlineCourse;
 import com.sld.termtracker.Entities.Term;
 
 import java.util.ArrayList;
@@ -57,6 +60,9 @@ public class CourseFragment extends Fragment {
 
         TextView termStarts = view.findViewById(R.id.term_start);
         TextView termEnds = view.findViewById(R.id.term_end);
+        TextView startsLabel = view.findViewById(R.id.starts_label);
+        TextView endsLabel = view.findViewById(R.id.ends_label);
+
 
         // Determine whether to load courses by term or all courses
         if (getArguments() != null && getArguments().containsKey(ARG_TERM_ID)) {
@@ -69,15 +75,24 @@ public class CourseFragment extends Fragment {
 
         repository = new Repository(getActivity().getApplication());
 
-        if(termId != -1 || termId !=0) {
-            repository.getTermById(termId, term ->{
-                if(getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        termStarts.setText(term.getStartDate());
-                        termEnds.setText(term.getEndDate());
-                    });
-                }
-            });
+        if(getActivity() instanceof TermsActivity) {
+            if(termId != -1 || termId !=0) {
+                repository.getTermById(termId, term ->{
+                    if(term != null) {
+                        if(getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                termStarts.setText(term.getStartDate());
+                                termEnds.setText(term.getEndDate());
+                            });
+                        }
+                    } else {
+                        termStarts.setVisibility(View.GONE);
+                        termEnds.setVisibility(View.GONE);
+                        startsLabel.setVisibility(View.GONE);
+                        endsLabel.setVisibility(View.GONE);
+                    }
+                });
+            }
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -93,7 +108,7 @@ public class CourseFragment extends Fragment {
 
         addCourseForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
-                ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle);
+                ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle, "");
             }
         });
 
@@ -154,7 +169,12 @@ public class CourseFragment extends Fragment {
     }
 
     private void showCourseDetailFragment(Course course) {
-        CourseDetailsFragment fragment = CourseDetailsFragment.newInstance(course.getCourseId());
+        CourseDetailsFragment fragment = new CourseDetailsFragment();
+        if(course instanceof OfflineCourse) {
+            fragment = CourseDetailsFragment.newInstance(course.getCourseId(), "Offline Course");
+        } else if(course instanceof OnlineCourse) {
+            fragment = CourseDetailsFragment.newInstance(course.getCourseId(), "Online Course");
+        }
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);

@@ -2,8 +2,6 @@ package com.sld.termtracker.UI;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import com.sld.termtracker.Entities.Term;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
     private List<Term> terms;
@@ -45,7 +42,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
         public TermViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.term_title);
+            title = itemView.findViewById(R.id.term_title_search);
             startDate = itemView.findViewById(R.id.term_date_start_date);
             endDate = itemView.findViewById(R.id.term_date_end_date);
             deleteIcon = itemView.findViewById(R.id.delete_button);

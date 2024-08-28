@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.CourseType;
 import com.sld.termtracker.Entities.Test;
 
 import java.util.List;
@@ -116,20 +117,28 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestViewHolder
     private static void handleEditTest(Test test, Context context) {
         FragmentTransaction transaction = null;
 
+        String courseType = new String();
+
+        if (test.getCourseType().equals(CourseType.OFFLINE_COURSE)) {
+            courseType = "Offline Course";
+        } else if (test.getCourseType().equals(CourseType.ONLINE_COURSE)) {
+            courseType = "Online Course";
+        }
+
         if (context instanceof TermsActivity) {
             TermsActivity activity = (TermsActivity) context;
             transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, AddTestFragment.newInstance(0, "", test.getTestId()));
+            transaction.replace(R.id.fragment_container, AddTestFragment.newInstance(0, "", test.getTestId(), courseType));
 
         } else if (context instanceof CoursesActivity) {
             CoursesActivity activity = (CoursesActivity) context;
             transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, AddTestFragment.newInstance(0, "", test.getTestId()));
+            transaction.replace(R.id.fragment_container, AddTestFragment.newInstance(0, "", test.getTestId(), courseType));
 
         } else if (context instanceof TestsActivity) {
             TestsActivity activity = (TestsActivity) context;
             transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, AddTestFragment.newInstance(0, "", test.getTestId()));
+            transaction.replace(R.id.fragment_container, AddTestFragment.newInstance(0, "", test.getTestId(), courseType));
 
         }
 

@@ -36,6 +36,17 @@
     <string name="dateHintEnd">End Date (MM/dd/yy)</string>
     <string name="shareNote">Share note</string>
     <string name="coursesLabel">COURSES</string>
+    <string name="onlineCourse">Online Course</string>
+    <string name="offlineCourse">Offline Course</string>
+    <string name="location">Location</string>
+    <string name="platform">Platform</string>
+    <string name="search">Search term</string>
+    <string name="type">Type</string>
+    <string name="number_tests">Number of tests</string>
+    <string name="scrollView">Scroll view</string>
+    <string name="reportLabel">Report</string>
+    <string name="termTitle">Term title</string>
+
 
     <!-- Tests Strings -->
     <string name="noActiveTests">No active Assessments</string>

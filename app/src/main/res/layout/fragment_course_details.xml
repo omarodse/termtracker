@@ -36,9 +36,10 @@
                     android:id="@+id/start_date_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:text="Start Date"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/locationPlatform" />
 
                 <TextView
                     android:id="@+id/course_details_start_date"
@@ -149,6 +150,32 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/course_note" />
+
+                <TextView
+                    android:id="@+id/locationPlatform"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/type_label" />
+
+                <TextView
+                    android:id="@+id/type_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/location_platform_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/location"
+                    app:layout_constraintStart_toEndOf="@+id/locationPlatform"
+                    app:layout_constraintTop_toTopOf="@+id/locationPlatform" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

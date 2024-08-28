@@ -17,6 +17,7 @@ import com.example.termtracker.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sld.termtracker.Database.Repository;
+import com.sld.termtracker.Entities.CourseType;
 import com.sld.termtracker.Entities.Test;
 import com.sld.termtracker.Entities.TestType;
 
@@ -38,11 +39,13 @@ public class AddTestFragment extends Fragment {
     private Repository repository;
     private static final String ARG_COURSE_ID = "courseId";
     private static final String ARG_COURSE_TITLE = "courseTitle";
+    private static final String ARG_COURSE_TYPE = "courseType";
     private int courseId;
     private String courseTitle;
+    private String courseType;
 
 
-    public static AddTestFragment newInstance(int courseId, String courseTitle, int testId) {
+    public static AddTestFragment newInstance(int courseId, String courseTitle, int testId, String courseType) {
         AddTestFragment fragment = new AddTestFragment();
         Bundle args = new Bundle();
         Log.d(TAG, "testId: " + testId);
@@ -50,6 +53,7 @@ public class AddTestFragment extends Fragment {
         args.putString(ARG_COURSE_TITLE, courseTitle);
         if (testId != -1) {
             args.putInt(ARG_TEST_ID, testId);
+            args.putString(ARG_COURSE_TYPE, courseType);
         }
         fragment.setArguments(args);
         return fragment;
@@ -74,6 +78,7 @@ public class AddTestFragment extends Fragment {
             courseId = getArguments().getInt(ARG_COURSE_ID);
             courseTitle = getArguments().getString(ARG_COURSE_TITLE);
             testId = getArguments().getInt(ARG_TEST_ID, -1);
+            courseType = getArguments().getString(ARG_COURSE_TYPE);
             Log.d(TAG, "GET ARGUMENTS: The termId is " + courseId);
         } else {
             Log.e(TAG, "Arguments are null");
@@ -169,13 +174,13 @@ public class AddTestFragment extends Fragment {
                 testType = TestType.OBJECTIVE_ASSESSMENT;
             }
 
-            Test test = new Test(title, startDate, endDate, testType, courseId);
+            Test test = new Test(title, startDate, endDate, testType, courseId, courseType);
 
             repository.insert(test);
 
             // Reload fragment if there were no courses in that term
             if(getActivity() instanceof TermsActivity) {
-                repository.getCourseById(courseId, course -> {
+                repository.getCourseById(courseId, courseType, course -> {
                     boolean hasNoTests = course.isHasNoTests();
                     if (hasNoTests) {
                         // Change hasNoTests for the course
@@ -214,7 +219,7 @@ public class AddTestFragment extends Fragment {
     }
     private void reloadTestFragment() {
         if (getActivity() instanceof TermsActivity) {
-            ((TermsActivity) getActivity()).showTestsFragment(courseTitle, courseId);
+            ((TermsActivity) getActivity()).showTestsFragment(courseTitle, courseId, courseType);
         }
     }
 }

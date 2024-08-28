@@ -18,6 +18,7 @@ import com.example.termtracker.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sld.termtracker.Database.Repository;
+import com.sld.termtracker.Entities.CourseType;
 
 public class CoursesActivity extends AppCompatActivity implements CourseDetailsFragment.OnCourseTitleUpdatedListener, TestDetailsFragment.OnTestTitleUpdatedListener {
     private static final String TAG = "CoursesActivity";
@@ -137,16 +138,16 @@ public class CoursesActivity extends AppCompatActivity implements CourseDetailsF
         transaction.replace(R.id.fragment_container, coursesFragment);
         transaction.commit();
     }
-    public void showTestsFragment(String courseTitle, int courseId) {
-        TestFragment testFragment = TestFragment.newInstance(courseTitle, courseId);
+    public void showTestsFragment(String courseTitle, int courseId, String courseType) {
+        TestFragment testFragment = TestFragment.newInstance(courseTitle, courseId, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, testFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    public void showAddTestFragment(int itemId, String itemTitle) {
-        AddTestFragment addTest = AddTestFragment.newInstance(itemId, itemTitle, -1);
+    public void showAddTestFragment(int itemId, String itemTitle, String courseType) {
+        AddTestFragment addTest = AddTestFragment.newInstance(itemId, itemTitle, -1, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addTest);
         transaction.addToBackStack(null);

@@ -60,16 +60,25 @@ public class EmptyStateFragment extends Fragment {
 
         TextView termStartDate = view.findViewById(R.id.date_start);
         TextView termEndDate = view.findViewById(R.id.date_end);
+        TextView startsLabel = view.findViewById(R.id.term_start);
+        TextView endsLabel = view.findViewById(R.id.term_end);
 
         repository = new Repository(getActivity().getApplication());
 
         if(itemId != -1 || itemId != 0) {
             repository.getTermById(itemId, term -> {
-                if(getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        termStartDate.setText(term.getStartDate());
-                        termEndDate.setText(term.getEndDate());
-                    });
+                if(term != null) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() -> {
+                            termStartDate.setText(term.getStartDate());
+                            termEndDate.setText(term.getEndDate());
+                        });
+                    }
+                } else {
+                    termStartDate.setVisibility(View.GONE);
+                    termEndDate.setVisibility(View.GONE);
+                    startsLabel.setVisibility(View.GONE);
+                    endsLabel.setVisibility(View.GONE);
                 }
             });
         }
@@ -91,9 +100,9 @@ public class EmptyStateFragment extends Fragment {
                 if (message.contains("terms")) {
                     fragment = new AddTermFragment();
                 } else if (message.contains("courses")) {
-                    fragment = AddCourseFragment.newInstance(itemId, itemTitle, -1);
+                    fragment = AddCourseFragment.newInstance(itemId, itemTitle, -1, "");
                 } else if(message.contains("assessments")) {
-                    fragment = AddTestFragment.newInstance(itemId, itemTitle, -1);
+                    fragment = AddTestFragment.newInstance(itemId, itemTitle, -1, "");
                 }
             }
 

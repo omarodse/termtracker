@@ -114,6 +114,15 @@
         <item name="android:dividerPadding">12dp</item>
     </style>
 
+    <!-- Custom style for Form LinearLayout -->
+    <style name="FormLinearLayoutHorizontal">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">12dp</item>
+<!--        <item name="android:divider">@drawable/fields_divider</item>-->
+<!--        <item name="android:showDividers">middle</item>-->
+<!--        <item name="android:dividerPadding">12dp</item>-->
+    </style>
+
     <!-- Custom style for Save form Button -->
     <style name="FormSaveButton" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/colorAccent</item>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.example.termtracker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.CourseType;
 import com.sld.termtracker.Entities.Test;
 
 import java.util.ArrayList;
@@ -27,8 +29,11 @@ public class TestFragment extends Fragment {
     private static final String TAG = "testFragment";
     private static final String ARG_COURSE_ID = "course_id";
     private static final String ARG_COURSE_TITLE = "course_title";
+    private static final String ARG_COURSE_TYPE = "courseType";
     private String courseTitle;
     private int courseId;
+
+    private String courseType;
     private ArrayList<Test> testList;
     private TestAdapter adapter;
     private Repository repository;
@@ -37,11 +42,12 @@ public class TestFragment extends Fragment {
 
 
     // Method to display tests by courses
-    public static TestFragment newInstance(String courseTitle, int courseId) {
+    public static TestFragment newInstance(String courseTitle, int courseId, String courseType) {
         TestFragment fragment = new TestFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COURSE_ID, courseId);
         args.putString(ARG_COURSE_TITLE, courseTitle);
+        args.putString(ARG_COURSE_TYPE, courseType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,6 +68,7 @@ public class TestFragment extends Fragment {
         if (getArguments() != null && getArguments().containsKey(ARG_COURSE_ID)) {
             courseId = getArguments().getInt(ARG_COURSE_ID);
             courseTitle = getArguments().getString(ARG_COURSE_TITLE);
+            courseType =getArguments().getString(ARG_COURSE_TYPE);
             loadTests(courseTitle, courseId);
         } else {
             loadAllTests();
@@ -80,9 +87,9 @@ public class TestFragment extends Fragment {
 
         addTestForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
-                ((TermsActivity) getActivity()).showAddTestFragment(courseId, courseTitle);
+                ((TermsActivity) getActivity()).showAddTestFragment(courseId, courseTitle, courseType);
             } else if(getActivity() instanceof CoursesActivity) {
-                ((CoursesActivity) getActivity()).showAddTestFragment(courseId, courseTitle);
+                ((CoursesActivity) getActivity()).showAddTestFragment(courseId, courseTitle, courseType);
             }
         });
 
@@ -92,7 +99,7 @@ public class TestFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     private void loadTests(String itemTitle, int itemId) {
         Repository repository = new Repository(getActivity().getApplication());
-        repository.getAssociatedTests(courseId, tests -> {
+        repository.getTestsByCourseIdAndType(courseId, courseType, tests -> {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (tests.isEmpty()) {
@@ -146,7 +153,16 @@ public class TestFragment extends Fragment {
     }
 
     private void showTestDetailFragment(Test test) {
-        TestDetailsFragment fragment = TestDetailsFragment.newInstance(test.getTestId(), courseTitle);
+        String testCourseType = new String();
+        if(test.getCourseType().equals("Offline Course")) {
+            testCourseType = "Offline Course";
+        } else if(test.getCourseType().equals("Online Course")) {
+            testCourseType = "Online Course";
+        } else {
+            Toast.makeText(getActivity(), "Error loading the course details", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        TestDetailsFragment fragment = TestDetailsFragment.newInstance(test.getTestId(), courseTitle, testCourseType);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);

@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey;
                 parentColumns = "termId",
                 childColumns = "termId",
                 onDelete = ForeignKey.CASCADE))
-public class Course {
-    @PrimaryKey(autoGenerate = true)
+public abstract class Course {
+    //@PrimaryKey(autoGenerate = true)
     private int courseId;
     private String courseTitle;
     private String startDate;
@@ -21,7 +21,6 @@ public class Course {
     private String instructorPhone;
     private String instructorEmail;
     private String note;
-
     private boolean hasNoTests;
 
 
@@ -77,7 +76,6 @@ public class Course {
     public String getNote() {
         return note;
     }
-
     public boolean isHasNoTests() {
         return hasNoTests;
     }
@@ -111,7 +109,6 @@ public class Course {
     public void setInstructorEmail(String instructorEmail) {
         this.instructorEmail = instructorEmail;
     }
-
     public void setNote(String note) {
         this.note = note;
     }

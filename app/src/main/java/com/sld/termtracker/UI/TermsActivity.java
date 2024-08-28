@@ -20,6 +20,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sld.termtracker.Database.Repository;
+import com.sld.termtracker.Entities.CourseType;
 import com.sld.termtracker.Entities.Term;
 
 import java.util.List;
@@ -213,16 +214,16 @@ public class TermsActivity extends AppCompatActivity implements
         transaction.commit();
     }
 
-    public void showAddCourseFragment(int termId, String termTitle) {
-        AddCourseFragment addCourse = AddCourseFragment.newInstance(termId, termTitle, -1);
+    public void showAddCourseFragment(int termId, String termTitle, String courseType) {
+        AddCourseFragment addCourse = AddCourseFragment.newInstance(termId, termTitle, -1, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addCourse);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    public void showAddTestFragment(int itemId, String itemTitle) {
-        AddTestFragment addTest = AddTestFragment.newInstance(itemId, itemTitle, -1);
+    public void showAddTestFragment(int itemId, String itemTitle, String courseType) {
+        AddTestFragment addTest = AddTestFragment.newInstance(itemId, itemTitle, -1, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addTest);
         transaction.addToBackStack(null);
@@ -237,8 +238,8 @@ public class TermsActivity extends AppCompatActivity implements
         transaction.commit();
     }
 
-    public void showTestsFragment(String itemTitle, int itemId) {
-        TestFragment testFragment = TestFragment.newInstance(itemTitle, itemId);
+    public void showTestsFragment(String itemTitle, int itemId, String courseType) {
+        TestFragment testFragment = TestFragment.newInstance(itemTitle, itemId, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, testFragment);
         transaction.addToBackStack(null);

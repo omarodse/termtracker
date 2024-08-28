@@ -1,7 +1,6 @@
 package com.sld.termtracker.UI;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.termtracker.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -17,9 +15,6 @@ import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Term;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class AddTermFragment extends Fragment {
 
@@ -40,7 +35,7 @@ public class AddTermFragment extends Fragment {
             ((TermsActivity) getActivity()).showBackButton(true);
         }
 
-        termTitleEditText = view.findViewById(R.id.term_title);
+        termTitleEditText = view.findViewById(R.id.term_title_search);
         termStartDateEditText = view.findViewById(R.id.term_start_date);
         termEndDateEditText = view.findViewById(R.id.term_end_date);
         Button saveButton = view.findViewById(R.id.save_button);
