@@ -1,11 +1,17 @@
 package com.sld.termtracker.Database;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.sld.termtracker.DAO.CourseDAO;
+import com.sld.termtracker.DAO.OfflineCourseDAO;
+import com.sld.termtracker.DAO.OnlineCourseDAO;
 import com.sld.termtracker.DAO.TermDAO;
 import com.sld.termtracker.DAO.TestDAO;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.CourseType;
+import com.sld.termtracker.Entities.OfflineCourse;
+import com.sld.termtracker.Entities.OnlineCourse;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.Test;
 
@@ -15,8 +21,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Repository {
+
+    private static final String TAG = "repository";
     private TermDAO mTermDAO;
     private CourseDAO mCourseDAO;
+
+    private OfflineCourseDAO mOfflineCourseDAO;
+
+    private OnlineCourseDAO mOnlineCourseDAO;
     private TestDAO mTestDAO;
 
     private List<Term> mAllTerms;
@@ -30,7 +42,8 @@ public class Repository {
     public Repository (Application application) {
         TermtrackerDatabaseBuilder db = TermtrackerDatabaseBuilder.getDatabase(application);
         mTermDAO = db.termDAO();
-        mCourseDAO = db.courseDAO();
+        mOfflineCourseDAO = db.offlineCourseDAO();
+        mOnlineCourseDAO = db.onlineCourseDAO();
         mTestDAO = db.testDAO();
     }
     // Access Terms in DB
@@ -75,22 +88,55 @@ public class Repository {
         void onTermRetrieved(Term term);
     }
 
-    // Access Courses
+    // Access Online courses
     public void insert(Course course) {
-        databaseExecutor.execute(() -> mCourseDAO.insert(course));
+        if (course instanceof OfflineCourse) {
+            databaseExecutor.execute(() -> mOfflineCourseDAO.insert((OfflineCourse) course));
+        } else if(course instanceof OnlineCourse) {
+            databaseExecutor.execute(() -> mOnlineCourseDAO.insert((OnlineCourse) course));
+        }
     }
 
     public void update(Course course) {
-        databaseExecutor.execute(() -> mCourseDAO.update(course));
+        if (course instanceof OfflineCourse) {
+            databaseExecutor.execute(() -> mOfflineCourseDAO.update((OfflineCourse) course));
+        } else if(course instanceof OnlineCourse) {
+            databaseExecutor.execute(() -> mOnlineCourseDAO.update((OnlineCourse) course));
+        }
     }
 
     public void delete(Course course) {
-        databaseExecutor.execute(() -> mCourseDAO.delete(course));
+        if (course instanceof OfflineCourse) {
+            databaseExecutor.execute(() -> mOfflineCourseDAO.delete((OfflineCourse) course));
+        } else if(course instanceof OnlineCourse) {
+            databaseExecutor.execute(() -> mOnlineCourseDAO.delete((OnlineCourse) course));
+        }
     }
 
-    public void getCourseById(int courseId, OnCourseRetrievedListener listener) {
+    public void getCourseById(int courseId, String courseType, OnCourseRetrievedListener listener) {
         databaseExecutor.execute(() -> {
-            Course course = mCourseDAO.getCourseById(courseId);
+            if(courseType.equals("Offline Course")) {
+                OfflineCourse course = mOfflineCourseDAO.getOfflineCourseById(courseId);
+                listener.onCourseRetrieved(course);
+            } else if (courseType.equals("Online Course")) {
+                OnlineCourse course = mOnlineCourseDAO.getOnlineCourseById(courseId);
+                listener.onCourseRetrieved(course);
+            }
+        });
+    }
+
+    public void getOnlineCourseById(int courseId, OnCourseRetrievedListener listener) {
+
+        databaseExecutor.execute(() -> {
+            OfflineCourse course = mOfflineCourseDAO.getOfflineCourseById(courseId);
+            listener.onCourseRetrieved(course);
+        });
+    }
+
+    public void getOfflineCourseById(int courseId, OnCourseRetrievedListener listener) {
+
+        databaseExecutor.execute(() -> {
+            OnlineCourse course = mOnlineCourseDAO.getOnlineCourseById(courseId);
             listener.onCourseRetrieved(course);
         });
     }
@@ -101,14 +147,23 @@ public class Repository {
 
     public void getAllCourses(OnCoursesRetrievedListener listener) {
         databaseExecutor.execute(() -> {
-            List<Course> courses = mCourseDAO.getAllCourses();
-            listener.onCoursesRetrieved(new ArrayList<>(courses));
+            List<OfflineCourse> offlineCourses = mOfflineCourseDAO.getAllOfflineCourses();
+            Log.d(TAG, "Here's offline courses: " + offlineCourses);
+            List<OnlineCourse> onlineCourses = mOnlineCourseDAO.getAllOnlineCourses();
+            List<Course> allCourses = new ArrayList<>();
+            allCourses.addAll(offlineCourses);
+            allCourses.addAll(onlineCourses);
+            listener.onCoursesRetrieved(new ArrayList<>(allCourses));
         });
     }
 
     public void getCoursesByTermId(int termId, OnCoursesRetrievedListener listener) {
         databaseExecutor.execute(() -> {
-            List<Course> courses = mCourseDAO.getCoursesByTermId(termId);
+            List<OfflineCourse> offlineCourses = mOfflineCourseDAO.getOfflineCoursesByTermId(termId);
+            List<OnlineCourse> onlineCourses = mOnlineCourseDAO.getOnlineCoursesByTermId(termId);
+            List<Course> courses = new ArrayList<>();
+            courses.addAll(offlineCourses);
+            courses.addAll(onlineCourses);
             listener.onCoursesRetrieved(new ArrayList<>(courses));
         });
     }
@@ -144,9 +199,16 @@ public class Repository {
         });
     }
 
-    public void getAssociatedTests(int courseId, OnTestsRetrievedListener listener) {
+    public void getTestsByCourseIdAndType(int courseId, String courseType, OnTestsRetrievedListener listener) {
         databaseExecutor.execute(() -> {
-            List<Test> tests = mTestDAO.getAssociatedTests(courseId);
+            List<Test> tests = mTestDAO.getTestsByCourseIdAndType(courseType, courseId);
+            listener.onTestsRetrieved(new ArrayList<>(tests));
+        });
+    }
+
+    public void getTestsByCourseType(String courseType, OnTestsRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            List<Test> tests = mTestDAO.getTestsByCourseType(courseType);
             listener.onTestsRetrieved(new ArrayList<>(tests));
         });
     }

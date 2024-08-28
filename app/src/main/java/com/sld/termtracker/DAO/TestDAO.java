@@ -26,9 +26,12 @@ public interface TestDAO {
     @Query("SELECT * FROM TESTS ORDER BY testId ASC")
     List<Test> getAllTests();
 
-    @Query("SELECT * FROM TESTS WHERE courseId=:course ORDER BY testId ASC")
-    List<Test> getAssociatedTests(int course);
+    @Query("SELECT * FROM Tests WHERE courseType=:courseType ORDER BY testId ASC")
+    List<Test> getTestsByCourseType(String courseType);
 
     @Query("SELECT * FROM tests WHERE testId = :testId LIMIT 1")
     Test getTestById(int testId);
+
+    @Query("SELECT * FROM tests WHERE courseType=:courseType AND courseId=:courseId")
+    List<Test> getTestsByCourseIdAndType(String courseType, int courseId);
 }

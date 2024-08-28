@@ -15,26 +15,32 @@ import androidx.fragment.app.Fragment;
 
 import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
+import com.sld.termtracker.Entities.CourseType;
 
 public class TestDetailsFragment extends Fragment {
     private static final String TAG = "testDetails";
     private Repository repository;
     private static final String ARG_TEST_ID = "testId";
     private static final String ARG_COURSE_TITLE = "courseTitle";
+
+    private static final String ARG_COURSE_TYPE = "courseType";
     private int testId;
     private String testTitle;
     private String courseTitle;
+
+    private String courseType;
     private RadioGroup testTypeGroup;
 
     public interface OnTestTitleUpdatedListener {
         void onTestTitleUpdated(String testTitle);
     }
 
-    public static TestDetailsFragment newInstance(int testId, String courseTitle) {
+    public static TestDetailsFragment newInstance(int testId, String courseTitle, String courseType) {
         TestDetailsFragment testDetails = new TestDetailsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_TEST_ID, testId);
         args.putString(ARG_COURSE_TITLE, courseTitle);
+        args.putString(ARG_COURSE_TYPE, courseType);
         testDetails.setArguments(args);
         return testDetails;
     }
@@ -46,6 +52,7 @@ public class TestDetailsFragment extends Fragment {
 
         if (getArguments() != null) {
             testId = getArguments().getInt(ARG_TEST_ID);
+            courseType = getArguments().getString(ARG_COURSE_TYPE);
             //courseTitle = getArguments().getString(ARG_COURSE_TITLE);
             Log.d(TAG, "Course Title: " + testId);
         } else {
@@ -70,7 +77,7 @@ public class TestDetailsFragment extends Fragment {
                     if(courseTitle == null || courseTitle.isEmpty()) {
                         Log.d(TAG, "Title is empty");
                         int courseId = test.getCourseId();
-                        repository.getCourseById(courseId, course -> {
+                        repository.getCourseById(courseId, courseType, course -> {
                             getActivity().runOnUiThread(() -> {
                                 courseTitle = course.getCourseTitle();
                                 courseName.setText(courseTitle);

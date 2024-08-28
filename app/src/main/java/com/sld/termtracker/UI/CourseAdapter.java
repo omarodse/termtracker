@@ -21,6 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.CourseType;
+import com.sld.termtracker.Entities.OfflineCourse;
+import com.sld.termtracker.Entities.OnlineCourse;
 
 import java.text.ParseException;
 import java.util.List;
@@ -139,12 +142,21 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         if (context instanceof TermsActivity) {
             TermsActivity activity = (TermsActivity) context;
             transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId()));
+            if(course instanceof OfflineCourse) {
+                transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId(), "Offline Course"));
+            } else if(course instanceof OnlineCourse) {
+                transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId(), "Online Course"));
+            }
+
 
         } else if (context instanceof CoursesActivity) {
             CoursesActivity activity = (CoursesActivity) context;
             transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId()));
+            if(course instanceof OfflineCourse) {
+                transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId(), "Offline Course"));
+            } else if(course instanceof OnlineCourse) {
+                transaction.replace(R.id.fragment_container, AddCourseFragment.newInstance(0, "", course.getCourseId(), "Online Course"));
+            }
 
         }
 

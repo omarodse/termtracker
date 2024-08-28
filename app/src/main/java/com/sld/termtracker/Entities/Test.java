@@ -4,11 +4,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "tests",
-        foreignKeys = @ForeignKey(entity = Course.class,
-                parentColumns = "courseId",
-                childColumns = "courseId",
-                onDelete = ForeignKey.CASCADE))
+@Entity(tableName = "tests")
 public class Test {
     @PrimaryKey(autoGenerate = true)
     private int testId;
@@ -17,13 +13,15 @@ public class Test {
     private String endDate;
     private TestType type;
     private int courseId;
+    private String courseType;
 
-    public Test(String title, String startDate, String endDate, TestType type, int courseId) {
+    public Test(String title, String startDate, String endDate, TestType type, int courseId, String courseType) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
         this.courseId = courseId;
+        this.courseType = courseType;
     }
 
     public int getTestId() {
@@ -49,6 +47,10 @@ public class Test {
         return courseId;
     }
 
+    public String getCourseType() {
+        return courseType;
+    }
+
     public void setTestId(int testId) {
         this.testId = testId;
     }
@@ -69,5 +71,8 @@ public class Test {
 
     public void setCourseId(int courseId) {
         this.courseId = courseId;
+    }
+    public void setCourseType(String courseType) {
+        this.courseType = courseType;
     }
 }

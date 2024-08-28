@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements CourseDetailsFrag
     }
     private void loadCourses() {
         repository.getAllCourses(courses -> {
+            Log.d(TAG, "Passed method");
             runOnUiThread(() -> {
                 if (courses.isEmpty()) {
                     showEmptyStateFragment();
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements CourseDetailsFrag
     }
 
     public void mainShowTestsFragment(String courseTitle, int courseId) {
-        TestFragment testFragment = TestFragment.newInstance(courseTitle, courseId);
+        TestFragment testFragment = TestFragment.newInstance(courseTitle, courseId, "");
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, testFragment);
         transaction.addToBackStack(null);

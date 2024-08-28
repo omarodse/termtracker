@@ -16,23 +16,30 @@ import androidx.fragment.app.Fragment;
 import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.CourseType;
+import com.sld.termtracker.Entities.OfflineCourse;
+import com.sld.termtracker.Entities.OnlineCourse;
 
 public class CourseDetailsFragment extends Fragment {
 
     private static final String TAG = "courseDetails";
     private Repository repository;
     private static final String ARG_COURSE_ID = "courseId";
+    private static final String ARG_COURSE_TYPE = "courseType";
     private int courseId;
     private String courseTitle;
     private String courseNoteValue;
+
+    private String courseType;
     public interface OnCourseTitleUpdatedListener {
         void onCourseTitleUpdated(String courseTitle);
     }
 
-    public static CourseDetailsFragment newInstance(int courseId) {
+    public static CourseDetailsFragment newInstance(int courseId, String courseType) {
         CourseDetailsFragment courseDetails = new CourseDetailsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COURSE_ID, courseId);
+        args.putString(ARG_COURSE_TYPE, courseType);
         courseDetails.setArguments(args);
         return courseDetails;
     }
@@ -44,6 +51,7 @@ public class CourseDetailsFragment extends Fragment {
 
         if (getArguments() != null) {
             courseId = getArguments().getInt(ARG_COURSE_ID);
+            courseType = getArguments().getString(ARG_COURSE_TYPE);
         } else {
             Log.e(TAG, "Arguments are null");
         }
@@ -56,11 +64,14 @@ public class CourseDetailsFragment extends Fragment {
         TextView instructorEmail = view.findViewById(R.id.course_details_instructor_email);
         TextView shareNoteButton = view.findViewById(R.id.share_note);
         TextView courseNote = view.findViewById(R.id.course_note);
+        TextView courseTypeLabel = view.findViewById(R.id.type_label);
+        TextView locationPlatformLabel = view.findViewById(R.id.locationPlatform);
+        TextView locationPlatformValue = view.findViewById(R.id.location_platform_value);
 
         repository = new Repository(getActivity().getApplication());
 
         // Using a lambda function to implement the onCourseRetrieved abstract method
-        repository.getCourseById(courseId, course -> {
+        repository.getCourseById(courseId, courseType, course -> {
             if (course != null) {
                 getActivity().runOnUiThread(() -> {
                     startDate.setText(course.getStartDate());
@@ -71,6 +82,15 @@ public class CourseDetailsFragment extends Fragment {
                     instructorEmail.setText(course.getInstructorEmail());
                     courseNote.setText(course.getNote());
 
+                    if (courseType.equals("Offline Course")) {
+                        courseTypeLabel.setText(R.string.offlineCourse);
+                        locationPlatformLabel.setText(R.string.location);
+                        locationPlatformValue.setText(((OfflineCourse) course).getLocation());
+                    } else if (courseType.equals("Online Course")) {
+                        courseTypeLabel.setText(R.string.onlineCourse);
+                        locationPlatformLabel.setText(R.string.platform);
+                        locationPlatformValue.setText(((OnlineCourse) course).getPlatform());
+                    }
                     courseNoteValue = course.getNote();
 
                     // If there is a note, display the share button.
@@ -96,11 +116,11 @@ public class CourseDetailsFragment extends Fragment {
 
         assessments.setOnClickListener(v ->{
            if(getActivity() instanceof TermsActivity) {
-               ((TermsActivity) getActivity()).showTestsFragment(courseTitle, courseId);
+               ((TermsActivity) getActivity()).showTestsFragment(courseTitle, courseId, courseType);
            } else if(getActivity() instanceof MainActivity) {
                ((MainActivity) getActivity()).mainShowTestsFragment(courseTitle, courseId);
            } else if(getActivity() instanceof CoursesActivity) {
-               ((CoursesActivity) getActivity()).showTestsFragment(courseTitle, courseId);
+               ((CoursesActivity) getActivity()).showTestsFragment(courseTitle, courseId, courseType);
            }
         });
 

@@ -18,6 +18,9 @@ import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Database.TermtrackerDatabaseBuilder;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.CourseType;
+import com.sld.termtracker.Entities.OfflineCourse;
+import com.sld.termtracker.Entities.OnlineCourse;
 import com.sld.termtracker.Entities.Test;
 
 import java.util.ArrayList;
@@ -109,7 +112,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void showCourseDetailFragment(Course course) {
-        CourseDetailsFragment fragment = CourseDetailsFragment.newInstance(course.getCourseId());
+        Fragment fragment = new CourseDetailsFragment();
+        if (course instanceof OfflineCourse) {
+            fragment = CourseDetailsFragment.newInstance(course.getCourseId(), "Offline Course");
+        } else if (course instanceof OnlineCourse) {
+            fragment = CourseDetailsFragment.newInstance(course.getCourseId(), "Online Course");
+        }
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
@@ -117,7 +125,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void showTestDetailFragment(Test test) {
-        TestDetailsFragment fragment = TestDetailsFragment.newInstance(test.getTestId(), test.getTitle());
+        Fragment fragment = new TestDetailsFragment();
+        if (test.getCourseType().equals(CourseType.OFFLINE_COURSE)) {
+            fragment = TestDetailsFragment.newInstance(test.getTestId(), test.getTitle(), "Offline Course");
+        } else if (test.getCourseType().equals(CourseType.ONLINE_COURSE)) {
+            fragment = TestDetailsFragment.newInstance(test.getTestId(), test.getTitle(), "Online Course");
+        }
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
