@@ -2,10 +2,6 @@ package com.sld.termtracker.UI;
 
 import androidx.fragment.app.Fragment;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,18 +22,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.CourseStatus;
-import com.sld.termtracker.Entities.CourseType;
 import com.sld.termtracker.Entities.OfflineCourse;
 import com.sld.termtracker.Entities.OnlineCourse;
-import com.sld.termtracker.Entities.Term;
-import com.sld.termtracker.Entities.TestType;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class AddCourseFragment extends Fragment {
     private static final String TAG = "AddCourse";
@@ -96,8 +85,7 @@ public class AddCourseFragment extends Fragment {
             termId = getArguments().getInt(ARG_TERM_ID);
             termTitle = getArguments().getString(ARG_TERM_TITLE);
             courseId = getArguments().getInt(ARG_COURSE_ID, -1);
-            courseType = getArguments().getString(ARG_COURSE_TYPE);
-            Log.d(TAG, "GET ARGUMENTS: The termId is " + termId);
+            courseType = getArguments().getString(ARG_COURSE_TYPE, "");
         } else {
             Log.e(TAG, "Arguments are null");
         }
@@ -108,7 +96,7 @@ public class AddCourseFragment extends Fragment {
             loadCourseDetails();
         }
 
-        courseTitleEditText = view.findViewById(R.id.course_title);
+        courseTitleEditText = view.findViewById(R.id.search_term_edit_text);
         courseStartDateEditText = view.findViewById(R.id.course_start_date);
         courseEndDateEditText = view.findViewById(R.id.course_end_date);
         courseInstructorEditText = view.findViewById(R.id.course_details_instructor_name);
@@ -266,6 +254,7 @@ public class AddCourseFragment extends Fragment {
             if (getSelectedCourseType == R.id.type_offline) {
                 newCourse = new OfflineCourse(title, startDate, endDate, selectedStatus, termId, instructorName,
                         instructorPhone, instructorEmail, note, locationPlatformField);
+                Log.d(TAG, "Course title: " + newCourse.getCourseTitle());
                 repository.insert(newCourse);
             } else if (getSelectedCourseType == R.id.type_online) {
                 newCourse = new OnlineCourse(title, startDate, endDate, selectedStatus,

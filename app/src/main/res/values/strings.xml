@@ -46,6 +46,7 @@
     <string name="scrollView">Scroll view</string>
     <string name="reportLabel">Report</string>
     <string name="termTitle">Term title</string>
+    <string name="searchButton">SEARCH</string>
 
 
     <!-- Tests Strings -->

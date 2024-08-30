@@ -19,10 +19,15 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/course_title"
+                android:id="@+id/search_term_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/search" />
+                android:hint="@string/search"
+                android:drawableTint="@color/colorAccent"
+                android:drawableStart="@null"
+                android:paddingStart="16dp"
+                android:drawablePadding="8dp"
+                android:visibility="gone" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,10 +75,11 @@
             android:id="@+id/report_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/reportLabel"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/search_button" />
 
         <TextView
             android:id="@+id/term_title_search"
@@ -81,6 +87,7 @@
             android:layout_height="19dp"
             android:layout_marginTop="16dp"
             android:text="@string/termTitle"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/report_label" />
 
@@ -90,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/start_date"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/term_title_search"
             app:layout_constraintTop_toTopOf="@+id/term_title_search" />
 
@@ -99,6 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/dash"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/term_start_search"
             app:layout_constraintTop_toTopOf="@+id/term_start_search" />
 
@@ -108,15 +117,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/end_date"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/date_dash_search"
             app:layout_constraintTop_toTopOf="@+id/date_dash_search" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/report_columns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/divider2">
 
@@ -148,6 +159,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
             android:background="?android:attr/listDivider"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/term_title_search" />
 
@@ -157,8 +169,9 @@
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
             android:background="?android:attr/listDivider"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/report_columns" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReport"
@@ -167,6 +180,17 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <Button
+            android:id="@+id/search_button"
+            style="@style/FormSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/searchButton"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -24,24 +24,35 @@ public class EmptyStateFragment extends Fragment {
     private static final String ARG_MESSAGE = "message";
     private static final String ARG_ITEM_TITLE = "frameTitle";
     private static final String ARG_ITEM_ID = "term_id";
+
+    private static final String ARG_COURSE_ID = "courseId";
+
+    private static final String ARG_COURSE_TYPE = "courseType";
     private String itemTitle;
     private String message;
-
     private Repository repository;
-
     private int itemId;
+
+    private int courseId;
+
+    private String courseType;
 
     MaterialToolbar toolbar;
 
-    public static EmptyStateFragment newInstance(String message, String itemTitle, int itemId) {
+    public static EmptyStateFragment newInstance(String message, String itemTitle, int itemId, int courseId, String courseType) {
         EmptyStateFragment fragment = new EmptyStateFragment();
         Bundle args = new Bundle();
         args.putString(ARG_MESSAGE, message);
-        args.putInt(ARG_ITEM_ID, itemId);
-        args.putString(ARG_ITEM_TITLE, itemTitle);
+        if (itemId != -1) {
+            args.putInt(ARG_ITEM_ID, itemId);
+            args.putString(ARG_ITEM_TITLE, itemTitle);
+        }
+        if (courseId != -1) {
+            args.putInt(ARG_COURSE_ID, courseId);
+            args.putString(ARG_COURSE_TYPE, courseType);
+        }
         fragment.setArguments(args);
         return fragment;
-
     }
 
     @Nullable
@@ -55,6 +66,8 @@ public class EmptyStateFragment extends Fragment {
             message = getArguments().getString(ARG_MESSAGE);
             itemTitle = getArguments().getString(ARG_ITEM_TITLE);
             itemId = getArguments().getInt(ARG_ITEM_ID);
+            courseId = getArguments().getInt(ARG_COURSE_ID);
+            courseType = getArguments().getString(ARG_COURSE_TYPE);
             emptyStateText.setText(message);
         }
 
@@ -100,9 +113,9 @@ public class EmptyStateFragment extends Fragment {
                 if (message.contains("terms")) {
                     fragment = new AddTermFragment();
                 } else if (message.contains("courses")) {
-                    fragment = AddCourseFragment.newInstance(itemId, itemTitle, -1, "");
+                    fragment = AddCourseFragment.newInstance(itemId, itemTitle, courseId, courseType);
                 } else if(message.contains("assessments")) {
-                    fragment = AddTestFragment.newInstance(itemId, itemTitle, -1, "");
+                    fragment = AddTestFragment.newInstance(itemId, itemTitle, courseId, courseType);
                 }
             }
 

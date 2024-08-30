@@ -23,6 +23,8 @@ public abstract class Course {
     private String note;
     private boolean hasNoTests;
 
+    private int numberOfTests;
+
 
     public Course(String courseTitle, String startDate, String endDate, CourseStatus status, int termId,
                   String instructorName, String instructorPhone, String instructorEmail, String note) {
@@ -36,6 +38,7 @@ public abstract class Course {
         this.instructorEmail = instructorEmail;
         this.note = note;
         this.hasNoTests = true;
+        this.numberOfTests = 0;
     }
 
     public int getCourseId() {
@@ -79,6 +82,10 @@ public abstract class Course {
     public boolean isHasNoTests() {
         return hasNoTests;
     }
+
+    public int getNumberOfTests() {
+        return numberOfTests;
+    }
     public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
@@ -114,5 +121,9 @@ public abstract class Course {
     }
     public void setHasNoTests(boolean hasNoTests) {
         this.hasNoTests = hasNoTests;
+    }
+
+    public void setNumberOfTests(int numberOfTests) {
+        this.numberOfTests = numberOfTests;
     }
 }

@@ -1,6 +1,5 @@
 package com.sld.termtracker.UI;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,14 +16,11 @@ import com.example.termtracker.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sld.termtracker.Database.Repository;
-import com.sld.termtracker.Entities.CourseType;
+import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.Test;
 import com.sld.termtracker.Entities.TestType;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AddTestFragment extends Fragment {
 
@@ -175,6 +171,12 @@ public class AddTestFragment extends Fragment {
             }
 
             Test test = new Test(title, startDate, endDate, testType, courseId, courseType);
+
+//            // Add test count to course
+//            repository.getCourseById(courseId, courseType, course -> {
+//                int getNumberOfTests = course.getNumberOfTests();
+//                course.setNumberOfTests(getNumberOfTests + 1);
+//            });
 
             repository.insert(test);
 

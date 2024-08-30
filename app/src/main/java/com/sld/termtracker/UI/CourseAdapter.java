@@ -1,6 +1,5 @@
 package com.sld.termtracker.UI;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
@@ -21,11 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.termtracker.R;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
-import com.sld.termtracker.Entities.CourseType;
 import com.sld.termtracker.Entities.OfflineCourse;
 import com.sld.termtracker.Entities.OnlineCourse;
 
-import java.text.ParseException;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
@@ -73,7 +70,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         public CourseViewHolder(@NonNull View itemView, CourseAdapter adapter, Repository repository, CourseAdapter.CourseClickedListener courseClickedListener) {
 
             super(itemView);
-            title = itemView.findViewById(R.id.course_title);
+            title = itemView.findViewById(R.id.search_term_edit_text);
             startDate = itemView.findViewById(R.id.date_start_date);
             endDate = itemView.findViewById(R.id.date_end_date);
             status = itemView.findViewById(R.id.course_status);
@@ -117,7 +114,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                     if(courses.isEmpty()) {
                         if (context instanceof TermsActivity) {
                             ((TermsActivity) context).getSupportFragmentManager().popBackStack();
-                            ((TermsActivity) context).showEmptyStateFragment("No active courses", "", termId);
+                            ((TermsActivity) context).showEmptyStateFragment("No active courses", "", termId, -1, "");
                         }
                     }
                     return true;

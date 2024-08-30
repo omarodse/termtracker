@@ -97,7 +97,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
                     Toast.makeText(context, "Term deleted", Toast.LENGTH_SHORT).show();
                     if(terms.isEmpty()) {
                         if(context instanceof TermsActivity) {
-                            ((TermsActivity) context).showEmptyStateFragment("No active terms", "Terms", 0);
+                            ((TermsActivity) context).showEmptyStateFragment("No active terms", "Terms", 0, -1, "");
                         }
                     }
                 } else {

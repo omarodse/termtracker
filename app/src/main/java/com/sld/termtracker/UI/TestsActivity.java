@@ -101,7 +101,7 @@ public class TestsActivity extends AppCompatActivity implements TestDetailsFragm
         repository.getAllTests(tests -> {
             runOnUiThread(() -> {
                 if (tests.isEmpty()) {
-                    showEmptyStateFragment("No active assessments", "Assessments", 0);
+                    showEmptyStateFragment("No active assessments", "Assessments", 0, -1, "");
                 } else {
                     showTestsFragment();
                 }
@@ -109,8 +109,8 @@ public class TestsActivity extends AppCompatActivity implements TestDetailsFragm
         });
     }
 
-    public void showEmptyStateFragment(String message, String frameTitle, int termId) {
-        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
+    public void showEmptyStateFragment(String message, String frameTitle, int termId, int courseId, String courseType) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId, courseId, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.addToBackStack(null);

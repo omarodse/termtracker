@@ -17,7 +17,7 @@ import com.sld.termtracker.Entities.OnlineCourse;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.Test;
 
-@Database(entities = {OfflineCourse.class, OnlineCourse.class, Term.class, Test.class}, version = 15, exportSchema = false)
+@Database(entities = {OfflineCourse.class, OnlineCourse.class, Term.class, Test.class}, version = 18, exportSchema = false)
 public abstract class TermtrackerDatabaseBuilder extends RoomDatabase {
     public abstract OfflineCourseDAO offlineCourseDAO();
     public abstract OnlineCourseDAO onlineCourseDAO();

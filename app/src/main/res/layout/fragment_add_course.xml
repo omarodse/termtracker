@@ -26,7 +26,7 @@
                 android:layout_width="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/course_title"
+                    android:id="@+id/search_term_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/title" />

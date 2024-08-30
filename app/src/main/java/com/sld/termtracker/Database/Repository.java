@@ -148,7 +148,6 @@ public class Repository {
     public void getAllCourses(OnCoursesRetrievedListener listener) {
         databaseExecutor.execute(() -> {
             List<OfflineCourse> offlineCourses = mOfflineCourseDAO.getAllOfflineCourses();
-            Log.d(TAG, "Here's offline courses: " + offlineCourses);
             List<OnlineCourse> onlineCourses = mOnlineCourseDAO.getAllOnlineCourses();
             List<Course> allCourses = new ArrayList<>();
             allCourses.addAll(offlineCourses);

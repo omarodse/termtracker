@@ -95,7 +95,7 @@ public class TermsActivity extends AppCompatActivity implements
         repository.getAllTerms(terms -> {
             runOnUiThread(() -> {
                 if (terms.isEmpty()) {
-                    showEmptyStateFragment("No active terms", "Terms", 0);
+                    showEmptyStateFragment("No active terms", "Terms", -1, -1, "");
                 } else {
                     showTerms();
                     noTerms = false;
@@ -139,7 +139,6 @@ public class TermsActivity extends AppCompatActivity implements
         } else if(currentFragment instanceof AddTestFragment) {
             showBackButton(true);
             int testId = ((AddTestFragment) currentFragment).getTestId();
-            Log.d(TAG, "testId: " +testId);
             if(testId == -1) {
                 updateToolbarTitle("Add assessment");
             } else {
@@ -191,8 +190,8 @@ public class TermsActivity extends AppCompatActivity implements
         noCourses = change;
     }
 
-    public void showEmptyStateFragment(String message, String frameTitle, int termId) {
-        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
+    public void showEmptyStateFragment(String message, String frameTitle, int termId, int courseId, String courseType) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId, courseId, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.addToBackStack(null);
@@ -214,8 +213,8 @@ public class TermsActivity extends AppCompatActivity implements
         transaction.commit();
     }
 
-    public void showAddCourseFragment(int termId, String termTitle, String courseType) {
-        AddCourseFragment addCourse = AddCourseFragment.newInstance(termId, termTitle, -1, courseType);
+    public void showAddCourseFragment(int termId, String termTitle, int courseId, String courseType) {
+        AddCourseFragment addCourse = AddCourseFragment.newInstance(termId, termTitle, courseId, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addCourse);
         transaction.addToBackStack(null);

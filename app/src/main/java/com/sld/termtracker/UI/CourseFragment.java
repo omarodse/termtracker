@@ -108,7 +108,7 @@ public class CourseFragment extends Fragment {
 
         addCourseForm.setOnClickListener(v -> {
             if (getActivity() instanceof TermsActivity) {
-                ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle, "");
+                ((TermsActivity) getActivity()).showAddCourseFragment(termId, termTitle, -1, "");
             }
         });
 
@@ -126,7 +126,7 @@ public class CourseFragment extends Fragment {
                         getParentFragmentManager().popBackStack();
 
                         if (getActivity() instanceof TermsActivity) {
-                            ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId);
+                            ((TermsActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId, -1, "");
                         }
                     } else {
                         courseList.clear();
@@ -153,7 +153,7 @@ public class CourseFragment extends Fragment {
                         getParentFragmentManager().popBackStack();
 
                         if (getActivity() instanceof CoursesActivity) {
-                            ((CoursesActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId);
+                            ((CoursesActivity) getActivity()).showEmptyStateFragment("No active courses", termTitle, termId, -1, "");
                         }
                     } else {
                         courseList.clear();

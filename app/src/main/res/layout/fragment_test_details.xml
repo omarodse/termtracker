@@ -27,7 +27,7 @@
 
             <!-- Start Date -->
             <TextView
-                android:id="@+id/course_title"
+                android:id="@+id/search_term_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/courseLabel"
@@ -43,7 +43,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Start Date"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/course_title" />
+                app:layout_constraintTop_toBottomOf="@id/search_term_edit_text" />
 
             <TextView
                 android:id="@+id/test_details_start_date"
@@ -89,8 +89,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/courseTitle"
-                app:layout_constraintStart_toEndOf="@id/course_title"
-                app:layout_constraintTop_toTopOf="@id/course_title" />
+                app:layout_constraintStart_toEndOf="@id/search_term_edit_text"
+                app:layout_constraintTop_toTopOf="@id/search_term_edit_text" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

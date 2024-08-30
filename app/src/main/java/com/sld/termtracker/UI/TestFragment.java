@@ -107,11 +107,11 @@ public class TestFragment extends Fragment {
                         getParentFragmentManager().popBackStack();
 
                         if (getActivity() instanceof TermsActivity) {
-                            ((TermsActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, itemId);
+                            ((TermsActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, itemId, courseId, courseType);
                         } else if(getActivity() instanceof MainActivity) {
-                            ((MainActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, 0);
+                            ((MainActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, 0, courseId, courseType);
                         } else if(getActivity() instanceof CoursesActivity) {
-                            ((CoursesActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, courseId);
+                            ((CoursesActivity) getActivity()).showEmptyStateFragment("No active assessments", itemTitle, itemId, courseId, courseType);
                         }
                     } else {
                         testList.clear();
@@ -137,7 +137,7 @@ public class TestFragment extends Fragment {
                         getParentFragmentManager().popBackStack();
 
                         if (getActivity() instanceof TestsActivity) {
-                            ((TestsActivity) getActivity()).showEmptyStateFragment("No active courses", courseTitle, courseId);
+                            ((TestsActivity) getActivity()).showEmptyStateFragment("No active courses", courseTitle, -1, courseId, courseType);
                         }
                     } else {
                         testList.clear();

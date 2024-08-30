@@ -161,8 +161,8 @@ public class MainActivity extends AppCompatActivity implements CourseDetailsFrag
         transaction.commit();
     }
 
-    public void showEmptyStateFragment(String message, String frameTitle, int termId) {
-        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
+    public void showEmptyStateFragment(String message, String frameTitle, int termId, int courseId, String courseType) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId, courseId, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.addToBackStack(null);

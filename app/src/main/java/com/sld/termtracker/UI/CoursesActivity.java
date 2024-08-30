@@ -116,7 +116,7 @@ public class CoursesActivity extends AppCompatActivity implements CourseDetailsF
         repository.getAllCourses(courses -> {
             runOnUiThread(() -> {
                 if (courses.isEmpty()) {
-                    showEmptyStateFragment("No active courses", "Courses", 0);
+                    showEmptyStateFragment("No active courses", "Courses", 0, -1, "");
                 } else {
                     showCoursesFragment();
                 }
@@ -124,8 +124,8 @@ public class CoursesActivity extends AppCompatActivity implements CourseDetailsF
         });
     }
 
-    public void showEmptyStateFragment(String message, String frameTitle, int termId) {
-        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId);
+    public void showEmptyStateFragment(String message, String frameTitle, int termId, int courseId, String courseType) {
+        EmptyStateFragment emptyStateFragment = EmptyStateFragment.newInstance(message, frameTitle, termId, courseId, courseType);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, emptyStateFragment);
         transaction.addToBackStack(null);

@@ -95,7 +95,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestViewHolder
                     if(tests.isEmpty()) {
                         if(context instanceof TermsActivity) {
                             ((TermsActivity) context).getSupportFragmentManager().popBackStack();
-                            ((TermsActivity) context).showEmptyStateFragment("No active assessments", "", 0);
+                            ((TermsActivity) context).showEmptyStateFragment("No active assessments", "", 0, -1, "");
                         }
                     }
                     return true;

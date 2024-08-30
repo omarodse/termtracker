@@ -63,7 +63,7 @@ public class TermFragment extends Fragment {
         dataRepository.getAllTerms(terms -> {
             if (terms.isEmpty()) {
                 if(getActivity() instanceof TermsActivity) {
-                    ((TermsActivity) getActivity()).showEmptyStateFragment("No active terms", "", 0);
+                    ((TermsActivity) getActivity()).showEmptyStateFragment("No active terms", "", 0, -1, "");
                 }
             }
             getActivity().runOnUiThread(() -> {
