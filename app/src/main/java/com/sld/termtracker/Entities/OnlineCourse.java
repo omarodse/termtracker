@@ -13,11 +13,14 @@ public class OnlineCourse extends Course {
 
     private CourseType courseType;
 
+    private int onlineTestsNumber;
+
     public OnlineCourse(String courseTitle, String startDate, String endDate, CourseStatus status, int termId,
                         String instructorName, String instructorPhone, String instructorEmail, String note, String platform) {
         super(courseTitle, startDate, endDate, status, termId, instructorName, instructorPhone, instructorEmail, note);
         this.courseType = CourseType.ONLINE_COURSE;
         this.platform = platform;
+        this.onlineTestsNumber = 0;
     }
 
     public String getPlatform() {
@@ -32,6 +35,10 @@ public class OnlineCourse extends Course {
         return courseId;
     }
 
+    public int getOnlineTestsNumber() {
+        return onlineTestsNumber;
+    }
+
     public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
@@ -42,5 +49,9 @@ public class OnlineCourse extends Course {
 
     public void setCourseType(CourseType courseType) {
         this.courseType = courseType;
+    }
+
+    public void setOnlineTestsNumber(int onlineTestsNumber) {
+        this.onlineTestsNumber = onlineTestsNumber;
     }
 }

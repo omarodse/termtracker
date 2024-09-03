@@ -8,12 +8,14 @@ import com.sld.termtracker.DAO.OfflineCourseDAO;
 import com.sld.termtracker.DAO.OnlineCourseDAO;
 import com.sld.termtracker.DAO.TermDAO;
 import com.sld.termtracker.DAO.TestDAO;
+import com.sld.termtracker.DAO.UserDAO;
 import com.sld.termtracker.Entities.Course;
 import com.sld.termtracker.Entities.CourseType;
 import com.sld.termtracker.Entities.OfflineCourse;
 import com.sld.termtracker.Entities.OnlineCourse;
 import com.sld.termtracker.Entities.Term;
 import com.sld.termtracker.Entities.Test;
+import com.sld.termtracker.Entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +27,12 @@ public class Repository {
     private static final String TAG = "repository";
     private TermDAO mTermDAO;
     private CourseDAO mCourseDAO;
-
     private OfflineCourseDAO mOfflineCourseDAO;
 
     private OnlineCourseDAO mOnlineCourseDAO;
     private TestDAO mTestDAO;
+
+    private UserDAO mUserDAO;
 
     private List<Term> mAllTerms;
     private List<Course> mAllCourses;
@@ -40,12 +43,31 @@ public class Repository {
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public Repository (Application application) {
-        TermtrackerDatabaseBuilder db = TermtrackerDatabaseBuilder.getDatabase(application);
+        // During development (unencrypted for inspection = getDatabase(application, false)
+        TermtrackerDatabaseBuilder db = TermtrackerDatabaseBuilder.getDatabase(application, false);
         mTermDAO = db.termDAO();
         mOfflineCourseDAO = db.offlineCourseDAO();
         mOnlineCourseDAO = db.onlineCourseDAO();
         mTestDAO = db.testDAO();
+        mUserDAO = db.userDAO();
     }
+
+    // Access users
+
+    public void insert(User user) {
+        databaseExecutor.execute(() -> mUserDAO.insert(user));
+    }
+    public void getUserByUsername(String username, OnUserRetrievedListener listener) {
+        databaseExecutor.execute(() -> {
+            User user = mUserDAO.getUserByUsername(username);
+            listener.onUserRetrieved(user);
+        });
+    }
+
+    public interface OnUserRetrievedListener {
+        void onUserRetrieved(User user);
+    }
+
     // Access Terms in DB
     public void getAllTerms(OnTermsRetrievedListener listener) {
         databaseExecutor.execute(() -> {

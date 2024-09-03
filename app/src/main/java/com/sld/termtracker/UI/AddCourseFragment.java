@@ -226,7 +226,6 @@ public class AddCourseFragment extends Fragment {
             String instructorEmail = courseInstructorEmailEditText.getText().toString().trim();
             String note = courseNoteEditText.getText().toString().trim();
             String locationPlatformField = locationPlatformEditText.getText().toString().trim();
-
             if (title.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || instructorName.isEmpty()
                     || instructorPhone.isEmpty() ||instructorEmail.isEmpty()) {
                 Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_LONG).show();
@@ -254,7 +253,6 @@ public class AddCourseFragment extends Fragment {
             if (getSelectedCourseType == R.id.type_offline) {
                 newCourse = new OfflineCourse(title, startDate, endDate, selectedStatus, termId, instructorName,
                         instructorPhone, instructorEmail, note, locationPlatformField);
-                Log.d(TAG, "Course title: " + newCourse.getCourseTitle());
                 repository.insert(newCourse);
             } else if (getSelectedCourseType == R.id.type_online) {
                 newCourse = new OnlineCourse(title, startDate, endDate, selectedStatus,

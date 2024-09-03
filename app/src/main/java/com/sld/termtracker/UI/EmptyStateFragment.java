@@ -113,9 +113,9 @@ public class EmptyStateFragment extends Fragment {
                 if (message.contains("terms")) {
                     fragment = new AddTermFragment();
                 } else if (message.contains("courses")) {
-                    fragment = AddCourseFragment.newInstance(itemId, itemTitle, courseId, courseType);
+                    fragment = AddCourseFragment.newInstance(itemId, itemTitle, -1, courseType);
                 } else if(message.contains("assessments")) {
-                    fragment = AddTestFragment.newInstance(itemId, itemTitle, courseId, courseType);
+                    fragment = AddTestFragment.newInstance(itemId, itemTitle, -1, courseType);
                 }
             }
 

@@ -1,196 +1,193 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
     tools:context="com.sld.termtracker.UI.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/CustomTextInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/CustomTextInputLayout"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_term_edit_text"
             android:layout_width="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:drawableStart="@null"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorAccent"
+            android:hint="@string/search"
+            android:paddingStart="16dp"
+            android:visibility="gone" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_term_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/search"
-                android:drawableTint="@color/colorAccent"
-                android:drawableStart="@null"
-                android:paddingStart="16dp"
-                android:drawablePadding="8dp"
-                android:visibility="gone" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/search_button"
+        style="@style/FormSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/searchButton"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout" />
+
+    <TextView
+        android:id="@+id/report_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/reportLabel"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_button" />
+
+    <TextView
+        android:id="@+id/term_title_search"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/termTitle"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/report_label" />
+
+    <TextView
+        android:id="@+id/term_start_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/start_date"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/term_title_search"
+        app:layout_constraintTop_toTopOf="@id/term_title_search" />
+
+    <TextView
+        android:id="@+id/date_dash_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/dash"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/term_start_search"
+        app:layout_constraintTop_toTopOf="@id/term_start_search" />
+
+    <TextView
+        android:id="@+id/term_end_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/end_date"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/date_dash_search"
+        app:layout_constraintTop_toTopOf="@id/date_dash_search" />
+
+    <LinearLayout
+        android:id="@+id/report_columns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/divider2">
 
         <TextView
-            android:id="@+id/activeCoursesTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/home_active_courses"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewReport" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activeCoursesRecyclerView"
+            android:id="@+id/course_title_report"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activeCoursesTitle" />
+            android:layout_weight="1"
+            android:text="@string/courseTitle" />
 
         <TextView
-            android:id="@+id/upcomingTestsTitle"
+            android:id="@+id/course_type_report"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/home_upcoming_tests"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activeCoursesRecyclerView" />
+            android:layout_weight="1"
+            android:text="@string/type" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/upcomingTestsRecyclerView"
+        <TextView
+            android:id="@+id/tests_number_report"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/upcomingTestsTitle" />
+            android:layout_weight="1"
+            android:text="@string/number_tests" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/report_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/reportLabel"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_button" />
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/term_title_search" />
 
-        <TextView
-            android:id="@+id/term_title_search"
-            android:layout_width="wrap_content"
-            android:layout_height="19dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/termTitle"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/report_label" />
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/report_columns" />
 
-        <TextView
-            android:id="@+id/term_start_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/start_date"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/term_title_search"
-            app:layout_constraintTop_toTopOf="@+id/term_title_search" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
 
-        <TextView
-            android:id="@+id/date_dash_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/dash"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/term_start_search"
-            app:layout_constraintTop_toTopOf="@+id/term_start_search" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider3" />
 
-        <TextView
-            android:id="@+id/term_end_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/end_date"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/date_dash_search"
-            app:layout_constraintTop_toTopOf="@+id/date_dash_search" />
+    <TextView
+        android:id="@+id/activeCoursesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/home_active_courses"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewReport" />
 
-        <LinearLayout
-            android:id="@+id/report_columns"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/divider2">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activeCoursesRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activeCoursesTitle" />
 
-            <TextView
-                android:id="@+id/course_title_report"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/courseTitle" />
+    <TextView
+        android:id="@+id/upcomingTestsTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/home_upcoming_tests"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activeCoursesRecyclerView" />
 
-            <TextView
-                android:id="@+id/course_type_report"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/type" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/upcomingTestsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/upcomingTestsTitle" />
 
-            <TextView
-                android:id="@+id/tests_number_report"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/number_tests" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="?android:attr/listDivider"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/term_title_search" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="?android:attr/listDivider"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/report_columns" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewReport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider3" />
-
-        <Button
-            android:id="@+id/search_button"
-            style="@style/FormSaveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/searchButton"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+
+    private static final String TAG = "HomeFragment";
     private RecyclerView coursesRecyclerView, testsRecyclerView, reportRecyclerView;
     private CourseAdapter courseAdapter;
     private TestAdapter testAdapter;
@@ -47,6 +50,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<Course> coursesList = new ArrayList<>();
     private ArrayList<Test> testsList = new ArrayList<>();
     private ArrayList<Term> termList = new ArrayList<>();
+
+    private ArrayList<Course> reportCourseList = new ArrayList<>();
     private EditText searchTerm;
 
     private Button searchButton;
@@ -100,30 +105,27 @@ public class HomeFragment extends Fragment {
 
         courseAdapter = new CourseAdapter(coursesList, repository, this::showCourseDetailFragment);
         testAdapter = new TestAdapter(testsList, repository, this::showTestDetailFragment);
-        termSearchAdapter = new TermSearchAdapter(coursesList, repository);
+        termSearchAdapter = new TermSearchAdapter(reportCourseList, repository);
 
         coursesRecyclerView.setAdapter(courseAdapter);
         testsRecyclerView.setAdapter(testAdapter);
         reportRecyclerView.setAdapter(termSearchAdapter);
 
         Drawable arrowDrawable = ContextCompat.getDrawable(getContext(), R.drawable.chevron_backward_20px);
-        searchTerm.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    // When EditText is focused, set the views to GONE
-                    coursesRecyclerView.setVisibility(View.GONE);
-                    testsRecyclerView.setVisibility(View.GONE);
-                    searchButton.setVisibility(View.VISIBLE);
-                    coursesLabel.setVisibility(View.GONE);
-                    testsLabel.setVisibility(View.GONE);
-                    if (arrowDrawable != null) {
-                        arrowDrawable.setTint(ContextCompat.getColor(requireContext(), R.color.colorAccent));
-                        searchTerm.setCompoundDrawablesWithIntrinsicBounds(arrowDrawable, null, null, null);
-                    }
-                } else {
-                    searchTerm.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        searchTerm.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                // When EditText is focused, set the views to GONE
+                coursesRecyclerView.setVisibility(View.GONE);
+                testsRecyclerView.setVisibility(View.GONE);
+                searchButton.setVisibility(View.VISIBLE);
+                coursesLabel.setVisibility(View.GONE);
+                testsLabel.setVisibility(View.GONE);
+                if (arrowDrawable != null) {
+                    arrowDrawable.setTint(ContextCompat.getColor(requireContext(), R.color.colorAccent));
+                    searchTerm.setCompoundDrawablesWithIntrinsicBounds(arrowDrawable, null, null, null);
                 }
+            } else {
+                searchTerm.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             }
         });
 
@@ -150,6 +152,7 @@ public class HomeFragment extends Fragment {
                             searchTerm.setText("");
                             coursesRecyclerView.setVisibility(View.VISIBLE);
                             testsRecyclerView.setVisibility(View.VISIBLE);
+                            reportRecyclerView.setVisibility(View.GONE);
                             searchButton.setVisibility(View.GONE);
                             coursesLabel.setVisibility(View.VISIBLE);
                             testsLabel.setVisibility(View.VISIBLE);
@@ -188,6 +191,8 @@ public class HomeFragment extends Fragment {
                 // Load the table
                 int termId = termFound.getTermId();
                 loadTable(termId);
+
+                reportRecyclerView.setVisibility(View.VISIBLE);
 
                 // Hide the keyboard
                 InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -253,7 +258,7 @@ public class HomeFragment extends Fragment {
 
     public Term filter (String termTitle) {
         for (Term term: termList) {
-            if (term.getTitle().toLowerCase().equals(termTitle.toLowerCase())) {
+            if (term.getTitle().equalsIgnoreCase(termTitle)) {
                 return term;
             }
         }
@@ -265,8 +270,8 @@ public class HomeFragment extends Fragment {
         repository.getCoursesByTermId(termId, courses -> {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    coursesList.clear();
-                    coursesList.addAll(courses);
+                    reportCourseList.clear();
+                    reportCourseList.addAll(courses);
                     termSearchAdapter.notifyDataSetChanged();
                 });
             }

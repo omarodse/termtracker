@@ -53,7 +53,7 @@ public class TestDetailsFragment extends Fragment {
         if (getArguments() != null) {
             testId = getArguments().getInt(ARG_TEST_ID);
             courseType = getArguments().getString(ARG_COURSE_TYPE);
-            //courseTitle = getArguments().getString(ARG_COURSE_TITLE);
+            courseTitle = getArguments().getString(ARG_COURSE_TITLE);
             Log.d(TAG, "Course Title: " + testId);
         } else {
             Log.e(TAG, "Arguments are null");

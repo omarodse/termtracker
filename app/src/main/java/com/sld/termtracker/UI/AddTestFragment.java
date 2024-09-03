@@ -17,6 +17,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sld.termtracker.Database.Repository;
 import com.sld.termtracker.Entities.Course;
+import com.sld.termtracker.Entities.OfflineCourse;
+import com.sld.termtracker.Entities.OnlineCourse;
 import com.sld.termtracker.Entities.Test;
 import com.sld.termtracker.Entities.TestType;
 
@@ -47,9 +49,9 @@ public class AddTestFragment extends Fragment {
         Log.d(TAG, "testId: " + testId);
         args.putInt(ARG_COURSE_ID, courseId);
         args.putString(ARG_COURSE_TITLE, courseTitle);
+        args.putString(ARG_COURSE_TYPE, courseType);
         if (testId != -1) {
             args.putInt(ARG_TEST_ID, testId);
-            args.putString(ARG_COURSE_TYPE, courseType);
         }
         fragment.setArguments(args);
         return fragment;
@@ -75,7 +77,7 @@ public class AddTestFragment extends Fragment {
             courseTitle = getArguments().getString(ARG_COURSE_TITLE);
             testId = getArguments().getInt(ARG_TEST_ID, -1);
             courseType = getArguments().getString(ARG_COURSE_TYPE);
-            Log.d(TAG, "GET ARGUMENTS: The termId is " + courseId);
+            Log.d(TAG, "GET ARGUMENTS: The course type is " + courseType);
         } else {
             Log.e(TAG, "Arguments are null");
         }
@@ -172,11 +174,18 @@ public class AddTestFragment extends Fragment {
 
             Test test = new Test(title, startDate, endDate, testType, courseId, courseType);
 
-//            // Add test count to course
-//            repository.getCourseById(courseId, courseType, course -> {
-//                int getNumberOfTests = course.getNumberOfTests();
-//                course.setNumberOfTests(getNumberOfTests + 1);
-//            });
+            // Add test count to course
+            repository.getCourseById(courseId, courseType, course -> {
+                if (course instanceof OfflineCourse) {
+                    int testNumber = ((OfflineCourse) course).getOfflineTestsNumber();
+                    ((OfflineCourse) course).setOfflineTestsNumber(testNumber + 1);
+                    repository.update(course);
+                } else if (course instanceof OnlineCourse) {
+                    int testNumber = ((OnlineCourse) course).getOnlineTestsNumber();
+                    ((OnlineCourse) course).setOnlineTestsNumber(testNumber + 1);
+                    repository.update(course);
+                }
+            });
 
             repository.insert(test);
 

@@ -63,4 +63,10 @@
     <string name="instructor_phone">Phone</string>
     <string name="instructor_email">Email</string>
 
+    <!--  Log in page  -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
 </resources>

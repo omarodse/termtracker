@@ -17,6 +17,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sld.termtracker.Database.Repository;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 public class MainActivity extends AppCompatActivity implements CourseDetailsFragment.OnCourseTitleUpdatedListener, TestDetailsFragment.OnTestTitleUpdatedListener {
 
     private static final String TAG = "MainActivity";
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements CourseDetailsFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SQLiteDatabase.loadLibs(this);
         setContentView(R.layout.activity_main);
         NotificationUtils.createNotificationChannel(this);
 

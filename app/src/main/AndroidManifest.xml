@@ -19,6 +19,15 @@
         tools:targetApi="31">
 
         <activity
+            android:name="com.sld.termtracker.UI.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.sld.termtracker.UI.TestsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false" />
@@ -33,17 +42,10 @@
         <activity
             android:name="com.sld.termtracker.UI.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
 
         <receiver
             android:name="com.sld.termtracker.UI.NotificationBroadcastReceiver"
             android:exported="true" />
     </application>
-
 </manifest>
